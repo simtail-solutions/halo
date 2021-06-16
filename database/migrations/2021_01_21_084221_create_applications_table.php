@@ -41,9 +41,6 @@ class CreateApplicationsTable extends Migration
             $table->string('referenceName');
             $table->string('referencePhone');
             $table->string('referenceSuburb');
-            $table->string('numCreditCards');
-            $table->string('numPersonalLoans');
-            $table->string('numMortgages');
             $table->string('category')->default('Incomplete');
             $table->timestamps();
         });

@@ -15,10 +15,10 @@ class CreateCreditcardsTable extends Migration
     {
         Schema::create('credit_cards', function (Blueprint $table) {
             $table->id();
-            $table->integer('application_id')->nullable();
-            $table->string('financeCompany')->nullable();
-            $table->integer('creditLimit')->nullable();
-            $table->string('consolidate')->nullable();
+            $table->integer('application_id');
+            $table->string('financeCompany');
+            $table->integer('creditLimit');
+            $table->string('consolidate');
             $table->timestamps();
         });
     }

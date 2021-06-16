@@ -11,10 +11,10 @@ class Mortgage extends Model
     protected $fillable = [
         'financeCompany',
         'balance',
-        'repayment'.
+        'repayment',
         'frequency',
-        'joint',
-        'investmentProperty'
+        'investmentProperty',
+        'joint'
     ];
 
     public function applications() 

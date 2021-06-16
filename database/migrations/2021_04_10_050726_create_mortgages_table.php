@@ -15,12 +15,13 @@ class CreateMortgagesTable extends Migration
     {
         Schema::create('mortgages', function (Blueprint $table) {
             $table->id();
+            $table->integer('application_id');
             $table->string('financeCompany');
             $table->integer('balance');
             $table->integer('repayment');
             $table->enum('frequency', ['Weekly','Fortnightly','Monthly']);
-            $table->boolean('investmentProperty');
-            $table->boolean('joint');
+            $table->string('investmentProperty');
+            $table->string('joint');
             $table->timestamps();
         });
     }

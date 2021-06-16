@@ -15,12 +15,13 @@ class CreatePersonalloansTable extends Migration
     {
         Schema::create('personal_loans', function (Blueprint $table) {
             $table->id();
+            $table->integer('application_id');
             $table->string('financeCompany');
             $table->integer('balance');
             $table->integer('repayment');
             $table->enum('frequency', ['Weekly','Fortnightly','Monthly']);
-            $table->boolean('consolidate');
-            $table->boolean('joint');
+            $table->string('consolidate');
+            $table->string('joint');
             $table->timestamps();
         });
     }

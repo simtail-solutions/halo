@@ -58,7 +58,7 @@
 </tr>
 <tr>
 <th scope="col">Date of Birth</th>
-<td>{{$application->applicant->dob}}</td>
+<td>{{$application->applicant->birth_day}} / {{$application->applicant->birth_month}} / {{$application->applicant->birth_year}}</td>
 </tr>
 <tr>
 <th scope="col">Number of Dependants</th>
@@ -80,7 +80,7 @@
 <th scope="col">Drivers Licence Number</th>
 <td>{{$application->applicant->currentDL}}
     {{$application->applicant->DLnumber}}<br>
-    <a href="#">Copy of drivers licence</a><br>
+    <a href="{{asset('storage/'.$application->applicant->DLimage)}}" target="_blank">Copy of drivers licence</a><br>
     <span class="badge bg-danger w-50">Download to be disabled after application approved / declined / withdrawn</span>
 </td>
 </tr>
@@ -88,7 +88,7 @@
 <th scope="col">Medicare Number</th>
 <td>{{$application->applicant->MCnumber}}
 <br>
-    <a href="#">Copy of medicare card</a>
+    <a href="{{asset('storage/'.$application->applicant->MCimage)}}" target="_blank">Copy of medicare card</a>
     <br>
     <span class="badge bg-danger w-75">Download to be disabled after application approved / declined / withdrawn</span></td>
 </tr>
@@ -136,10 +136,12 @@
 <th scope="col">Applicants Income</th>
 <td>{{$application->income}} / {{$application->incomeFreq}}</td>
 </tr>
+@if(isset($application->partnerIncome))
 <tr>
 <th scope="col">Partners Income</th>
 <td>{{$application->partnerIncome}} / {{$application->partnerIncomeFreq}}</td>
 </tr>
+@endif
 <tr>
 <th scope="col">Rent / Mortgage</th>
 <td>{{$application->rentMortgageBoard}} / {{$application->rentFreq}}</td>
@@ -168,15 +170,137 @@
 </tr>
 <tr>
 <th scope="col">Credit Cards</th>
-<td>Add credit card details</td>
+<td></td>
 </tr>
 <tr>
+<td colspan="2">
+@if (count($application->creditCards) > 0)
+    <table class="table">
+    <thead>
+    <th>Finance Company</th>
+    <th>Credit Limit</th>
+    <th>Consolidate?</th>
+    </thead>
+    <tbody>
+    @foreach($application->creditCards as $creditCard)
+    <tr>
+    <td>
+        {{ $creditCard->financeCompany }}
+    </td>
+    <td>
+    {{ $creditCard->creditLimit }}   
+    </td>
+    <td>
+    {{ $creditCard->consolidate }}
+    </td>
+    </tr>
+    @endforeach
+    </tbody>
+    </table>
+
+    @else
+
+    <div>No credit cards to show</div>
+    @endif
+    </td>
+</tr>
+
+<tr>
 <th scope="col">Personal Loans</th>
-<td>Add personal loan details</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2">
+@if (count($application->personalLoans) > 0)
+<table class="table">
+<thead>
+<th>Finance Company</th>
+<th>Balance</th>
+<th>Repayment</th>
+<th>Frequency</th>
+<th>Consolidate?</th>
+<th>Joint Loan?</th>
+</thead>
+<tbody>
+@foreach($application->personalLoans as $personalLoan)
+<tr>
+  <td>
+    {{ $personalLoan->financeCompany}} 
+  </td>
+  <td>
+    {{ $personalLoan->balance }}  
+  </td>
+  <td>
+   {{ $personalLoan->repayment }}   
+  </td>
+  <td>
+    {{ $personalLoan->frequency }}
+  </td>
+  <td>
+    {{ $personalLoan->consolidate }}
+  </td>
+  <td>
+    {{ $personalLoan->joint }}    
+</td>
+</tr>
+@endforeach
+</tbody>
+</table>
+
+@else
+
+<div>No personal loans to show</div>
+@endif
+</td>
 </tr>
 <tr>
 <th scope="col">Mortgages</th>
-<td>Add mortgage details</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2">
+@if (count($application->mortgages) > 0)
+
+<table class="table">
+<thead>
+<th>Finance Company</th>
+<th>Balance</th>
+<th>Repayment</th>
+<th>Frequency</th>
+<th>Investment Property?</th>
+<th>Joint Loan?</th>
+</thead>
+<tbody>
+@foreach($application->mortgages as $mortgage)
+<tr>
+  <td>
+  {{ $mortgage->financeCompany }}  
+  </td>
+  <td>
+  {{ $mortgage->balance }}    
+  </td>
+  <td>
+    {{ $mortgage->repayment }}
+  </td>
+  <td>
+  {{ $mortgage->frequency }}
+  </td>
+  <td>
+  {{ $mortgage->investmentProperty }}
+  </td>
+  <td>
+   {{ $mortgage->joint }}   
+</td>
+</tr>
+@endforeach
+</tbody>
+</table>
+
+@else
+
+<div>No mortgages to show</div>
+@endif
+</td>
 </tr>
 </tbody>
 </table>

@@ -53,8 +53,11 @@ class ApplicationsTableSeeder extends Seeder
             'postcode' => '6003',
             'phone' => '0892141200',
             'email' => 'boo@outlook.com.au',
-            'DOB' => '2000-12-31',
-            'currentDL' => 'Yes',
+            //'dob' => '2000-12-31',
+            'birth_day' => '31',
+            'birth_month' => '12',
+            'birth_year' => '2000',
+            'currentDL' => false,
             'DLnumber' => '123456789',
             'MCnumber' => '98732155',
             'occupation' => 'Nurse',
@@ -75,8 +78,11 @@ class ApplicationsTableSeeder extends Seeder
             'postcode' => '6000',
             'phone' => '0413578850',
             'email' => 'hello@gmail.com',
-            'DOB' => '2000-12-31',
-            'currentDL' => 'No',
+            //'dob' => '2000-12-31',
+            'birth_day' => '31',
+            'birth_month' => '12',
+            'birth_year' => '2000',
+            'currentDL' => true,
             'DLnumber' => '599845',
             'MCnumber' => '8855488',
             'occupation' => 'Driver',
@@ -98,8 +104,11 @@ class ApplicationsTableSeeder extends Seeder
             'postcode' => '6051',
             'phone' => '0412 123 554',
             'email' => 'myemail@email.com.au',
-            'DOB' => '2000-12-31',
-            'currentDL' => 'True',
+            //'dob' => '2000-12-31',
+            'birth_day' => '31',
+            'birth_month' => '12',
+            'birth_year' => '2000',
+            'currentDL' => false,
             'DLnumber' => '0012006',
             'MCnumber' => '5584669',
             'occupation' => 'Plumber',
@@ -133,9 +142,6 @@ class ApplicationsTableSeeder extends Seeder
             'referenceName' => 'John Doe',
             'referencePhone' => '1300123456',
             'referenceSuburb' => 'Perth',
-            'numCreditCards' => '3',
-            'numPersonalLoans' => '1',
-            'numMortgages' => '2',
             'category' => 'Submitted'
         ]);
 
@@ -165,9 +171,6 @@ class ApplicationsTableSeeder extends Seeder
             'referenceName' => 'Mr Abdul Sharpy',
             'referencePhone' => '089123456',
             'referenceSuburb' => 'Bayswater',
-            'numCreditCards' => '3',
-            'numPersonalLoans' => '1',
-            'numMortgages' => '2',
             'category' => 'Incomplete'
         ]);
         
@@ -197,9 +200,6 @@ class ApplicationsTableSeeder extends Seeder
             'referenceName' => 'John Smith',
             'referencePhone' => '0291234688',
             'referenceSuburb' => 'Sydney',
-            'numCreditCards' => '3',
-            'numPersonalLoans' => '1',
-            'numMortgages' => '2',
             'category' => 'Incomplete'
         ]);
 

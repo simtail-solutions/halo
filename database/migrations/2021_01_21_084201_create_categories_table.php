@@ -15,7 +15,7 @@ class CreateCategoriesTable extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->enum('name',['Incomplete','Submitted','Declined','Withdrawn','Approved']);
+            $table->enum('name',['Incomplete','Submitted','Declined','Withdrawn','Approved'])->default("Incomplete");
             $table->timestamps();
         });
     }

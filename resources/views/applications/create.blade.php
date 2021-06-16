@@ -31,6 +31,8 @@
     </div>
     @endif
 
+
+
 <form class="application-form" action="{{ route('applications.store') }}" method="POST" enctype="multipart/form-data">
 @csrf
 
@@ -134,9 +136,20 @@
     <div class="col-lg-4">
       <div class="form-group">
         <label for="dob">Date of Birth</label>
-      <input type="text" class="dob form-control" id="dob" name="dob" placeholder="DOB" value="{{ isset($applicant) ? $applicant->dob : '' }}" required>
+      <div class="w-100">
+        <input type="text" class="form-control d-inline w-25" id="birth_day" name="birth_day" size="2" maxlength="2" placeholder="DD">
+        <input type="text" class="form-control d-inline w-25" id="birth_month" name="birth_month" size="2" maxlength="2" placeholder="MM">
+        <input type="text" class="form-control d-inline w-25" id="birth_year" name="birth_year" size="4" maxlength="4" placeholder="YYYY">
+      </div>
       </div>            
     </div>
+
+    <script>
+        // flatpickr('#dob', {
+        //     enableTime: true,
+        //     enableSeconds: true
+        // })
+    </script>
 
     <div class="col-lg-4">
       <div class="form-group">
@@ -158,17 +171,28 @@
         <label for="status">Marital Status</label>
           <select class="form-control" id="status" name="status" value="{{ isset($applicant) ? $applicant->status : '' }}" required>
             <option></option>
-            <option>Single</option>
-            <option>Married</option>
-            <option>De Facto</option>
-            <option>Seperated</option>
-            <option>Divorced</option>
-            <option>Widowed</option>
+            <option id="single">Single</option>
+            <option id="married">Married</option>
+            <option id="defacto">De Facto</option>
+            <option id="separated">Seperated</option>
+            <option id="divorced">Divorced</option>
+            <option id="widowed">Widowed</option>
           </select>
       </div>
     </div>
       
   </div>
+
+  <script>
+    $("#status").change(function() {
+        if ($(this).find("option:selected").attr("id") == "married" || $(this).find("option:selected").attr("id") == "defacto") {
+            $(".partner-income").removeClass("d-none");
+        } else  {
+                $(".partner-income").addClass("d-none");
+        } 
+    });
+
+</script>
 
   <div class="row m-3">
       
@@ -232,7 +256,7 @@
             <option>Contract</option>
             <option>Pension</option>
             <option>Unemployed</option>
-            <option>Centrelink</option>
+            <option id="centrelink">Centrelink</option>
             <option>Other</option>
           </select>
       </div>
@@ -325,7 +349,9 @@
           * if unemployed or Centerlink has been selected they wont be able to proceed past this point. A notification will explain why, but after T&C's are accepted as we want their info
         </p>
   </div>
-
+  <div class="m-5">
+<hr>
+</div>
 </div>
 
 <div class="form-section">
@@ -497,6 +523,9 @@
   </div>
 
 </div>
+<div class="m-5">
+<hr>
+</div>
 
 </div>
 
@@ -504,246 +533,305 @@
 
 <div class="row m-3">
 
-  <div class="col-lg-3">
-    <div class="form-group">
-      <label for="numCreditCards">Number of Credit Cards:</label>
-        <select class="form-control" name="numCreditCards" id="numCreditCards">
-          <option value="0">0</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>  
-    </div>
-  </div>
+<h3>Credit Cards</h3>
+<p>List all credit cards - include store cards and zero balance cards.</p>
 
-  <div class="col-lg-9">
-  <p class="font-weight-bold">Include store cards</p>
-  </div>
-
-</div>
-
-<div class="row m-3 credit-card-details">
-
-  <div class="col-lg-4">
-    <div class="form-group">
-      <label for="financeCompany">Finance Company name</label>
-      <input type="text" class="form-control" name="financeCompany" id="financeCompany" value="" placeholder="Finance Company Name" />
-    </div>    
-  </div>
-
-  <div class="col-lg-4">
-    <div class="form-group">
-      <label for="creditLimit">Credit limit</label>
-      <input type="text" class="form-control" name="creditLimit" id="creditLimit" value="" placeholder="$" />
-    </div>    
-  </div>
-
-  <div class="col-lg-4">
-    <div class="form-group">
-      <label for="">Consolidate this card? </label>
-        <input type="checkbox" name="consolidate" id="consolidate" checked />
-    </div>    
-  </div>
 
 </div>
 
 
-<div class="row m-3 credit-card-details">
+<table class="table table-striped credit-card-table">
+<thead>
+<th>Finance Company</th>
+<th>Credit Limit</th>
+<th>Consolidate?</th>
+<th></th>
+</thead>
+<tbody id="creditCardContainer">
 
-  <div class="col-lg-4">
-    <div class="form-group">
-      <label for="financeCompany">Finance Company name</label>
-      <input type="text" class="form-control" name="financeCompany" id="financeCompany2" value="" placeholder="Finance Company Name" />
-    </div>    
-  </div>
+</tbody>
+</table>
+<div><a href="#" class="btn btn-info" id="addRow">Add Credit Card</a></div>
 
-  <div class="col-lg-4">
-    <div class="form-group">
-      <label for="creditLimit">Credit limit</label>
-      <input type="text" class="form-control" name="creditLimit" id="creditLimit" value="" placeholder="$" />
-    </div>    
-  </div>
+<script type="text/javascript">
 
-  <div class="col-lg-4">
-    <div class="form-group">
-      <label for="">Consolidate this card? </label>
-        <input type="checkbox" name="consolidate" id="consolidate" checked />
-    </div>    
-  </div>
+    let i = 1;
 
+    document.getElementById('addRow').onclick = function () {
+    let template = `<td>
+      <div class="form-group">
+      <label for="financeCompany-${i}" class="visually-hidden">Finance Company name #${i}</label>
+      <input type="text" class="form-control" id="financeCompany-${i}" name="creditCards[${i}][financeCompany]" value="" placeholder="Finance Company Name" />
+      </div> 
+      </td>
+      <td>
+      <div class="form-group">
+      <label for="creditLimit-${i}" class="visually-hidden">Credit limit</label>
+      <input type="text" class="form-control" id="creditLimit-${i}" name="creditCards[${i}][creditLimit]" value="" placeholder="$" />
+      </div>  
+      </td>
+      <td>
+      <div class="form-group">
+      <label for="consolidate-${i}" class="visually-hidden">Consolidate this card?</label>
+      <select class="form-control" name="creditCards[${i}][consolidate]" id="consolidate-${i}">
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+      </select>
+      </div>  
+      </td>
+      <td><a href="#" class="btn btn-danger rounded-circle remove fw-bold">X</a></td>`;
+    let container = document.getElementById('creditCardContainer');
+    let tr = document.createElement('tr');
+    tr.innerHTML = template;
+    container.appendChild(tr);      
+    i++;
+  };
+
+  $('tbody').on('click', '.remove', function(){
+        $(this).parent().parent().remove();
+        i--;
+      });
+  
+      
+</script>
+
+
+<div class="m-5">
+<hr>
 </div>
 
 <div class="row m-3">
 
-  <div class="col-lg-3">
-    <div class="form-group">
-      <label for="numPersonalLoans">Number of Personal Loans:</label>
-        <select class="form-control" name="numPersonalLoans" id="numPersonalLoans">
-          <option value="0">0</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>  
-    </div>
-  </div>
-
-  <div class="col-lg-9">
-  <p class="font-weight-bold">Include secured and unsecured loans</p>
-  </div>
+<h3>Personal Loans</h3>
+<p>List all secured and unsecured loans.</p>
 
 </div>
 
-<div class="row m-3 personal-loan-details">
+<table class="table table-striped">
+<thead>
+<th>Finance Company</th>
+<th>Balance</th>
+<th>Repayment</th>
+<th>Frequency</th>
+<th>Consolidate?</th>
+<th>Joint Loan?</th>
+<th></th>
+</thead>
+<tbody id="personalLoanContainer">
 
-  <div class="col-lg-4">
-    <div class="form-group">
-      <label for="financeCompany">Finance Company name</label>
-      <input type="text" class="form-control" name="financeCompany" id="financeCompany" value="" placeholder="Finance Company Name" />
+</tbody>
+</table>
+<div><a href="#" class="btn btn-info" id="addPL">Add Personal Loan</a></div>
+
+<script type="text/javascript">
+
+    let p = 1;
+
+    document.getElementById('addPL').onclick = function () {
+    let template = `<td>
+<div class="form-group">
+      <label for="financeCompanyPL-${p}" class="visually-hidden">Finance Company name</label>
+      <input type="text" class="form-control" name="personalLoans[${p}][financeCompany]" id="financeCompanyPL-${p}" value="" placeholder="Finance Company Name" />
+    </div> 
+  </td>
+<td>
+<div class="form-group">
+      <label for="balance-${p}" class="visually-hidden">Balance</label>
+      <input type="text" class="form-control" name="personalLoans[${p}][balance]" id="balance-${p}" value="" placeholder="$" />
     </div>    
-  </div>
+  </td>
+<td>
+<div class="form-group">
+      <label for="repayment-${p}" class="visually-hidden">Repayment</label>
+      <input type="text" class="form-control" name="personalLoans[${p}][repayment]" id="repayment-${p}" value="" placeholder="$" />
+    </div>   
+  </td>
 
-  <div class="col-lg-2">
-    <div class="form-group">
-      <label for="balance">Balance</label>
-      <input type="text" class="form-control" name="balance" id="balance" value="" placeholder="$" />
+<td>
+<div class="form-group">
+      <label for="frequency-${p}" class="visually-hidden">Frequency</label>
+      <select class="form-control" name="personalLoans[${p}][frequency]" id="frequency-${p}">
+        <option value="Weekly">Weekly</option>
+        <option value="Fortnightly">Fortnightly</option>
+        <option value="Monthly">Monthly</option>
+      </select>
+    </div></td>
+<td>
+<div class="form-group">
+      <label for="consolidatePL-${p}" class="visually-hidden">Consolidate this loan? </label>
+        <select class="form-control" name="personalLoans[${p}][consolidate]" id="consolidatePL-${p}" >
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+        </select>
+    </div></td>
+<td>
+<div class="form-group">
+      <label for="jointLoanPL-${p}" class="visually-hidden">Joint loan? </label>
+        <select class="form-control" name="personalLoans[${p}][joint]" id="jointPL-${p}" >
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+        </select>
     </div>    
-  </div>
+</td>
+<td>
+  <a href="#" class="btn btn-danger rounded-circle fw-bold removePL">X</a>
+</td>`;
+    let container = document.getElementById('personalLoanContainer');
+    let tr = document.createElement('tr');
+    tr.innerHTML = template;
+    container.appendChild(tr);      
+    p++;
+  };
 
-  <div class="col-lg-2">
-    <div class="form-group">
-      <label for="repayment">Repayment</label>
-      <input type="text" class="form-control" name="repayment" id="repayment" value="" placeholder="$" />
+  $('tbody').on('click', '.removePL', function(){
+        $(this).parent().parent().remove();
+        p--;
+      });
+  
+      
+</script>
+
+<div class="m-5">
+<hr>
+</div>
+
+<div class="row m-3">
+
+<h3>Mortgages</h3>
+<p>List all mortgages and investment loans.</p>
+
+</div>
+
+<table class="table table-striped">
+<thead>
+<th>Finance Company</th>
+<th>Balance</th>
+<th>Repayment</th>
+<th>Frequency</th>
+<th>Investment Property?</th>
+<th>Joint Loan?</th>
+<th></th>
+</thead>
+<tbody id="mortgageContainer">
+
+</tbody>
+</table>
+<div><a href="#" class="btn btn-info" id="addM">Add Mortgage Loan</a></div>
+
+<div class="m-5">
+<hr>
+</div>
+
+
+<script type="text/javascript">
+
+    let m = 1;
+
+    document.getElementById('addM').onclick = function () {
+    let template = `<td>
+  <div class="form-group">
+      <label for="financeCompanyM-${m}" class="visually-hidden">Finance Company name</label>
+      <input type="text" class="form-control" name="mortgages[${m}][financeCompany]" id="financeCompanyM-${m}" value="" placeholder="Finance Company Name" />
+    </div>  
+  </td>
+  <td>
+  <div class="form-group">
+      <label for="balanceM-${m}1" class="visually-hidden">Balance</label>
+      <input type="text" class="form-control" name="mortgages[${m}][balance]" id="balanceM-${m}" value="" placeholder="$" />
     </div>    
-  </div>
-
-  <div class="col-lg-2">
-    <div class="form-group">
-      <label for="frequency">Frequency</label>
-      <select class="form-control" name="frequency" id="frequency">
+  </td>
+  <td>
+  <div class="form-group">
+      <label for="repaymentM-${m}" class="visually-hidden">Repayment</label>
+      <input type="text" class="form-control" name="mortgages[${m}][repayment]" id="repaymentM-${m}" value="" placeholder="$" />
+    </div>   
+  </td>
+  <td>
+  <div class="form-group">
+      <label for="frequencyM-${m}" class="visually-hidden">Frequency</label>
+      <select class="form-control" name="mortgages[${m}][frequency]" id="frequencyM-${m}">
         <option value="Weekly">Weekly</option>
         <option value="Fortnightly">Fortnightly</option>
         <option value="Monthly">Monthly</option>
       </select>
     </div>
-  </div>
-
-  <div class="col-lg-1">
-    <div class="form-group">
-      <label for="">Consolidate this loan? </label>
-        <input type="checkbox" name="consolidate" id="consolidate" checked />
+  </td>
+  <td>
+  <div class="form-group">
+      <label for="investmentProperty-${m}" class="visually-hidden">Investment Property? </label>
+      <select class="form-control" name="mortgages[${m}][investmentProperty]" id="investmentProperty-${m}" >
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+        </select>
+    </div>
+  </td>
+  <td>
+   <div class="form-group">
+      <label for="jointM-${m}" class="visually-hidden">Joint loan? </label>
+        <select class="form-control" name="mortgages[${m}][joint]" id="jointM-${m}" >
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+        </select>
     </div>    
-  </div>
+</td>
+<td>
+  <a href="#" class="btn btn-danger rounded-circle fw-bold removeM">X</a>
+</td>`;
+    let container = document.getElementById('mortgageContainer');
+    let tr = document.createElement('tr');
+    tr.innerHTML = template;
+    container.appendChild(tr);      
+    m++;
+  };
 
-  <div class="col-lg-1">
-    <div class="form-group">
-      <label for="">Joint loan? </label>
-        <input type="checkbox" name="joint" id="joint" checked />
-    </div>    
-  </div>
+  $('tbody').on('click', '.removeM', function(){
+        $(this).parent().parent().remove();
+        p--;
+      });
+  
+      
+</script>
+
+
+
+
 
 </div>
 
-<div class="row m-3">
-
-  <div class="col-lg-3">
-    <div class="form-group">
-      <label for="numMortgages">Number of Mortgages:</label>
-        <select class="form-control" name="numMortgages" id="numMortgages">
-          <option value="0">0</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-        </select>  
+<div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">We're Sorry...</h5>
+       
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>You do not qualify for funding through this portal.  We do have options tailored more to your needs, please contact us on ### to discuss.</p>
+      </div>
+      <div class="modal-footer">
+      <input type="hidden" name="category" id="category" value="Incomplete">
+        <button type="submit" class="btn btn-primary">Save changes</button>
+        
+      </div>
     </div>
   </div>
-
 </div>
 
-<div class="row m-3 mortgage-details">
-
-  <div class="col-lg-4">
-    <div class="form-group">
-      <label for="financeCompany">Finance Company name</label>
-      <input type="text" class="form-control" name="financeCompany" id="financeCompany" value="" placeholder="Finance Company Name" />
-    </div>    
-  </div>
-
-  <div class="col-lg-2">
-    <div class="form-group">
-      <label for="balance">Balance</label>
-      <input type="text" class="form-control" name="balance" id="balance" value="" placeholder="$" />
-    </div>    
-  </div>
-
-  <div class="col-lg-2">
-    <div class="form-group">
-      <label for="repayment">Repayment</label>
-      <input type="text" class="form-control" name="repayment" id="repayment" value="" placeholder="$" />
-    </div>    
-  </div>
-
-  <div class="col-lg-2">
-    <div class="form-group">
-      <label for="frequency">Frequency</label>
-      <select class="form-control" name="frequency" id="frequency">
-        <option value="Weekly">Weekly</option>
-        <option value="Fortnightly">Fortnightly</option>
-        <option value="Monthly">Monthly</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="col-lg-1">
-    <div class="form-group">
-      <label for="investmentProperty">Investment Property? </label>
-        <input type="checkbox" name="investmentProperty" id="consoliinvestmentPropertydate" checked />
-    </div>    
-  </div>
-
-  <div class="col-lg-1">
-    <div class="form-group">
-      <label for="joint">Joint loan? </label>
-        <input type="checkbox" name="joint" id="joint" checked />
-    </div>    
-  </div>
-
-</div>
-
-</div>
-
-<input type="hidden" name="category" id="category" value="Incomplete">
-<input type="hidden" name="applicant_id" id="applicant_id" value="{{ $application =  App\Models\Applicant::find(1)->application }}">
+<input type="hidden" name="category" id="category" value="Submitted">
 
 <div class="form-navigation">
 <button type="button" class="previous btn btn-info float-left">Previous</button>
-<button type="button"  class="next btn btn-info float-right">Next</button>
+<button id="next" type="button"  class="next btn btn-info float-right show-modal">Next</button>
 <button type="submit"  class="btn-btn success float-right">Submit</button>
 </div>
 
 
                   
-         
+
+
+
 </form>
 </div></div>
 <script type="text/javascript">
@@ -794,6 +882,10 @@ $(function () {
   });
   navigateTo(0); // Start at the beginning
 });
+
+
+
+
 </script>
 
 @endsection

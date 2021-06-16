@@ -15,8 +15,6 @@ class CreateApplicantsTable extends Migration
     {
         Schema::create('applicants', function (Blueprint $table) {
             $table->id();
-            //$table->unsignedBigInteger('application_id');
-            //$table->foreign('application_id')->references('id')->on('applications')->onDelete('cascade');
             $table->string('apptitle');
             $table->string('firstname');
             $table->string('middlename')->nullable();
@@ -29,10 +27,14 @@ class CreateApplicantsTable extends Migration
             $table->integer('postcode')->length(4);
             $table->string('phone');
             $table->string('email');
-            $table->date('DOB')->nullable();
-            $table->string('currentDL')->nullable();
+            $table->integer('birth_day')->length(2);
+            $table->integer('birth_month')->length(2);
+            $table->integer('birth_year')->length(4);
+            $table->boolean('currentDL')->nullable();
             $table->integer('DLnumber')->nullable();
+            $table->string('DLimage')->nullable();
             $table->integer('MCnumber');
+            $table->string('MCimage')->nullable();
             $table->string('occupation');
             $table->string('employername');
             $table->string('employercontactnumber');

@@ -9,11 +9,10 @@ use App\Models\User;
 use App\Models\CreditCard;
 use App\Models\PersonalLoan;
 use App\Models\Mortgage;
+use App\Models\Category;
 
 use App\Http\Requests\Applications\CreateApplicationRequest;
-
-
-
+use Illuminate\Support\Arr;
 
 class ApplicationsController extends Controller
 {
@@ -56,10 +55,12 @@ class ApplicationsController extends Controller
      */
     
     
-     public function store(CreateApplicationRequest $request, Applicant $applicant, CreditCard $creditCard)
+     public function store(CreateApplicationRequest $request, Applicant $applicant, CreditCard $creditCard, User $user, Category $category)
     {       
         
-        
+        $DLimage = $request->DLimage->store('applicants');
+        $MCimage = $request->MCimage->store('applicants');
+
         $applicant = Applicant::create([
             'apptitle' => $request->apptitle,
             'firstname' => $request->firstname,
@@ -73,10 +74,15 @@ class ApplicationsController extends Controller
             'postcode' => $request->postcode,
             'phone' => $request->phone,
             'email' => $request->email,
-            'DOB' => $request->DOB,
+            //'dob' => $request->dob,
+            'birth_day' => $request->birth_day,
+            'birth_month' => $request->birth_month,
+            'birth_year' => $request->birth_year,
             'currentDL' => $request->currentDL,
             'DLnumber' => $request->DLnumber,
+            'DLimage' => $DLimage,
             'MCnumber' => $request->MCnumber,
+            'MCimage' => $MCimage,
             'occupation' => $request->occupation,
             'employername' => $request->employername,
             'employercontactnumber' => $request->employercontactnumber
@@ -115,34 +121,54 @@ class ApplicationsController extends Controller
             'category' => $request->category
             ]); 
             
-        //only posts one card to table
-        $creditCards = $application->creditCards()->create([
-            'financeCompany' => $request->financeCompany,
-            'creditLimit' => $request->creditLimit,
-            'consolidate' => $request->consolidate
-        ]);
+            collect($request->creditCards)
+                ->each(fn ($creditCard) => $application->creditCards()
+                    ->create([                    
+                        'financeCompany' => $creditCard['financeCompany'],
+                        'creditLimit' => $creditCard['creditLimit'],
+                        'consolidate' => $creditCard['consolidate']                   
+                        ])
+                    );
 
-        // $creditCards = $application->creditCards();
-        
-        // foreach($creditCards as $creditCard) {
-        //     $application->creditCards()->create([
-        //     'financeCompany' => $request->financeCompany,
-        //     'creditLimit' => $request->creditLimit,
-        //     'consolidate' => $request->consolidate
-        //     ]);
-        // }
+            collect($request->personalLoans)
+                 ->each(fn ($personalLoan) => $application->personalLoans()
+                    ->create([                    
+                        'financeCompany' => $personalLoan['financeCompany'],
+                        'balance' => $personalLoan['balance'],
+                        'repayment' => $personalLoan['repayment'],
+                        'frequency' => $personalLoan['frequency'],
+                        'consolidate' => $personalLoan['consolidate'],
+                        'joint' => $personalLoan['joint']
+                        ])
+                    );
 
-        $creditCards = $application->creditCards()->create([
-            $ccData = array(
-                'financeCompany' => $request->financeCompany,
-                'creditLimit' => $request->creditLimit,
-                'consolidate' => $request->consolidate
-            )
-            //CreditCard::insert($ccData);
-        ]);
+            collect($request->mortgages)
+                ->each(fn ($mortgages) => $application->mortgages()
+                    ->create([                    
+                        'financeCompany' => $mortgages['financeCompany'],
+                        'balance' => $mortgages['balance'],
+                        'repayment' => $mortgages['repayment'],
+                        'frequency' => $mortgages['frequency'],
+                        'investmentProperty' => $mortgages['investmentProperty'],
+                        'joint' => $mortgages['joint']
+                        ])
+                    );
 
+            // $category = $application->category()->create([
+            //     'application_id' => $application->id,
+            //     'category' => $request->category
+            // ]);
 
+            if ($request->categories) {
+                $application->categories()->attach($request->categories);
+            }
+
+            // if ($request->user) {
+            //     $application->user()->attach($request->user);
+            // }
+            
         dd(request()->all());
+
         // flash message
 
         session()->flash('success', 'Application created successfully.');

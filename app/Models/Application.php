@@ -18,6 +18,7 @@ class Application extends Model
         'frequency',
         'employment',
         'residentialType',
+        'resTimeY',
         'resTimeM',
         'otherAddress',
         'empTimeY',
@@ -36,16 +37,13 @@ class Application extends Model
         'referenceName',
         'referencePhone',
         'referenceSuburb',
-        'numCreditCards',
-        'numPersonalLoans',
-        'numMortgages',
         'category'
     ];
+
 
     public function applicant()
     {
         return $this->belongsTo(Applicant::class);
-        //$applicant = Applicant::has('id')->get();
     }    
 
     public function user()
@@ -63,15 +61,15 @@ class Application extends Model
         return $this->hasMany(CreditCard::class);
     }
 
-    // public function personalLoans()
-    // {
-    //     return $this->hasMany(PersonalLoan::class);
-    // }
+    public function personalLoans()
+    {
+        return $this->hasMany(PersonalLoan::class);
+    }
 
-    // public function mortgages()
-    // {
-    //     return $this->hasMany(Mortgage::class);
-    // }
+    public function mortgages()
+    {
+        return $this->hasMany(Mortgage::class);
+    }
 
     // public function hasApplicant($applicantId)
     // {
@@ -87,21 +85,21 @@ class Application extends Model
     // //     return $this->applicant->id;
     // // }
 
-    // public function hasUser($userId)
-    // {
-    //     /**
-    //      * check for referrer user details
-    //      */
-    //     return in_array($userId, $this->user->pluck('id')->toArray());
-    // }
+    public function hasUser($userId)
+    {
+        /**
+         * check for referrer user details
+         */
+        return in_array($userId, $this->user->pluck('id')->toArray());
+    }
 
-    // public function hasCategory($categoryId)
-    // {
-    //     /**
-    //      * check for category of application
-    //      */
-    //     return in_array($categoryId, $this->category->pluck('id')->toArray());
-    // }
+    public function hasCategory($categoryId)
+    {
+        /**
+         * check for category of application
+         */
+        return in_array($categoryId, $this->category->pluck('id')->toArray());
+    }
 
     public function hasCreditCard($creditcardId)
     {
@@ -111,21 +109,21 @@ class Application extends Model
         return in_array($creditcardId, $this->creditCards->pluck('id')->toArray());
     }
 
-    // public function hasPersonalLoan($personalLoanId)
-    // {
-    //     /**
-    //      * check for personal loan details
-    //      */
-    //     return in_array($personalLoanId, $this->personalLoans->pluck('id')->toArray());
-    // }
+    public function hasPersonalLoan($personalLoanId)
+    {
+        /**
+         * check for personal loan details
+         */
+        return in_array($personalLoanId, $this->personalLoans->pluck('id')->toArray());
+    }
 
-    // public function hasMortgage($mortgageId)
-    // {
-    //     /**
-    //      * check for personal loan details
-    //      */
-    //     return in_array($mortgageId, $this->mortgages->pluck('id')->toArray());
-    // }
+    public function hasMortgage($mortgageId)
+    {
+        /**
+         * check for personal loan details
+         */
+        return in_array($mortgageId, $this->mortgages->pluck('id')->toArray());
+    }
 
     public function scopeSearched($query) {
         

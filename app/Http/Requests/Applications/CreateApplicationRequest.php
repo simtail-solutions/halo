@@ -50,9 +50,6 @@ class CreateApplicationRequest extends FormRequest
             'referenceName' => 'required',
             'referencePhone' => 'required',
             'referenceSuburb' => 'required',
-            'numCreditCards' => 'required',
-            'numCreditCards' => 'required',
-            'numCreditCards' => 'required',
             'category' => 'required'
         ];
     }
