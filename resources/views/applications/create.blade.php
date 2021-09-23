@@ -66,7 +66,6 @@
         <label for="loanTerm">Loan Term</label>
         <select class="form-control" name="loanTerm" id="loanTerm" value="{{ isset($application) ? $application->loanTerm : '' }}"  required>
             <option></option>
-            <option value="6 mnths">6 mnths</option>
             <option value="1 year">1 year</option>
             <option value="2 years">2 years</option>
             <option value="3 years">3 years</option>
@@ -498,31 +497,6 @@
 
 </div>
 
-<div class="row m-3">
-
-  <div class="col-lg-4">
-    <div class="form-group">
-      <label for="referenceName">Reference Name</label>
-      <input type="text" class="form-control" id="referenceName" name="referenceName" placeholder="" value="{{ isset($application) ? $application->referenceName : '' }}">
-    </div>
-  </div>
-
-  <div class="col-lg-4">
-    <div class="form-group">
-      <label for="referencePhone">Reference Phone</label>
-      <input type="number" class="form-control" id="referencePhone" name="referencePhone" placeholder="" value="{{ isset($application) ? $application->referencePhone : '' }}">
-    </div>
-  </div>
-
-  <div class="col-lg-4">
-    <div class="form-group">
-      <label for="referenceSuburb">Reference Suburb</label>
-      <input type="text" class="form-control" id="referenceSuburb" name="referenceSuburb" placeholder="" value="{{ isset($application) ? $application->referenceSuburb : '' }}">
-    </div>
-
-  </div>
-
-</div>
 <div class="m-5">
 <hr>
 </div>

@@ -26,6 +26,34 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="businessName" class="col-md-4 col-form-label text-md-right">{{ __('BusinessName') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="businessName" type="text" class="form-control @error('businessName') is-invalid @enderror" name="businessName" value="{{ old('businessName') }}" required autocomplete="businessName" autofocus>
+
+                                @error('businessName')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
+
+                                @error('phone')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
@@ -69,7 +97,6 @@
                             </div>
                         </div>
                     </form>
-                    <strong>*** Link registration to Mailchimp ***</strong>
                 </div>
             </div>
         </div>

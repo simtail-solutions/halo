@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<span class="badge bg-danger w-50">Admin users can see ALL applications, Referrers can only see their own referral applications (to be implemented)</span>
 <div class="d-flex justify-content-between m-3">
 <form class="" action="" method="GET" role="search">
                   <input type="text" class="form-control" name="search" placeholder="Search" value="{{ request()->query('search') }}">
@@ -21,8 +20,7 @@
 </div>
 <div class="card card-default">
 
-@if($applications->count() > 0)
-
+@if($applications->count() > 0) 
 <table class="table table-striped">
 <thead class="m-3">
     <tr>
@@ -42,6 +40,7 @@
 <tbody>
 
 @foreach($applications as $application)
+    @if(auth()->user()->isAdmin() or auth()->user()->id == $application->user_id)
     <tr class="m-3 {{ $application->category }}">
         <td>{{ date('d M Y', strtotime($application->created_at ))}}</td>
         <td>
@@ -57,6 +56,7 @@
         <td><a href="/applications/{{ $application->id }}" class="btn btn-primary">Open</a></td>
         @endif
     </tr>
+    @endif
 @endforeach
 </tbody>
 </table>
@@ -111,11 +111,7 @@
 	
 
 </script>
-
-
-
 @endif
-
 </div>
 
 @endsection

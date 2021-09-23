@@ -47,9 +47,6 @@ class CreateApplicationRequest extends FormRequest
             'rentMortgageBoard',
             'rentFreq' => 'required',
             'rentShared' => 'required',
-            'referenceName' => 'required',
-            'referencePhone' => 'required',
-            'referenceSuburb' => 'required',
             'category' => 'required'
         ];
     }

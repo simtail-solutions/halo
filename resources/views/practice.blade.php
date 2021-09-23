@@ -18,7 +18,6 @@
 <li>We offer all types of financne for dental staff - cars, homes, anything!</li>
 <li>Industry leading personal and business loans for dental professionals</li>
 <li>If you practice is accredited with HALO, we can fund you directly</li>
-<li>Weekly repayments as low as $40 for Invisalign and $13 for implants</li>
 <li>Loans up to $50,000 typically approved same day</li>
 <li>HALO is trusted by dental professionals Australia wide</li>
 <li>Hassle free, we hand the application from submission to approval</li>

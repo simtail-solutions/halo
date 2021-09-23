@@ -151,21 +151,6 @@
 <td>{{$application->rentShared}}</td>
 </tr>
 <tr>
-<th scope="row" class="text-uppercase">Reference Details</th>
-</tr>
-<tr>
-<th scope="col">Reference Name</th>
-<td>{{$application->referenceName}}</td>
-</tr>
-<tr>
-<th scope="col">Reference Phone</th>
-<td>{{$application->referencePhone}}</td>
-</tr>
-<tr>
-<th scope="col">Reference Suburb</th>
-<td>{{$application->referenceSuburb}}</td>
-</tr>
-<tr>
 <th scope="row" class="text-uppercase">Other Debts</th>
 </tr>
 <tr>

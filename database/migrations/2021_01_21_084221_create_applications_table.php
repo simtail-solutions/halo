@@ -38,9 +38,6 @@ class CreateApplicationsTable extends Migration
             $table->integer('rentMortgageBoard');
             $table->string('rentFreq');
             $table->string('rentShared');
-            $table->string('referenceName');
-            $table->string('referencePhone');
-            $table->string('referenceSuburb');
             $table->string('category')->default('Incomplete');
             $table->timestamps();
         });

@@ -139,9 +139,6 @@ class ApplicationsTableSeeder extends Seeder
             'rentMortgageBoard' => '1500',
             'rentFreq' => 'month',
             'rentShared' => 'yes',
-            'referenceName' => 'John Doe',
-            'referencePhone' => '1300123456',
-            'referenceSuburb' => 'Perth',
             'category' => 'Submitted'
         ]);
 
@@ -168,9 +165,6 @@ class ApplicationsTableSeeder extends Seeder
             'rentMortgageBoard' => '300',
             'rentFreq' => 'week',
             'rentShared' => 'no',
-            'referenceName' => 'Mr Abdul Sharpy',
-            'referencePhone' => '089123456',
-            'referenceSuburb' => 'Bayswater',
             'category' => 'Incomplete'
         ]);
         
@@ -197,9 +191,6 @@ class ApplicationsTableSeeder extends Seeder
             'rentMortgageBoard' => '150',
             'rentFreq' => 'week',
             'rentShared' => 'no',
-            'referenceName' => 'John Smith',
-            'referencePhone' => '0291234688',
-            'referenceSuburb' => 'Sydney',
             'category' => 'Incomplete'
         ]);
 

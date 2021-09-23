@@ -25,7 +25,8 @@ class UpdateUserProfileRequest extends FormRequest
     {
         return [
             'businessName' => 'required',
-            'phone' => 'required'
+            'phone' => 'required',
+            'role' => 'required'
         ];
     }
 }
