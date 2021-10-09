@@ -94,7 +94,7 @@
   
 
 <div class="form-navigation">
-
+<input type="hidden" name="name" id="name" value="Incomplete">
 <button type="submit"  class="btn btn-primary success float-right">Send to client</button>
 </div>
 

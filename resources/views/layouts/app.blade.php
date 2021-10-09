@@ -109,7 +109,7 @@
       @else
       <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
         <a href="{{ route('register') }}" class="btn btn-primary">{{ __('Register') }}</a>
-        <a href="#" class="btn btn-secondary">Contact</a>
+        <a href="/contact" class="btn btn-secondary">Contact</a>
 
     @endauth
     @endif
@@ -124,6 +124,13 @@
             <div class="row justify-content-center">
                 <!--div class="col-md-12">
                     <div class="card"-->
+
+                            <!-- Success message -->
+                                @if(Session::has('success'))
+                                    <div class="alert alert-success">
+                                        {{Session::get('success')}}
+                                    </div>
+                                @endif
            
                      @yield('content')
                      

@@ -27,6 +27,7 @@ class ApplicationsController extends Controller
         return view('applications.index')
             ->with('applications', Application::searched()->paginate(10))
             ->with('applicants', Applicant::all())
+            ->with('categories', Category::all())
             ->with('users', User::all());
     }
 
@@ -42,7 +43,8 @@ class ApplicationsController extends Controller
             ->with('applicants', Applicant::all())
             ->with('creditCards', CreditCard::all())
             ->with('personalLoans', PersonalLoan::all())
-            ->with('mortgages', Mortgage::all());
+            ->with('mortgages', Mortgage::all())
+            ->with('categories', Category::all());
 
     }
 
@@ -57,9 +59,6 @@ class ApplicationsController extends Controller
     
      public function store(CreateApplicationRequest $request, Applicant $applicant, CreditCard $creditCard, User $user, Category $category)
     {       
-        
-        $DLimage = $request->DLimage->store('applicants');
-        $MCimage = $request->MCimage->store('applicants');
 
         $applicant = Applicant::create([
             'apptitle' => $request->apptitle,
@@ -74,7 +73,6 @@ class ApplicationsController extends Controller
             'postcode' => $request->postcode,
             'phone' => $request->phone,
             'email' => $request->email,
-            //'dob' => $request->dob,
             'birth_day' => $request->birth_day,
             'birth_month' => $request->birth_month,
             'birth_year' => $request->birth_year,
@@ -112,10 +110,7 @@ class ApplicationsController extends Controller
             'rentMortgageBoard' => $request->rentMortgageBoard,
             'rentFreq' => $request->rentFreq,
             'rentShared' => $request->rentShared,
-            'numCreditCards' => $request->numCreditCards,
-            'numPersonalLoans' => $request->numPersonalLoans,
-            'numMortgages' => $request->numMortgages,
-            'category' => $request->category
+            'category_id' => $category->id
             ]); 
             
             collect($request->creditCards)
@@ -151,18 +146,13 @@ class ApplicationsController extends Controller
                         ])
                     );
 
-            // $category = $application->category()->create([
-            //     'application_id' => $application->id,
-            //     'category' => $request->category
-            // ]);
+                    
 
-            if ($request->categories) {
-                $application->categories()->attach($request->categories);
-            }
+            $category = $application->categories()->create([
+                'application_id' => $application->id,
+                'name' => $request->name
+            ]);
 
-            // if ($request->user) {
-            //     $application->user()->attach($request->user);
-            // }
             
         dd(request()->all());
 
@@ -173,6 +163,8 @@ class ApplicationsController extends Controller
         // redirect the user
 
         return redirect(route('applications.index'));
+
+        // Need to provide a screen advising they need to supply their medicare / licence and payslips
     }
 
     /**
@@ -181,9 +173,11 @@ class ApplicationsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Application $application)
+    public function show(Application $application, Category $category)
     {
-        return view('applications.show')->with('application', $application);
+        return view('applications.show')
+        ->with('application', $application)
+        ->with('category', $category);
     }
 
     /**
@@ -204,9 +198,114 @@ class ApplicationsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CreateApplicationRequest $request, Applicant $applicant, CreditCard $creditCard, User $user, Category $category)
     {
-        //
+        $DLimage = $request->DLimage->store('applicants');
+        $MCimage = $request->MCimage->store('applicants');
+
+        $applicant = Applicant::update([
+            'apptitle' => $request->apptitle,
+            'firstname' => $request->firstname,
+            'middlename' => $request->middlename,
+            'lastname' => $request->lastname,
+            'status' => $request->status,
+            'dependants' => $request->dependants,
+            'streetaddress' => $request->streetaddress,
+            'suburb' => $request->suburb,
+            'state' => $request->state,
+            'postcode' => $request->postcode,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'birth_day' => $request->birth_day,
+            'birth_month' => $request->birth_month,
+            'birth_year' => $request->birth_year,
+            'currentDL' => $request->currentDL,
+            'DLnumber' => $request->DLnumber,
+            'DLimage' => $DLimage,
+            'MCnumber' => $request->MCnumber,
+            'MCimage' => $MCimage,
+            'occupation' => $request->occupation,
+            'employername' => $request->employername,
+            'employercontactnumber' => $request->employercontactnumber
+        ]);
+        
+        $application = $applicant->application()->create([
+            'applicant_id' => $applicant->id,
+            'user_id' => auth()->id(),
+            'loanAmount' => $request->loanAmount,
+            'loanTerm' => $request->loanTerm,
+            'frequency' => $request->frequency,
+            'employment' => $request->employment,
+            'residentialType' => $request->residentialType,
+            'resTimeY' => $request->resTimeY,
+            'resTimeM' => $request->resTimeM,
+            'otherAddress' => $request->otherAddress,
+            'empTimeY' => $request->empTimeY,
+            'empTimeM' => $request->empTimeM,
+            'prevOccupation' => $request->prevOccupation,
+            'prevEmployer' => $request->prevEmployer,
+            'prevEmployerTimeY' => $request->prevEmployerTimeY,
+            'prevEmployerTimeM' => $request->prevEmployerTimeM,
+            'income' => $request->income,
+            'incomeFreq' => $request->incomeFreq,
+            'partnerIncome' => $request->partnerIncome,
+            'partnerIncomeFreq' => $request->partnerIncomeFreq,
+            'rentMortgageBoard' => $request->rentMortgageBoard,
+            'rentFreq' => $request->rentFreq,
+            'rentShared' => $request->rentShared,
+            'category_id' => $category->id
+            ]); 
+            
+            collect($request->creditCards)
+                ->each(fn ($creditCard) => $application->creditCards()
+                    ->create([                    
+                        'financeCompany' => $creditCard['financeCompany'],
+                        'creditLimit' => $creditCard['creditLimit'],
+                        'consolidate' => $creditCard['consolidate']                   
+                        ])
+                    );
+
+            collect($request->personalLoans)
+                 ->each(fn ($personalLoan) => $application->personalLoans()
+                    ->create([                    
+                        'financeCompany' => $personalLoan['financeCompany'],
+                        'balance' => $personalLoan['balance'],
+                        'repayment' => $personalLoan['repayment'],
+                        'frequency' => $personalLoan['frequency'],
+                        'consolidate' => $personalLoan['consolidate'],
+                        'joint' => $personalLoan['joint']
+                        ])
+                    );
+
+            collect($request->mortgages)
+                ->each(fn ($mortgages) => $application->mortgages()
+                    ->create([                    
+                        'financeCompany' => $mortgages['financeCompany'],
+                        'balance' => $mortgages['balance'],
+                        'repayment' => $mortgages['repayment'],
+                        'frequency' => $mortgages['frequency'],
+                        'investmentProperty' => $mortgages['investmentProperty'],
+                        'joint' => $mortgages['joint']
+                        ])
+                    );
+
+                    
+
+            $category = $application->categories()->create([
+                'application_id' => $application->id,
+                'name' => $request->name
+            ]);
+
+            
+        dd(request()->all());
+
+        // flash message
+
+        session()->flash('success', 'Application created successfully.');
+
+        // redirect the user
+
+        return redirect(route('applications.index'));
     }
 
     /**
@@ -218,5 +317,14 @@ class ApplicationsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function category(Application $application, Category $category)
+    {
+        $application->mostRecentCategory($category);
+
+        session()->flash('success', 'Category updated');
+
+        return redirect()->back();
     }
 }

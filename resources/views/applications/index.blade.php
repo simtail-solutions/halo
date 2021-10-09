@@ -39,20 +39,28 @@
 </thead>
 <tbody>
 
+
+
+
 @foreach($applications as $application)
     @if(auth()->user()->isAdmin() or auth()->user()->id == $application->user_id)
-    <tr class="m-3 {{ $application->category }}">
+    <tr class="m-3 @foreach($application->categories->reverse() as $category)
+                        @if($application->hasCategory($category->id))
+                            {{ $category->name }}
+                        @endif
+                    @endforeach">
         <td>{{ date('d M Y', strtotime($application->created_at ))}}</td>
         <td>
             {{  $application->applicant->apptitle }} {{  $application->applicant->firstname }} {{  $application->applicant->lastname }}
                 </td>
         <td>{{ $application->applicant->phone }} </td>
         <td>{{ $application->applicant->email }} </td>
-        <td>{{ $application->category }}</td>
+        <td>@if($application->hasCategory($category->id)) {{ $category->name }}  @endif
+        </td>
         <td>{{ date('d M Y', strtotime($application->updated_at ))}}</td>
         <td>{{"$ " . number_format($application->loanAmount, 0)  }}</td>
         @if(auth()->user()->isAdmin())
-        <td>{{ $application->user->businessName }}</td>
+        <td><a href="/users/profile/{{ $application->user->id }}">{{ $application->user->businessName }}</a></td>
         <td><a href="/applications/{{ $application->id }}" class="btn btn-primary">Open</a></td>
         @endif
     </tr>

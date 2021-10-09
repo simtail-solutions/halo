@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Users;
+namespace App\Http\Requests\Contact;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserRequest extends FormRequest
+class CreateContactRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,11 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'email' => 'email|required',
-            'role' => 'required',
-            'businessName' => 'required',
-            'phone' => 'required'
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'email' => 'required',
+            'phone',
+            'message'
         ];
-        
     }
 }

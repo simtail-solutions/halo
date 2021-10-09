@@ -77,7 +77,7 @@ class UsersController extends Controller
         return view('users.profile')
         ->with('user', $user)
         ->with('applicants', Applicant::all())
-        ->with('applications', $applications);
+        ->with('applications', Application::all());
     }
 
     /**
@@ -88,7 +88,7 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('users.update-profile')->with('user', auth()->user());
     }
 
     /**

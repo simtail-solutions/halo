@@ -36,33 +36,25 @@ class ApplicantsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateApplicantRequest $request)
+    public function store(CreateApplicantRequest $request, Application $application)
     {
         $applicant = Applicant::create([
             'apptitle' => $request->apptitle,
             'firstname' => $request->firstname,
             'middlename' => $request->middlename,
             'lastname' => $request->lastname,
-            // 'status' => $request->status,
-            // 'dependants' => $request->dependants,
-            // 'streetaddress' => $request->streetaddress,
-            // 'suburb' => $request->suburb,
-            // 'state' => $request->state,
-            // 'postcode' => $request->postcode,
             'phone' => $request->phone,
-            'email' => $request->email,
-            'DOB' => $request->birth_day,
-            'DOB' => $request->birth_month,
-            'DOB' => $request->birth_year,
-            // 'currentDL' => $request->currentDL,
-            // 'DLnumber' => $request->DLnumber,
-            // 'MCnumber' => $request->MCnumber,
-            // 'occupation' => $request->occupation,
-            // 'employername' => $request->employername,
-            // 'employercontactnumber' => $request->employercontactnumber
+            'email' => $request->email
         ]);
-        dd($request->all());
-        //return redirect(route('applications.create', $applicant->id));
+
+        $application = $applicant->application()->create([
+            'applicant_id' => $applicant->id,
+            'user_id' => auth()->id()
+        ]);
+
+        //dd($request->all());
+        //return redirect(route('applications.update'));
+        return redirect(route('applications.update', $application->applicant->id));
     }
 
     /**
@@ -97,6 +89,7 @@ class ApplicantsController extends Controller
     public function update(Request $request, $id)
     {
         //
+
     }
 
     /**

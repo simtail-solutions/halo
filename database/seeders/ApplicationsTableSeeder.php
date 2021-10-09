@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Applicant;
 use App\Models\Application;
+use App\Models\Category;
 use App\Models\User;
 
 use Illuminate\Database\Seeder;
@@ -139,7 +140,7 @@ class ApplicationsTableSeeder extends Seeder
             'rentMortgageBoard' => '1500',
             'rentFreq' => 'month',
             'rentShared' => 'yes',
-            'category' => 'Submitted'
+            //'category_id' => $category1->id 
         ]);
 
         $application2 = Application::create([
@@ -165,7 +166,7 @@ class ApplicationsTableSeeder extends Seeder
             'rentMortgageBoard' => '300',
             'rentFreq' => 'week',
             'rentShared' => 'no',
-            'category' => 'Incomplete'
+            //'category_id' => $category2->id
         ]);
         
         $application3 = Application::create([
@@ -191,8 +192,25 @@ class ApplicationsTableSeeder extends Seeder
             'rentMortgageBoard' => '150',
             'rentFreq' => 'week',
             'rentShared' => 'no',
-            'category' => 'Incomplete'
+            //'category_id' => $category3->id
         ]);
+
+        $category1 = Category::create([
+            'application_id' => $application1->id,
+            'name' => 'Submitted'
+        ]);
+
+        $category2 = Category::create([
+            'application_id' => $application2->id,
+            'name' => 'Incomplete'
+        ]);
+
+        $category3 = Category::create([
+            'application_id' => $application3->id,
+            'name' => 'Incomplete'
+        ]);
+        
+
 
         
     }

@@ -48,7 +48,7 @@ class User extends Authenticatable
         return $this->role==='admin';
     }
 
-    public function application()
+    public function applications()
     {
         return $this->hasMany(Application::class);
     }

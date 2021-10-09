@@ -15,13 +15,13 @@ class CreateApplicationsTable extends Migration
     {
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
-            $table->integer('applicant_id')->nullable(); 
+            $table->integer('applicant_id'); 
             $table->integer('user_id');  //referrer id
-            $table->integer('loanAmount');
-            $table->string('loanTerm');
-            $table->string('frequency');
-            $table->string('employment');
-            $table->string('residentialType');
+            $table->integer('loanAmount')->nullable();
+            $table->string('loanTerm')->nullable();
+            $table->string('frequency')->nullable();
+            $table->string('employment')->nullable();
+            $table->string('residentialType')->nullable();
             $table->integer('resTimeY')->nullable();
             $table->integer('resTimeM')->nullable();
             $table->string('otherAddress')->nullable();
@@ -31,14 +31,14 @@ class CreateApplicationsTable extends Migration
             $table->string('prevEmployer')->nullable();
             $table->integer('prevEmployerTimeY')->nullable();
             $table->integer('prevEmployerTimeM')->nullable();
-            $table->integer('income');
-            $table->string('incomeFreq');
+            $table->integer('income')->nullable();
+            $table->string('incomeFreq')->nullable();
             $table->integer('partnerIncome')->nullable();
             $table->string('partnerIncomeFreq')->nullable();
-            $table->integer('rentMortgageBoard');
-            $table->string('rentFreq');
-            $table->string('rentShared');
-            $table->string('category')->default('Incomplete');
+            $table->integer('rentMortgageBoard')->nullable();
+            $table->string('rentFreq')->nullable();
+            $table->string('rentShared')->nullable();
+            $table->integer('category_id')->nullable();
             $table->timestamps();
         });
     }

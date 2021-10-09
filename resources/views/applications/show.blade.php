@@ -170,7 +170,7 @@
     @foreach($application->creditCards as $creditCard)
     <tr>
     <td>
-        {{ $creditCard->financeCompany }}
+    {{ $creditCard->financeCompany }}
     </td>
     <td>
     {{ $creditCard->creditLimit }}   
@@ -296,23 +296,70 @@
 </div>
 <div class="col-md-3 noprint">
 <div class="my-5">
+@foreach($application->categories->reverse() as $category)
+@endforeach
 
+@if($application->hasCategory($category->id)) 
 <h3>Application Status</h3>
-{{ $application->category }}
-<p>&nbsp;</p>
+<h4>{{ $category->name }}</h4>
+<p>&nbsp;</p>                     
+@endif 
+
+@if ($category->name === "Incomplete")
+<button class="btn btn-primary">Send to client</button>
+@endif
+              
+@if ($category->name !== "Incomplete")
 <p><button class="btn btn-primary"onClick="window.print()">Print Application</button></p>
+@endif
 </div>
-<div class="my-5">
-@if ($application->category === "Submitted")
+
+<div class="my-5 order-2">
+
+<h3>Application history</h3>
+<p>Created: {{ date('d M Y', strtotime($application->created_at ))}}</p>
+<p>Last updated: {{ date('d M Y', strtotime($category->updated_at ))}}</p>
+
+@foreach($application->categories as $category)
+
+@if($application->id == $category->application_id)
+@if($category->name !== "Incomplete")
+<div class="card my-3">
+    <div class="card-header">
+        {{ $category->name }}
+    </div>
+    <div class="card-body">
+        @if($category->name !== "Approved")
+        @if($category->name !== "Submitted")
+        <p><strong>Reason:</strong> {{$category->reason}}</p>
+        @endif
+        @endif
+        @if($category->notes !== NULL)
+        <p><strong>Notes:</strong> {{$category->notes}}</p>        
+        @endif
+        <p><strong>Date:</strong> {{ date('d M Y', strtotime($category->updated_at ))}}</p>
+    </div>
+</div>
+@endif
+@endif
+@endforeach
+</div>
+
+@foreach($application->categories->reverse() as $category)
+@endforeach
+<div class="my-5 order-1">
+@if ($category->name !== "Incomplete")
+@if ($category->name !== "Approved")
 <h3>Update Application</h3>
-    <form class="category-update" action=" " method="PUT" enctype="multipart/form-data">
+    <form class="category-update" action="{{ route('categories.store', $application) }}" method="POST" enctype="multipart/form-data">
     @csrf
+    <input type="hidden" name="application_id" id="application_id" value="{{ $application->id }}" />
         <div class="form-group">
-            <label for="category">Approve / Withdraw / Decline</label>
-                <select class="form-control" name="category" id="category" value="">
-                    <option value="approve" id="approve">Approve</option>
-                    <option value="decline" id="decline">Decline</option>
-                    <option value="withdraw" id="withdraw">Withdraw</option>                    
+            <label for="name">Approve / Withdraw / Decline</label>
+                <select class="form-control" name="name" id="name" value="">
+                    <option value="Approved" id="approve">Approve</option>
+                    <option value="Declined" id="decline">Decline</option>
+                    <option value="Withdrawn" id="withdraw">Withdraw</option>                    
                 </select>
         </div>
 
@@ -320,37 +367,39 @@
         <div class="form-group d-none" id="withdrawlReason" >
             <label for="reason">Reason for Withdrawl</label>
                 <select class="form-control" name="reason"value="">
-                    <option value="noContact">Unable to contact customer</option>
-                    <option value="notProceeding">Customer to proceeding</option>                  
+                    <option value="None">N/a</option>
+                    <option value="Unable to contact customer">Unable to contact customer</option>
+                    <option value="Customer not proceeding">Customer not proceeding</option>                  
                 </select>
         </div>
 
         <div class="form-group d-none" id="declineReason" >
             <label for="reason">Reason for Decline</label>
                 <select class="form-control" name="reason"value="">
-                    <option value="creditScore">Credit score</option>
-                    <option value="creditHistory">Credit history</option>
-                    <option value="bankingConduct">Banking conduct</option> 
-                    <option value="affordability">Affordability</option> 
-                    <option value="other">Other</option>                   
+                    <option value="None">N/a</option>
+                    <option value="Credit score">Credit score</option>
+                    <option value="Credit history">Credit history</option>
+                    <option value="Banking conduct">Banking conduct</option> 
+                    <option value="Affordability">Affordability</option> 
+                    <option value="Other">Other</option>                   
                 </select>
         </div>
 
-<button class="btn btn-primary">Update</button>
-    </form>
-    <span class="badge bg-danger w-100">Update button not working yet</span>
-    @endif
+        <div class="form-group">
+        <label for="notes">Admin notes</label>
+        <input type="text" class="form-control" name="notes" id="notes" placeholder="" value="" >
+      </div>
 
-    @if ($application->category === "Incomplete")
-    <button class="btn btn-primary">Send to client</button>
+<button type="submit" class="btn btn-primary">Update</button>
+    </form>
+@endif
     @endif
 
     
-</div>
-<div class="my-5">
-<h3>Application history</h3>
-<p>Created: {{ date('d M Y', strtotime($application->created_at ))}}</p>
-<p>Last updated: {{ date('d M Y', strtotime($application->updated_at ))}}</p>
+
+
+
+    
 </div>
 
 
@@ -361,7 +410,7 @@
 
 </div>
 <script>
-    $("#category").change(function() {
+    $("#name").change(function() {
         if ($(this).find("option:selected").attr("id") == "approve") {
             $("#withdrawlReason").addClass("d-none");
                 $("#declineReason").addClass("d-none");
@@ -375,5 +424,6 @@
     });
 
 </script>
+
 
 @endsection

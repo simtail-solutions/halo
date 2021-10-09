@@ -33,7 +33,7 @@
 
 
 
-<form class="application-form" action="{{ route('applications.store') }}" method="POST" enctype="multipart/form-data">
+<form class="application-form" action="{{ route('applications.update') }}" method="POST" enctype="multipart/form-data">
 @csrf
 
 <div class="form-section">
@@ -219,6 +219,10 @@
         <input type="number" class="form-control" id="DLnumber" name="DLnumber" value="{{ isset($applicant) ? $applicant->DLnumber : '' }}"  placeholder="" 
         >
       </div> 
+      <div class="form-group">
+      <label for="DLimage">Upload copy of Drivers Licence</label>
+      <input type="file" class="form-control" name="DLimage" id="DLimage">
+      </div> 
     </div>
 
     <div class="col-lg-3">
@@ -234,6 +238,10 @@
         <input type="number" class="form-control" id="MCnumber" name="MCnumber" value="{{ isset($applicant) ? $applicant->MCnumber : '' }}"
         placeholder="">
       </div>
+      <div class="form-group">
+      <label for="MCimage">Upload copy of Medicare Card</label>
+      <input type="file" class="form-control" name="MCimage" id="MCimage">
+      </div> 
     </div>
 
     <div class="col-lg-3">

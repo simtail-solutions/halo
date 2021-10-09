@@ -37,7 +37,7 @@ class Application extends Model
         'referenceName',
         'referencePhone',
         'referenceSuburb',
-        'category'
+        'category_id'
     ];
 
 
@@ -51,9 +51,9 @@ class Application extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->hasMany(Category::class)->latest();
     }
 
     public function creditCards()
@@ -98,8 +98,18 @@ class Application extends Model
         /**
          * check for category of application
          */
-        return in_array($categoryId, $this->category->pluck('id')->toArray());
+        return in_array($categoryId, $this->categories->pluck('id')->toArray());
+        
     }
+
+    // public function latestCategory($categoryId)
+    // {
+    //     /**
+    //      * check for category of application
+    //      */
+    //     return $this->categories->pluck('id')->last();
+        
+    // }
 
     public function hasCreditCard($creditcardId)
     {
@@ -134,6 +144,13 @@ class Application extends Model
         }
 
         return $query->where('lastname', 'LIKE', "%($search");
+    }
+
+    public function mostRecentCategory(Category $category) 
+    {
+        $this->update([
+            'category_id' => $category->id
+        ]);
     }
 
 }
