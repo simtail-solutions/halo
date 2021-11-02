@@ -10,26 +10,38 @@ use App\Models\CreditCard;
 use App\Models\PersonalLoan;
 use App\Models\Mortgage;
 use App\Models\Category;
+use App\Models\Update;
+use App\Notifications\NewSubmissionAdded;
 
 use App\Http\Requests\Applications\CreateApplicationRequest;
 use Illuminate\Support\Arr;
 
+
 class ApplicationsController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Application $application, Applicant $applicant, Category $category, Update $update, User $user)
     {      
         return view('applications.index')
-            ->with('applications', Application::searched()->paginate(10))
+            //->with('applications', Application::filterByCategories()->paginate(10))
+            ->with('applications', Application::all())
             ->with('applicants', Applicant::all())
             ->with('categories', Category::all())
-            ->with('users', User::all());
+            ->with('updates', Update::all())
+            ->with('users', User::all())
+            ->with('user', $user)
+            ->with('applications', Application::searched()->paginate(10));
+
     }
+        //     return view('applications.index', [
+        //         'applications' => Application::filterByCategories()->paginate(10)
+        //     ]);
+
+        // }
 
     /**
      * Show the form for creating a new resource.
@@ -44,7 +56,8 @@ class ApplicationsController extends Controller
             ->with('creditCards', CreditCard::all())
             ->with('personalLoans', PersonalLoan::all())
             ->with('mortgages', Mortgage::all())
-            ->with('categories', Category::all());
+            ->with('categories', Category::all())
+            ->with('updates', Update::all());
 
     }
 
@@ -57,7 +70,7 @@ class ApplicationsController extends Controller
      */
     
     
-     public function store(CreateApplicationRequest $request, Applicant $applicant, CreditCard $creditCard, User $user, Category $category)
+     public function store(CreateApplicationRequest $request, Applicant $applicant, CreditCard $creditCard, User $user, Update $update)
     {       
 
         $applicant = Applicant::create([
@@ -78,9 +91,9 @@ class ApplicationsController extends Controller
             'birth_year' => $request->birth_year,
             'currentDL' => $request->currentDL,
             'DLnumber' => $request->DLnumber,
-            'DLimage' => $DLimage,
+            //'DLimage' => $DLimage,
             'MCnumber' => $request->MCnumber,
-            'MCimage' => $MCimage,
+            //'MCimage' => $MCimage,
             'occupation' => $request->occupation,
             'employername' => $request->employername,
             'employercontactnumber' => $request->employercontactnumber
@@ -110,8 +123,10 @@ class ApplicationsController extends Controller
             'rentMortgageBoard' => $request->rentMortgageBoard,
             'rentFreq' => $request->rentFreq,
             'rentShared' => $request->rentShared,
-            'category_id' => $category->id
+            'category_id' => $request->category_id,
+            'api_token' => bin2hex(openssl_random_pseudo_bytes(10))
             ]); 
+
             
             collect($request->creditCards)
                 ->each(fn ($creditCard) => $application->creditCards()
@@ -148,13 +163,15 @@ class ApplicationsController extends Controller
 
                     
 
-            $category = $application->categories()->create([
+            $update = $application->updates()->create([
                 'application_id' => $application->id,
-                'name' => $request->name
+                'category_id' => $request->category_id
             ]);
 
             
-        dd(request()->all());
+        //dd(request()->all());
+        
+        $application->siteAdmin->notify(new NewSubmissionAdded($application));
 
         // flash message
 
@@ -173,11 +190,14 @@ class ApplicationsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Application $application, Category $category)
+    public function show(Application $application, Update $update, Category $category, User $user)
     {
         return view('applications.show')
         ->with('application', $application)
-        ->with('category', $category);
+        ->with('updates', $update)
+        ->with('category', $category)
+        ->with('categories', Category::all())
+        ->with('user', $user);
     }
 
     /**
@@ -186,9 +206,12 @@ class ApplicationsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Application $application, Applicant $applicant)
     {
-        //
+        return view('applications.edit' )
+        ->with('application', $application)
+        ->with('applicant', $applicant)
+        ->with('user', $user);;
     }
 
     /**
@@ -198,7 +221,7 @@ class ApplicationsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CreateApplicationRequest $request, Applicant $applicant, CreditCard $creditCard, User $user, Category $category)
+    public function update(UpdateApplicationRequest $request, Application $application, Applicant $applicant, CreditCard $creditCard, User $user, Category $category, Update $update)
     {
         $DLimage = $request->DLimage->store('applicants');
         $MCimage = $request->MCimage->store('applicants');
@@ -229,9 +252,9 @@ class ApplicationsController extends Controller
             'employercontactnumber' => $request->employercontactnumber
         ]);
         
-        $application = $applicant->application()->create([
-            'applicant_id' => $applicant->id,
-            'user_id' => auth()->id(),
+        $application = $applicant->application()->update([
+            //'applicant_id' => $applicant->id,
+            //'user_id' => auth()->id(),
             'loanAmount' => $request->loanAmount,
             'loanTerm' => $request->loanTerm,
             'frequency' => $request->frequency,
@@ -253,7 +276,8 @@ class ApplicationsController extends Controller
             'rentMortgageBoard' => $request->rentMortgageBoard,
             'rentFreq' => $request->rentFreq,
             'rentShared' => $request->rentShared,
-            'category_id' => $category->id
+            'category_id' => $category->id,
+            //'api_token' => $request->api_token
             ]); 
             
             collect($request->creditCards)
@@ -291,9 +315,9 @@ class ApplicationsController extends Controller
 
                     
 
-            $category = $application->categories()->create([
+            $update = $application->updates()->create([
                 'application_id' => $application->id,
-                'name' => $request->name
+                'category_id' => $request->category_id
             ]);
 
             
@@ -319,12 +343,12 @@ class ApplicationsController extends Controller
         //
     }
 
-    public function category(Application $application, Category $category)
-    {
-        $application->mostRecentCategory($category);
+    // public function category(Application $application, Category $category)
+    // {
+    //     $application->mostRecentCategory($category);
 
-        session()->flash('success', 'Category updated');
+    //     session()->flash('success', 'Category updated');
 
-        return redirect()->back();
-    }
+    //     return redirect()->back();
+    // }
 }

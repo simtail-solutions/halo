@@ -4,15 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Application;
-use App\Models\Applicant;
 use App\Models\Category;
 use App\Models\Update;
-use App\Models\User;
-use App\Notifications\ClientReferralLink;
 
-use App\Http\Requests\Applicants\CreateApplicantRequest;
+use App\Http\Requests\Updates\CreateUpdateRequest;
 
-class ApplicantsController extends Controller
+class UpdatesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,7 +28,7 @@ class ApplicantsController extends Controller
      */
     public function create()
     {
-        return view('applicants.create')->with('applicants', Applicant::all())->with('applications', Application::all())->with('categories', Category::all());
+        //
     }
 
     /**
@@ -40,40 +37,30 @@ class ApplicantsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateApplicantRequest $request, Application $application, Category $category)
-    {
-        $applicant = Applicant::create([
-            'apptitle' => $request->apptitle,
-            'firstname' => $request->firstname,
-            'middlename' => $request->middlename,
-            'lastname' => $request->lastname,
-            'phone' => $request->phone,
-            'email' => $request->email
-        ]);
-
-        $application = $applicant->application()->create([
-            'applicant_id' => $applicant->id,
-            'user_id' => auth()->id(),
-            'category_id' => $request->category_id,
-            'api_token' => bin2hex(openssl_random_pseudo_bytes(10))
-        ]);
+    public function store(Request $request, Application $application, Category $category)
+    {    
 
         $update = $application->updates()->create([
-            'application_id' => $application->id,
+            'application_id' => $request->application_id,
+            'category_id' => $request->category_id,
+            'reasonDe' => $request->reasonDe,
+            'reasonWd' => $request->reasonWd,
+            'notes' => $request->notes
+        ]);
+        
+        $application->update([
             'category_id' => $request->category_id
         ]);
 
+        dd(request()->all());
 
-        $applicant->save();
-        $application->save();
-        $update->save();
+        // flash message
 
-        //$application->applicantEmail->notify(new ClientReferralLink($application));
+        session()->flash('success', 'Application updated successfully.');
 
-        //dd($request->all());
-        //return redirect(route('applications.update'));
-        //return redirect(route('applications.edit', $application->api_token));
-        return View('applicants.next');
+        // redirect the user
+
+        return redirect()->back();
     }
 
     /**
@@ -108,7 +95,6 @@ class ApplicantsController extends Controller
     public function update(Request $request, $id)
     {
         //
-
     }
 
     /**

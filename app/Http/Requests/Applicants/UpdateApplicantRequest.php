@@ -40,7 +40,8 @@ class UpdateApplicantRequest extends FormRequest
             'MCnumber' => 'required',
             'occupation' => 'required',
             'employername' => 'required',
-            'employercontactnumber' => 'required'
+            'employercontactnumber' => 'required',
+            'api_token'
         ];
     }
 }

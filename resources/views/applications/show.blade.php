@@ -21,11 +21,12 @@
 </div>
 </div>
 <div class="card-body">
-<p>Referred by: @if (isset($application->user->businessName)) 
+<p><a href="/users/profile/{{ $application->user->id }}" class="">
+                Referred by: @if (isset($application->user->businessName)) 
                      {{ $application->user->businessName }} 
                 @else
                     {{ $application->user->name }}
-                @endif</p>
+                @endif</a></p>
 <table class="table table-striped">
 <tbody>
 <thead>
@@ -35,7 +36,7 @@
 </thead>
 <tr>
 <th scope="col">Dental Treatment Cost</th>
-<td>{{ $application->loanAmount }}</td>
+<td>{{"$ " . number_format($application->loanAmount, 0)  }}</td>
 </tr>
 <tr>
 <th scope="col">Loan Term</th>
@@ -58,7 +59,7 @@
 </tr>
 <tr>
 <th scope="col">Date of Birth</th>
-<td>{{$application->applicant->birth_day}} / {{$application->applicant->birth_month}} / {{$application->applicant->birth_year}}</td>
+<td>{{$application->applicant->birth_day}} {{$application->applicant->birth_month}} {{$application->applicant->birth_year}}</td>
 </tr>
 <tr>
 <th scope="col">Number of Dependants</th>
@@ -70,27 +71,30 @@
 </tr>
 <tr>
 <th scope="col">Mobile Number</th>
-<td>{{$application->applicant->phone}}</td>
+<td><a href="tel:{{$application->applicant->phone}}" class="">{{preg_replace('~.*(\d{4})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{3}).*~', '$1 $2 $3', $application->applicant->phone)}}</a></td>
 </tr>
 <tr>
 <th scope="col">Email</th>
-<td>{{$application->applicant->email}}</td>
+<td><a href="mailto:{{ $application->applicant->email }}" class="">{{$application->applicant->email}}</a></td>
 </tr>
 <tr>
 <th scope="col">Drivers Licence Number</th>
-<td>{{$application->applicant->currentDL}}
-    {{$application->applicant->DLnumber}}<br>
+<td>{{ isset($application->applicant->DLnumber) ? $application->applicant->DLnumber : 'No Drivers license'}}<br>
+@if(isset($application->applicant->DLimage))
     <a href="{{asset('storage/'.$application->applicant->DLimage)}}" target="_blank">Copy of drivers licence</a><br>
     <span class="badge bg-danger w-50">Download to be disabled after application approved / declined / withdrawn</span>
+    @endif
 </td>
 </tr>
 <tr>
 <th scope="col">Medicare Number</th>
 <td>{{$application->applicant->MCnumber}}
+    @if(isset($application->applicant->MCimage))
 <br>
     <a href="{{asset('storage/'.$application->applicant->MCimage)}}" target="_blank">Copy of medicare card</a>
     <br>
-    <span class="badge bg-danger w-75">Download to be disabled after application approved / declined / withdrawn</span></td>
+    <span class="badge bg-danger w-75">Download to be disabled after application approved / declined / withdrawn</span>
+@endif</td>
 </tr>
 <tr>
 <th scope="col">Employment Status</th>
@@ -102,12 +106,14 @@
 </tr>
 <tr>
 <th scope="col">Time at current address</th>
-<td>{{$application->resTimeY}} years, {{$application->resTimeM}} months</td>
+<td>{{$application->resTimeY}} {{ isset($application->resTimeM) ? $application->resTimeM : '' }}</td>
 </tr>
-<tr>
+@if(isset($application->otherAddress))
+<tr>    
 <th scope="col">Previous addresses</th>
-<td>Show previous addresses here (if applicable)</td>
+<td>{{ $application->otherAddress }}</td>
 </tr>
+@endif
 <tr>
 <th scope="col">Current Occupation</th>
 <td>{{$application->applicant->occupation}}</td>
@@ -122,29 +128,31 @@
 </tr>
 <tr>
 <th scope="col">Time with current employer</th>
-<td>{{$application->empTimeY}} years, {{$application->empTimeM}} months</td>
+<td>{{$application->empTimeY}} {{ isset($application->empTimeM) ? $application->empTimeM : '' }}</td>
 </tr>
+@if(isset($application->prevOccupation))
 <tr>
 <th scope="col">Previous Employment</th>
-<td>Show previous employment here (if applicable)</td>
+<td>{{ $application->prevOccupation }} - {{$application->prevEmployer}}, {{$application->prevEmployerTimeY}} {{$application->prevEmployerTimeM}}</td>
 </tr>
+@endif
 <tr>
 <th scope="row" class="text-uppercase">Income</th>
 <td></td>
 </tr>
 <tr>
 <th scope="col">Applicants Income</th>
-<td>{{$application->income}} / {{$application->incomeFreq}}</td>
+<td>{{"$ " . number_format($application->income, 0)  }} / {{$application->incomeFreq}}</td>
 </tr>
 @if(isset($application->partnerIncome))
 <tr>
 <th scope="col">Partners Income</th>
-<td>{{$application->partnerIncome}} / {{$application->partnerIncomeFreq}}</td>
+<td>{{ "$ " . number_format($application->partnerIncome, 0) }} / {{$application->partnerIncomeFreq}}</td>
 </tr>
 @endif
 <tr>
 <th scope="col">Rent / Mortgage</th>
-<td>{{$application->rentMortgageBoard}} / {{$application->rentFreq}}</td>
+<td>{{"$ " . number_format($application->rentMortgageBoard, 0)  }} / {{$application->rentFreq}}</td>
 </tr>
 <tr>
 <th scope="col">Shared?</th>
@@ -152,6 +160,7 @@
 </tr>
 <tr>
 <th scope="row" class="text-uppercase">Other Debts</th>
+<td></td>
 </tr>
 <tr>
 <th scope="col">Credit Cards</th>
@@ -173,7 +182,7 @@
     {{ $creditCard->financeCompany }}
     </td>
     <td>
-    {{ $creditCard->creditLimit }}   
+    {{"$ " . number_format($creditCard->creditLimit, 0)  }}   
     </td>
     <td>
     {{ $creditCard->consolidate }}
@@ -213,10 +222,10 @@
     {{ $personalLoan->financeCompany}} 
   </td>
   <td>
-    {{ $personalLoan->balance }}  
+  {{"$ " . number_format($personalLoan->balance, 0)  }}  
   </td>
   <td>
-   {{ $personalLoan->repayment }}   
+  {{"$ " . number_format($personalLoan->repayment, 0)  }}   
   </td>
   <td>
     {{ $personalLoan->frequency }}
@@ -262,10 +271,10 @@
   {{ $mortgage->financeCompany }}  
   </td>
   <td>
-  {{ $mortgage->balance }}    
+  {{"$ " . number_format($mortgage->balance, 0)  }}    
   </td>
   <td>
-    {{ $mortgage->repayment }}
+  {{"$ " . number_format($mortgage->repayment, 0)  }}
   </td>
   <td>
   {{ $mortgage->frequency }}
@@ -296,20 +305,18 @@
 </div>
 <div class="col-md-3 noprint">
 <div class="my-5">
-@foreach($application->categories->reverse() as $category)
-@endforeach
 
-@if($application->hasCategory($category->id)) 
 <h3>Application Status</h3>
-<h4>{{ $category->name }}</h4>
+<h4>{{ $application->category->name }}</h4>
 <p>&nbsp;</p>                     
-@endif 
+ 
 
-@if ($category->name === "Incomplete")
+@if ($application->category->name === "Incomplete")
 <button class="btn btn-primary">Send to client</button>
+<a href="/applications/{{ $application->api_token }}/edit">Update Application</a>
 @endif
               
-@if ($category->name !== "Incomplete")
+@if ($application->category->name !== "Incomplete")
 <p><button class="btn btn-primary"onClick="window.print()">Print Application</button></p>
 @endif
 </div>
@@ -318,26 +325,27 @@
 
 <h3>Application history</h3>
 <p>Created: {{ date('d M Y', strtotime($application->created_at ))}}</p>
-<p>Last updated: {{ date('d M Y', strtotime($category->updated_at ))}}</p>
+<p>Last updated: {{ date('d M Y', strtotime($application->updated_at ))}}</p>
 
-@foreach($application->categories as $category)
+@foreach($application->updates->reverse() as $update)
 
-@if($application->id == $category->application_id)
-@if($category->name !== "Incomplete")
+@if($application->id == $update->application_id)
+@if($application->category->name !== "Incomplete")
 <div class="card my-3">
     <div class="card-header">
-        {{ $category->name }}
+        {{ $update->category->name }}
     </div>
     <div class="card-body">
-        @if($category->name !== "Approved")
-        @if($category->name !== "Submitted")
-        <p><strong>Reason:</strong> {{$category->reason}}</p>
+        @if($application->category->name !== "Approved")
+        @if($application->category->name !== "Submitted")
+        <p><strong>Reason:</strong> @if($application->category->name == "Declined") {{ $update->reasonDe }} @endif
+        @if($application->category->name == "Withdrawn") {{ $update->reasonWd }} @endif</p>
         @endif
         @endif
-        @if($category->notes !== NULL)
-        <p><strong>Notes:</strong> {{$category->notes}}</p>        
+        @if($update->notes !== NULL)
+        <p><strong>Notes:</strong> {{$update->notes}}</p>        
         @endif
-        <p><strong>Date:</strong> {{ date('d M Y', strtotime($category->updated_at ))}}</p>
+        <p><strong>Date:</strong> {{ date('d M Y', strtotime($update->created_at ))}}</p>
     </div>
 </div>
 @endif
@@ -345,43 +353,45 @@
 @endforeach
 </div>
 
-@foreach($application->categories->reverse() as $category)
+@foreach($application->updates->reverse() as $update)
 @endforeach
 <div class="my-5 order-1">
-@if ($category->name !== "Incomplete")
-@if ($category->name !== "Approved")
+@if ($application->category->name !== "Incomplete")
+@if ($application->category->name !== "Approved")
 <h3>Update Application</h3>
-    <form class="category-update" action="{{ route('categories.store', $application) }}" method="POST" enctype="multipart/form-data">
+    <form class="category-update" action="{{ route('updates.store', $application, $category ) }}" method="POST" enctype="multipart/form-data">
     @csrf
+    @method ('PUT')
     <input type="hidden" name="application_id" id="application_id" value="{{ $application->id }}" />
         <div class="form-group">
-            <label for="name">Approve / Withdraw / Decline</label>
-                <select class="form-control" name="name" id="name" value="">
-                    <option value="Approved" id="approve">Approve</option>
-                    <option value="Declined" id="decline">Decline</option>
-                    <option value="Withdrawn" id="withdraw">Withdraw</option>                    
+            <label for="category_id">Approve / Withdraw / Decline</label>
+                <select class="form-control" name="category_id" id="category_id" value="">
+                @foreach($categories->reverse()->slice(0, 3) as $category)
+                    <option value="{{ $category->id }}" id="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach                   
                 </select>
         </div>
 
-  
-        <div class="form-group d-none" id="withdrawlReason" >
-            <label for="reason">Reason for Withdrawl</label>
-                <select class="form-control" name="reason"value="">
-                    <option value="None">N/a</option>
-                    <option value="Unable to contact customer">Unable to contact customer</option>
-                    <option value="Customer not proceeding">Customer not proceeding</option>                  
-                </select>
-        </div>
+        
 
         <div class="form-group d-none" id="declineReason" >
-            <label for="reason">Reason for Decline</label>
-                <select class="form-control" name="reason"value="">
+            <label for="reasonDe">Reason for Decline</label>
+                <select class="form-control" name="reasonDe" value="">
                     <option value="None">N/a</option>
                     <option value="Credit score">Credit score</option>
                     <option value="Credit history">Credit history</option>
                     <option value="Banking conduct">Banking conduct</option> 
                     <option value="Affordability">Affordability</option> 
                     <option value="Other">Other</option>                   
+                </select>
+        </div>
+
+        <div class="form-group d-none" id="withdrawlReason" >
+            <label for="reasonWd">Reason for Withdrawl</label>
+                <select class="form-control" name="reasonWd" value="">
+                    <option value="None">N/a</option>
+                    <option value="Unable to contact customer">Unable to contact customer</option>
+                    <option value="Customer not proceeding">Customer not proceeding</option>                  
                 </select>
         </div>
 
@@ -410,14 +420,14 @@
 
 </div>
 <script>
-    $("#name").change(function() {
-        if ($(this).find("option:selected").attr("id") == "approve") {
+    $("#category_id").change(function() {
+        if ($(this).find("option:selected").attr("id") == "5") {
             $("#withdrawlReason").addClass("d-none");
                 $("#declineReason").addClass("d-none");
-        } else if ($(this).find("option:selected").attr("id") == "withdraw") {
+        } else if ($(this).find("option:selected").attr("id") == "4") {
                 $("#withdrawlReason").removeClass("d-none");
                 $("#declineReason").addClass("d-none");
-        } else if ($(this).find("option:selected").attr("id") == "decline") {
+        } else if ($(this).find("option:selected").attr("id") == "3") {
                 $("#declineReason").removeClass("d-none");
                 $("#withdrawlReason").addClass("d-none");
         } 
@@ -425,5 +435,5 @@
 
 </script>
 
-
+@include('includes.footer')
 @endsection

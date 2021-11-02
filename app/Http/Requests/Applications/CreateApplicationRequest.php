@@ -32,22 +32,23 @@ class CreateApplicationRequest extends FormRequest
             'employment' => 'required',
             'residentialType' => 'required',
             'resTimeY' => 'required',
-            'resTimeM' => 'required',
+            'resTimeM',
             'otherAddress',
-            'empTimeY' => 'required',
-            'empTimeM' => 'required',
+            'empTimeY' ,
+            'empTimeM',
             'prevOccupation',
             'prevEmployer',
             'prevEmployerTimeY',
             'prevEmployerTimeM',
-            'income' => 'required',
-            'incomeFreq' => 'required',
+            'income',
+            'incomeFreq',
             'partnerIncome',
             'partnerIncomeFreq',
             'rentMortgageBoard',
             'rentFreq' => 'required',
             'rentShared' => 'required',
-            'category_id'
+            'category_id',
+            'api_token'
         ];
     }
 }

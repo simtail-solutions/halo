@@ -21,8 +21,9 @@ class UsersTableSeeder extends Seeder
             User::create([
                 'name' => 'Leanne Bishop',
                 'email' => 'leanne@simtail.com',
+                'businessName' => 'Simtail',
                 'role' => 'admin',
-                'password' => Hash::make('password')
+                'password' => Hash::make('password'),
             ]);
         }
     }

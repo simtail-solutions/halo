@@ -48,6 +48,12 @@ class Applicant extends Model
         return $this->belongsTo(Application::class);
     }
 
+    public function applicantEmail() {       
+        return $this->belongsTo(Applicant::class, 'applicant_id');
+        //return $this->belongsTo(User::class, 'user_id');
+    }
+
+    
     // public function showApplicationID($applicant)
     // {
     //     $applicant = Application::find(1)->applicant;

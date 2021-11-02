@@ -3,8 +3,14 @@
 @section('content')
 
 <div class="card">
+    <div class="card-header">
+    <div class="d-flex justify-content-between">
+<h2>User Profile</h2>
+<a class="btn btn-secondary noprint" href="javascript:history.back()">Back</a>
+</div>
+    </div>
 <div class="card-body">
-<form action="{{ route('users.update-profile') }}" method="POST">
+<form action="{{ route('users.update', $user->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 
@@ -16,14 +22,6 @@
                     <form-group>
                         <label for="email">Email</label>
                         <input type="text" class="form-control" name="email" id="email" value="{{ $user->email }}">
-                    </form-group>
-
-                    <form-group>
-                        <label for="role">Role</label>
-                        <select name="role" class="form-control" id="role" value="{{ $user->role }}">
-                            <option value="referrer">Referrer</option>
-                            <option value="admin">Admin</option>
-                        </select>
                     </form-group>
 
                     <form-group>
@@ -41,5 +39,5 @@
                     </form>
 </div>
 </div>
-
+@include('includes.footer')
 @endsection

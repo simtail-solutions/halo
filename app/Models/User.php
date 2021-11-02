@@ -53,14 +53,14 @@ class User extends Authenticatable
         return $this->hasMany(Application::class);
     }
 
-    // public function scopeMatched($query)
-    // {
-    //     $matched = request()->query('matched');
+    public function scopeMatched($query)
+    {
+        $matched = request()->query('matched');
 
-    //     if(!$matched) {
-    //         return null;
-    //     }
+        if(!$matched) {
+            return null;
+        }
 
-    //     return $query->Application::where('user_id', 'LIKE', 'id');
-    // }
+        return $query->Application::where('user_id', 'LIKE', 'id');
+    }
 }

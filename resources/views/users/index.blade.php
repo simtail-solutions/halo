@@ -21,8 +21,8 @@
     <td>{{ $user->businessName }}</td>
     <td>{{ $user->name }}</td>
     <td><a href="mailto:{{$user->email}}">{{ $user->email }}</a></td>
-    <td>{{ $user->phone }}</td>
-    <td>{{ $user->role }}</td>
+    <td><a href="tel:{{ $user->phone }}" class="">{{preg_replace('~.*(\d{4})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{3}).*~', '$1 $2 $3', $user->phone )}}</a></td>
+    <td>{{ ucfirst(trans($user->role)) }}</td>
     <td>{{ date('d M Y', strtotime($user->created_at ))}}</td>
     <td><a href="/users/profile/{{ $user->id }}" class="btn btn-primary">Open</a></td>
 </tr>
@@ -34,5 +34,5 @@
 
 </div>
 </div>
-
+@include('includes.footer')
 @endsection

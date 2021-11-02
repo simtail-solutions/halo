@@ -17,7 +17,7 @@
   </style>
 <div class="card card-default">
 <div class="card-header">
-    {{ !isset($application) ? 'Start New Application' : 'Update Application' }}
+    {{ !isset($application->applicant) ? 'Start New Application' : 'Update Application' }}
 </div>
 <div class="card-body">
 
@@ -33,8 +33,9 @@
 
 
 
-<form class="application-form" action="{{ route('applications.update') }}" method="POST" enctype="multipart/form-data">
+<form class="application-form" action="{{ route('applications.update', $application->api_token) }}" method="POST" enctype="multipart/form-data">
 @csrf
+@method ('PUT')
 
 <div class="form-section">
   
@@ -43,8 +44,6 @@
         completed in full and truthfully. Halo makes borrowing more rewarding with flexible loans tailored to your budget 
         helping borrowers get ahead in life and achieve more with their money. It's fairer finance that works for everyone</p>
 
-        <h1 class="p-5">Let's get Started!</h1>
-        Referred by: {{ Auth::user()->id }} {{ Auth::user()->name }}  
 
   </div>
   
@@ -94,8 +93,12 @@
     <div class="col-lg-1">
       <div class="form-group">
         <label for="repayment">Title</label>
-          <select class="form-control" id="apptitle"  name="apptitle" value="{{ isset($applicant) ? $applicant->apptitle : '' }}"  required>
-          <option></option>
+        @if(isset($application->applicant))
+        <input type="text" class="form-control"id="apptitle"  name="apptitle" value="{{ $application->applicant->apptitle }}"  >
+        @endif
+        @if(!isset($application->applicant))
+          <select class="form-control" id="apptitle"  name="apptitle" value=" "  required>
+          <option ></option>
             <option value="Mr">Mr</option>
             <option value="Mrs">Mrs</option>
             <option value="Ms">Ms</option>
@@ -104,27 +107,28 @@
             <option value="Prof">Prof</option>
             <option value="Sir">Sir</option>
           </select>
+          @endif
       </div>
     </div>
 
     <div class="col-4">
       <div class="form-group">
         <label for="first_name">First Name</label>
-        <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name"  value="{{ isset($applicant) ? $applicant->firstname : '' }}"  required>
+        <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name"  value="{{ isset($application) ? $application->applicant->firstname : '' }}"  required>
       </div>
     </div>
 
     <div class="col-3">
       <div class="form-group">
         <label for="middlename">Middle Name</label>
-        <input type="text" class="form-control" id="middlename" name="middlename" placeholder="Middle Name"  value="{{ isset($applicant) ? $applicant->middlename : '' }}" >
+        <input type="text" class="form-control" id="middlename" name="middlename" placeholder="Middle Name"  value="{{ isset($application) ? $application->applicant->middlename : '' }}" >
       </div>
     </div>
 
     <div class="col-4">
       <div class="form-group">
         <label for="last_name">Last Name</label>
-        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name"  value="{{ isset($applicant) ? $applicant->lastname : '' }}"  required>
+        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name"  value="{{ isset($application) ? $application->applicant->lastname : '' }}"  required>
       </div>
     </div>
       
@@ -198,14 +202,14 @@
     <div class="col-lg-6">
       <div class="form-group">
         <label for="phone">Mobile Number</label>
-        <input type="number" class="form-control" id="phone" name="phone" placeholder="" required>
+        <input type="number" class="form-control" id="phone" name="phone" value="{{ isset($application) ? $application->applicant->phone : '' }}" required>
       </div>
     </div>
 
     <div class="col-lg-6">
       <div class="form-group">
         <label for="email">Email Address</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="" required>
+        <input type="email" class="form-control" id="email" name="email" value="{{ isset($application) ? $application->applicant->email : '' }}" required>
       </div>
     </div>
       
@@ -325,16 +329,55 @@
       <div class="form-group">
         <label for="address_period">Time at address</label>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Years" id="resTimeY" name="resTimeY" value="{{ isset($application) ? $application->resTimeY : '' }}"  />  
-          <input type="text" class="form-control" placeholder="Months" id="resTimeM" name="resTimeM" value="{{ isset($application) ? $application->resTimeM : '' }}"  />
+        <select class="form-control" id="resTimeY" name="resTimeY" value="" placeholder="">
+            <option></option>
+            <option id="oneYear">1 yr</option>
+            <option>2 yrs</option>
+            <option>3 yrs</option>
+            <option>4 yrs</option>
+            <option>5+ yrs</option>
+          </select>
+          <select class="form-control" id="resTimeM" name="resTimeM" value="" placeholder="">
+            <option></option>
+            <option>1 mth</option>
+            <option>2 mths</option>
+            <option>3 mths</option>
+            <option>4 mths</option>
+            <option>5 mths</option>
+            <option>6 mth</option>
+            <option>7 mths</option>
+            <option>8 mths</option>
+            <option>9 mths</option>
+            <option>10 mths</option>
+            <option>11 mths</option>
+          </select>
         </div>    
       </div>
     </div>
-
+  </div>
+    <div class="row m-3 d-none" id="previous-address">
+      
+    <div class="col-lg-12">
+      <div class="form-group">
+        <label for="address">Previous Address</label>
+        <input type="text" class="form-control" id="otherAddress" name="otherAddress" value="">
+      </div>
+    </div>
   </div>
 
+
+    <script>
+    $("#resTimeY").change(function() {
+        if ($(this).find("option:selected").attr("id") == "oneYear") {
+            $("#previous-address").removeClass("d-none");
+        } else if ($(this).find("option:selected").attr("id") !== "oneYear") {
+            $("#previous-address").addClass("d-none");
+        } 
+    });
+
+</script>
+
   <div class="row m-3">
-    <p>* If current address is less than 2 years, another section will open "Previous Residential Address" below this section</p>
     <p>
           * Disclaimer and Acceptance added here 
           <span class="ml-4">
@@ -866,6 +909,6 @@ $(function () {
     })
 
 </script>
-
+@include('includes.footer')
 @endsection
 

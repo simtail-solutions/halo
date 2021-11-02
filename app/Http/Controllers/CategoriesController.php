@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Application;
 use App\Models\Category;
+use App\Models\Update;
 
 use App\Http\Requests\Categories\CreateCategoryRequest;
 
@@ -42,22 +43,27 @@ class CategoriesController extends Controller
      public function store(CreateCategoryRequest $request, Application $application)
     {    
 
-        $category = $application->categories()->create([
-            'application_id' => $application->id,
-            'name' => $request->name,
-            'reason' => $request->reason,
-            'notes' => $request->notes
-        ]);
+        // $category = $application->categories()->create([
+        //     'application_id' => $application->id,
+        //     'name' => $request->name,
+        //     'reasonDe' => $request->reasonDe,
+        //     'reasonWd' => $request->reasonWd,
+        //     'notes' => $request->notes
+        // ]);
 
-        dd(request()->all());
+        // $application = $category->application()->update([
+        //     'category_id' => $category->id
+        // ]);
 
-        // flash message
+        // dd(request()->all());
 
-        session()->flash('success', 'Application created successfully.');
+        // // flash message
 
-        // redirect the user
+        // session()->flash('success', 'Application created successfully.');
 
-        return redirect()->back();
+        // // redirect the user
+
+        // return redirect()->back();
     }
 
     /**

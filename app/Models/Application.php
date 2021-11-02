@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 
+
 class Application extends Model
 {
     use HasFactory;
@@ -37,10 +38,14 @@ class Application extends Model
         'referenceName',
         'referencePhone',
         'referenceSuburb',
-        'category_id'
+        'category_id',
+        'api_token'
     ];
 
-
+    public function getRouteKeyName() 
+    {
+        return 'api_token';
+    }
     public function applicant()
     {
         return $this->belongsTo(Applicant::class);
@@ -51,9 +56,23 @@ class Application extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function categories()
+    public function siteAdmin() {
+        //$role = $this->role==='admin';
+        return $this->belongsTo(User::class, 'user_id');
+        //return $this->belongsTo(User::where('role', 'admin')->first('user_id'));
+       //$AdminUser = User::where('role', 'admin')->first();
+        //return $this->role==='admin';
+        // needs to go to site admin
+    }
+
+    public function category()
     {
-        return $this->hasMany(Category::class)->latest();
+        return $this->belongsTo(Category::class);
+    }
+
+    public function updates()
+    {
+        return $this->hasMany(Update::class);
     }
 
     public function creditCards()
@@ -71,26 +90,13 @@ class Application extends Model
         return $this->hasMany(Mortgage::class);
     }
 
-    // public function hasApplicant($applicantId)
-    // {
-    //     /**
-    //      * check for applicant details
-    //      */
-    //     //return in_array($applicantId, $this->applicant->pluck('id')->toArray());
-    //    return $applicantId = $this->applicant->id->get();
-    // }
-
-    // // public function showApplicationID($applicantId)
-    // // {
-    // //     return $this->applicant->id;
-    // // }
-
     public function hasUser($userId)
     {
         /**
          * check for referrer user details
          */
-        return in_array($userId, $this->user->pluck('id')->toArray());
+        //$user = User::find(auth()->user()->id);
+        //return in_array($userId, $this->user->pluck('id')->toArray());
     }
 
     public function hasCategory($categoryId)
@@ -98,7 +104,7 @@ class Application extends Model
         /**
          * check for category of application
          */
-        return in_array($categoryId, $this->categories->pluck('id')->toArray());
+        //return in_array($categoryId, $this->categories->pluck('id')->toArray());
         
     }
 
@@ -143,8 +149,39 @@ class Application extends Model
             return $query;
         }
 
-        return $query->where('lastname', 'LIKE', "%($search");
+        return $query->whereHas('applicant', function ($query) use($search){
+            $query->where('lastname', 'LIKE', '%' . $search . '%');
+        })
+        ->orWhereHas('applicant', function ($query) use($search){
+            $query->where('phone', 'LIKE', '%'.preg_replace('/\s+/', '', $search).'%')->limit(100);
+        })
+        ->orWhereHas('applicant', function ($query) use($search){
+            $query->where('email', 'LIKE', '%' . $search . '%');
+        })
+        ->orWhereHas('user', function ($query) use($search){
+            $query->where('businessName', 'LIKE', '%' . $search . '%');
+        })
+        ->orWhereHas('category', function ($query) use($search){
+            $query->where('name', 'LIKE', '%' . $search . '%');
+        });
+
+
     }
+
+    // public function scopeFilterByCategories($builder)
+
+    // {
+    //     if (request()->query('category')) {
+    //         // filter
+    //         $category = Category::where('id', request()->query('category_id'))->first();
+
+    //         if ($category) {
+    //             return $builder->where('category_id', $category->id);
+    //         }
+    //         return $builder;
+    //     }
+    //     return $builder;
+    // }
 
     public function mostRecentCategory(Category $category) 
     {

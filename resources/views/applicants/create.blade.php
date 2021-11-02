@@ -94,7 +94,7 @@
   
 
 <div class="form-navigation">
-<input type="hidden" name="name" id="name" value="Incomplete">
+<input type="hidden" name="category_id" id="category_id" value="1">
 <button type="submit"  class="btn btn-primary success float-right">Send to client</button>
 </div>
 
@@ -113,6 +113,6 @@
 <p>The customer will be then sent a link to the application with these details pre-filled.</p>
 <p>Upon submission, this form will redirect to a page advising the referrer of what steps have been taken.</p>
 </div></div>
-
+@include('includes.footer')
 @endsection
 

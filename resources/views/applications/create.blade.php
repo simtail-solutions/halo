@@ -44,7 +44,7 @@
         helping borrowers get ahead in life and achieve more with their money. It's fairer finance that works for everyone</p>
 
         <h1 class="p-5">Let's get Started!</h1>
-        Referred by: {{ Auth::user()->id }} {{ Auth::user()->name }}  
+  
 
   </div>
   
@@ -113,7 +113,6 @@
         <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name"  value="{{ isset($applicant) ? $applicant->firstname : '' }}"  required>
       </div>
     </div>
-
     <div class="col-3">
       <div class="form-group">
         <label for="middlename">Middle Name</label>
@@ -136,19 +135,58 @@
       <div class="form-group">
         <label for="dob">Date of Birth</label>
       <div class="w-100">
-        <input type="text" class="form-control d-inline w-25" id="birth_day" name="birth_day" size="2" maxlength="2" placeholder="DD">
-        <input type="text" class="form-control d-inline w-25" id="birth_month" name="birth_month" size="2" maxlength="2" placeholder="MM">
-        <input type="text" class="form-control d-inline w-25" id="birth_year" name="birth_year" size="4" maxlength="4" placeholder="YYYY">
+        <select class="form-control d-inline w-25" id="birth_day" name="birth_day" value="" placeholder="">
+            <option>01</option>
+            <option>02</option>
+            <option>03</option>
+            <option>04</option>
+            <option>05</option>
+            <option>06</option>
+            <option>07</option>
+            <option>08</option>
+            <option>09</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+            <option>13</option>
+            <option>14</option>
+            <option>15</option>
+            <option>16</option>
+            <option>17</option>
+            <option>18</option>
+            <option>19</option>
+            <option>20</option>
+            <option>21</option>
+            <option>22</option>
+            <option>23</option>
+            <option>24</option>
+            <option>25</option>
+            <option>26</option>
+            <option>27</option>
+            <option>28</option>
+            <option>29</option>
+            <option>30</option>
+            <option>31</option>
+        </select>
+        <select class="form-control d-inline w-25" id="birth_month" name="birth_month" value="" placeholder="">
+            <option>JAN</option>
+            <option>FEB</option>
+            <option>MAR</option>
+            <option>APR</option>
+            <option>MAY</option>
+            <option>JUN</option>
+            <option>JUL</option>
+            <option>AUG</option>
+            <option>SEP</option>
+            <option>OCT</option>
+            <option>NOV</option>
+            <option>DEC</option>
+          </select>
+        <input type="text" class="form-control d-inline w-25" id="birth_year" name="birth_year" size="4" maxlength="4" placeholder="1980">
       </div>
       </div>            
     </div>
 
-    <script>
-        // flatpickr('#dob', {
-        //     enableTime: true,
-        //     enableSeconds: true
-        // })
-    </script>
 
     <div class="col-lg-4">
       <div class="form-group">
@@ -198,7 +236,7 @@
     <div class="col-lg-6">
       <div class="form-group">
         <label for="phone">Mobile Number</label>
-        <input type="number" class="form-control" id="phone" name="phone" placeholder="" required>
+        <input type="text" class="form-control" id="phone" name="phone" placeholder="" required>
       </div>
     </div>
 
@@ -213,42 +251,40 @@
 
   <div class="row m-3">
       
-    <div class="col-lg-3">
+    <div class="col-lg-4">
       <div class="form-group" id="DLnumber">
         <label for="DLnumber">Drivers License Number (conditional)</label>
-        <input type="number" class="form-control" id="DLnumber" name="DLnumber" value="{{ isset($applicant) ? $applicant->DLnumber : '' }}"  placeholder="" 
+        <input type="text" class="form-control" id="DLnumber" name="DLnumber" value="{{ isset($applicant) ? $applicant->DLnumber : '' }}"  placeholder="" 
         >
+      </div> 
+      <div  class="form-group">
+        <label for="drivers_check"><input type="checkbox" id="currentDL" name="currentDL" value=" " > I don't have a drivers licence</label>        
       </div> 
     </div>
 
-    <div class="col-lg-3">
-      <div  class="form-group">
-        <label for="drivers_check">I don't have a drivers licence</label>
-        <input type="checkbox" id="currentDL" name="currentDL" value="{{ isset($applicant) ? $applicant->currentDL : '' }}" >
-      </div>      
-    </div>
+    
 
-    <div class="col-lg-3">
+    <div class="col-lg-4">
       <div class="form-group">
         <label for="MCnumber">Medicare Card Number</label>
-        <input type="number" class="form-control" id="MCnumber" name="MCnumber" value="{{ isset($applicant) ? $applicant->MCnumber : '' }}"
+        <input type="text" class="form-control" id="MCnumber" name="MCnumber" value="{{ isset($applicant) ? $applicant->MCnumber : '' }}"
         placeholder="">
       </div>
     </div>
 
-    <div class="col-lg-3">
+    <div class="col-lg-4">
       <div class="form-group">
         <label for="employment">Employment Status</label>
           <select class="form-control" id="employment" name="employment" value="{{ isset($application) ? $application->employment : '' }}" placeholder="">
-            <option>Full Time</option>
-            <option>Part Time</option>
-            <option>Casual</option>
-            <option>Self Employed</option>
-            <option>Contract</option>
-            <option>Pension</option>
-            <option>Unemployed</option>
+            <option id="fullTime">Full Time</option>
+            <option id="partTime">Part Time</option>
+            <option id="casual">Casual</option>
+            <option id="selfEmployed">Self Employed</option>
+            <option id="contract">Contract</option>
+            <option id="pension">Pension</option>
+            <option id="unemployed">Unemployed</option>
             <option id="centrelink">Centrelink</option>
-            <option>Other</option>
+            <option id="other">Other</option>
           </select>
       </div>
     </div>
@@ -294,7 +330,7 @@
     <div class="col-lg-3">
       <div class="form-group">
         <label for="postcode">Postcode</label>
-        <input type="number" class="form-control" id="postcode" name="postcode" value="{{ isset($applicant) ? $applicant->postcode : '' }}" placeholder="">
+        <input type="text" class="form-control" id="postcode" name="postcode" value="{{ isset($applicant) ? $applicant->postcode : '' }}" placeholder="">
       </div>
     </div>
 
@@ -303,46 +339,138 @@
         <label for="residentialType">Residential Type</label>
           <select class="form-control" id="residentialType" name="residentialType" value="{{ isset($application) ? $application->residentialType : '' }}" placeholder="">
             <option></option>
-            <option>Renting</option>
-            <option>Mortgage</option>
-            <option>Boarding</option>
-            <option>Living with parents</option>
-            <option>Own home outright</option>
-            <option>Other</option>
+            <option id="renting">Renting</option>
+            <option id="mort">Mortgage</option>
+            <option id="boarding">Boarding</option>
+            <option id="parents">Living with parents</option>
+            <option id="outright">Own home outright</option>
+            <option id="resOther">Other</option>
           </select>
       </div>
+      <div  class="form-group d-none" id="homeowner">
+        <label for="isHomeowner"><input type="checkbox" id="isHomeowner" name="isHomeowner" value=" " > Applicant is a homeowner</label>
+      </div> 
     </div>
 
     <div class="col-lg-2">
       <div class="form-group">
         <label for="address_period">Time at address</label>
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Years" id="resTimeY" name="resTimeY" value="{{ isset($application) ? $application->resTimeY : '' }}"  />  
-          <input type="text" class="form-control" placeholder="Months" id="resTimeM" name="resTimeM" value="{{ isset($application) ? $application->resTimeM : '' }}"  />
+        <select class="form-control" id="resTimeY" name="resTimeY" value="" placeholder="">
+            <option></option>
+            <option id="oneYear">1 yr</option>
+            <option>2 yrs</option>
+            <option>3 yrs</option>
+            <option>4 yrs</option>
+            <option>5+ yrs</option>
+          </select>
+          <select class="form-control" id="resTimeM" name="resTimeM" value="" placeholder="">
+            <option></option>
+            <option>1 mth</option>
+            <option>2 mths</option>
+            <option>3 mths</option>
+            <option>4 mths</option>
+            <option>5 mths</option>
+            <option>6 mth</option>
+            <option>7 mths</option>
+            <option>8 mths</option>
+            <option>9 mths</option>
+            <option>10 mths</option>
+            <option>11 mths</option>
+          </select>
         </div>    
       </div>
     </div>
-
   </div>
 
-  <div class="row m-3">
-    <p>* If current address is less than 2 years, another section will open "Previous Residential Address" below this section</p>
-    <p>
-          * Disclaimer and Acceptance added here 
-          <span class="ml-4">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-            <label class="form-check-label mr-5" for="defaultCheck1">
-              I have read, understood and agree to the terms
-            </label>
-          </span>
-        </p>
-        <p> 
-          * if unemployed or Centerlink has been selected they wont be able to proceed past this point. A notification will explain why, but after T&C's are accepted as we want their info
-        </p>
+  <script>
+    $("#residentialType").change(function() {
+        if ($(this).find("option:selected").attr("id") == "mort" || $(this).find("option:selected").attr("id") == "outright") {
+            $("#homeowner").addClass("d-none");
+        } else  {
+                $("#homeowner").removeClass("d-none");
+        } 
+    });
+
+</script>
+
+    <div class="row m-3 d-none" id="previous-address">
+      
+    <div class="col-lg-12">
+      <div class="form-group">
+        <label for="address">Previous Address</label>
+        <input type="text" class="form-control" id="otherAddress" name="otherAddress" value="">
+      </div>
+    </div>
   </div>
-  <div class="m-5">
+
+  <div class="row mx-3">
+
+      
+      <span class="ml-4">
+        
+        <input type="checkbox" id="acceptance" name="acceptance" value="" required>
+        <label id="sample" class="form-check-label mr-5" for="defaultCheck1">
+          I have read, understood and agree to the terms
+        </label>
+       
+      </span>
+    
+    
+</div>
+<div class="m-2">
 <hr>
 </div>
+
+    <script>
+    $("#resTimeY").change(function() {
+        if ($(this).find("option:selected").attr("id") == "oneYear") {
+            $("#previous-address").removeClass("d-none");
+        } else if ($(this).find("option:selected").attr("id") !== "oneYear") {
+            $("#previous-address").addClass("d-none");
+        } 
+    });
+
+
+      $('#currentDL').click(function(){
+        if($(this).prop("checked") == true){
+        //alert("you checked checkbox.");
+        $("#DLnumber").addClass("d-none");
+      }else if($(this).prop("checked") == false){
+        //alert("you unchecked checkbox.");
+        $("#DLnumber").removeClass("d-none");
+        }
+    });
+
+    $("#employment").change(function() {
+        if ($(this).find("option:selected").attr("id") == "centrelink") {
+          $('#next').on('click', function() {
+              $('#sorry').show()
+              $('.cat-submitted').remove();
+              });
+            } 
+        });
+
+    $('#acceptance').click(function(){
+        if($(this).prop("checked") == true){
+        $("#next").attr('disabled', false);
+        // alert("you checked checkbox.");
+      }else if($(this).prop("checked") == false){
+        $("#next").attr('disabled', true);
+        // alert("you unchecked checkbox.");
+        }
+    });
+
+    
+
+
+
+</script>
+
+
+
+
+
 </div>
 
 <div class="form-section">
@@ -373,9 +501,29 @@
       <div class="col-lg-3">
         <div class="form-group">
           <label for="empTimeCurrent">Time with current employer</label>
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="years" id="empTimeY" name="empTimeY" value="{{ isset($application) ? $application->empTimeY : '' }}" />  
-            <input type="text"  class="form-control" placeholder="months" id="empTimeM" name="empTimeM" value="{{ isset($application) ? $applicant->empTimeM : '' }}" />
+        <div class="input-group">
+        <select class="form-control" id="empTimeY" name="empTimeY" value="" placeholder="">
+            <option></option>
+            <option id="oneYearEmp">1 yr</option>
+            <option>2 yrs</option>
+            <option>3 yrs</option>
+            <option>4 yrs</option>
+            <option>5+ yrs</option>
+          </select>
+          <select class="form-control" id="empTimeM" name="empTimeM" value="" placeholder="">
+            <option></option>
+            <option>1 mth</option>
+            <option>2 mths</option>
+            <option>3 mths</option>
+            <option>4 mths</option>
+            <option>5 mths</option>
+            <option>6 mth</option>
+            <option>7 mths</option>
+            <option>8 mths</option>
+            <option>9 mths</option>
+            <option>10 mths</option>
+            <option>11 mths</option>
+          </select>
         </div>
       </div>
       </div>
@@ -383,10 +531,10 @@
 </div>
 
 <div class="row m-3">
-<p>* If current employment is less than 2 years, another section will open "Previous Employment" below this section</p>
+
 </div>
 
-<div class="row m-3 previous-employment d-none">
+<div id="previous-employment" class="row m-3 previous-employment d-none">
 
     <div class="col-lg-4">
       <div class="form-group">
@@ -405,21 +553,63 @@
   <div class="col-lg-4">
     <div class="form-group">
       <label for="empTimePrev">Time with previous employer</label>
-      <div class="input-group">
-        <input type="text"  class="form-control" placeholder="years" id="prevEmployerTimeY" name="prevEmployerTimeY"  value="{{ isset($application) ? $application->prevEmployerTimeY : '' }}" />  
-        <input type="text" class="form-control" placeholder="months" id="prevEmployerTimeM" name="prevEmployerTimeM"  value="{{ isset($application) ? $application->prevEmployerTimeM : '' }}"  />
-    </div>
+    <div class="input-group">
+        <select class="form-control" id="prevEmployerTimeY" name="prevEmployerTimeY" value="" placeholder="">
+            <option></option>
+            <option>1 yr</option>
+            <option>2 yrs</option>
+            <option>3 yrs</option>
+            <option>4 yrs</option>
+            <option>5+ yrs</option>
+          </select>
+          <select class="form-control" id="prevEmployerTimeM" name="prevEmployerTimeM" value="" placeholder="">
+            <option></option>
+            <option>1 mth</option>
+            <option>2 mths</option>
+            <option>3 mths</option>
+            <option>4 mths</option>
+            <option>5 mths</option>
+            <option>6 mth</option>
+            <option>7 mths</option>
+            <option>8 mths</option>
+            <option>9 mths</option>
+            <option>10 mths</option>
+            <option>11 mths</option>
+          </select>
+        </div>
     </div>
     </div>
 
 </div>
 
+<script>
+
+$("#empTimeY").change(function() {
+        if ($(this).find("option:selected").attr("id") == "oneYearEmp") {
+            $("#previous-employment").removeClass("d-none");
+        } else if ($(this).find("option:selected").attr("id") !== "oneYear") {
+            $("#previous-employment").addClass("d-none");
+        } 
+    });
+
+    $("#residentialType").change(function() {
+        if ($(this).find("option:selected").attr("id") == "outright") {
+            $("#rentPayable").addClass("d-none");
+        } else  {
+                $("#rentPayable").removeClass("d-none");
+        } 
+    });
+
+</script>
+
+
+
 <div class="row m-3">
            
     <div class="col-lg-3">
       <div class="form-group">
-        <label for="income">Income Amount</label> 
-        <input type="text" class="form-control" id="income" name="income" placeholder="" value="{{ isset($application) ? $application->income : '' }}"> <span class="btn btn-info rounded-circle m-1" data-toggle="tooltip" title="After tax - your take home income" data-placement="top" >?</span>
+        <label for="income">Income Amount <span class="badge bg-primary rounded-circle m-1" data-toggle="tooltip" title="After tax - your take home income" data-placement="top" >?</span></label> 
+        <input type="text" class="form-control" id="income" name="income" placeholder="" value="{{ isset($application) ? $application->income : '' }}"> 
       </div>
     </div>
     
@@ -457,7 +647,7 @@
     
 </div>
 
-<div class="row m-3">
+<div class="row m-3" id="rentPayable">
 
 <div class="col-lg-4">
     <div class="form-group">
@@ -500,8 +690,9 @@
 <div class="row m-3">
 
 <h3>Credit Cards</h3>
-<p>List all credit cards - include store cards and zero balance cards.</p>
-
+<p class="credit-card-table">List all credit cards - include store cards and zero balance cards.</p>
+<p class="no-cards">No credit cards to show.</p>
+        
 
 </div>
 
@@ -517,7 +708,7 @@
 
 </tbody>
 </table>
-<div><a href="#" class="btn btn-info" id="addRow">Add Credit Card</a></div>
+<div><a href="#" class="btn btn-info credit-card-table" id="addRow">Add Credit Card</a> <label class="credit-card-table" for="no-credit-cards"><input type="checkbox" id="noCards" name="noCards" value="" > I don't have any Credit Cards</label></div>
 
 <script type="text/javascript">
 
@@ -558,22 +749,35 @@
         i--;
       });
   
+    
+
+      $('#noCards').click(function(){
+        if($(this).prop("checked") == true){
+        //alert("you checked checkbox.");
+        $(".credit-card-table").addClass("d-none")
+        $(".no-cards").removeClass("d-none");
+      }else if($(this).prop("checked") == false){
+        //alert("you unchecked checkbox.");
+        $(".credit-card-table").removeClass("d-none");
+        }
+    });
       
 </script>
 
 
-<div class="m-5">
+<div class="m-5 credit-card-table">
 <hr>
 </div>
 
 <div class="row m-3">
 
 <h3>Personal Loans</h3>
-<p>List all secured and unsecured loans.</p>
+<p class="personal-loan-table">List all secured and unsecured loans.</p>
+<p class="no-loans d-none">No unsecured loans.</p>
 
 </div>
 
-<table class="table table-striped">
+<table class="table table-striped personal-loan-table">
 <thead>
 <th>Finance Company</th>
 <th>Balance</th>
@@ -587,7 +791,7 @@
 
 </tbody>
 </table>
-<div><a href="#" class="btn btn-info" id="addPL">Add Personal Loan</a></div>
+<div><a href="#" class="btn btn-info personal-loan-table" id="addPL">Add Personal Loan</a> <label for="no-personal-loans" class="personal-loan-table"><input type="checkbox" id="noLoans" name="noLoans" value="" > I don't have any Personal Loans</label></div>
 
 <script type="text/javascript">
 
@@ -654,21 +858,32 @@
         p--;
       });
   
+      $('#noLoans').click(function(){
+        if($(this).prop("checked") == true){
+        //alert("you checked checkbox.");
+        $(".personal-loan-table").addClass("d-none")
+        $(".no-loans").removeClass("d-none");
+      }else if($(this).prop("checked") == false){
+        //alert("you unchecked checkbox.");
+        $(".personal-loan-table").removeClass("d-none");
+        }
+    });
       
 </script>
 
-<div class="m-5">
+<div class="m-5 personal-loan-table">
 <hr>
 </div>
 
+<div id="showMortgages" class="d-none">
 <div class="row m-3">
 
 <h3>Mortgages</h3>
-<p>List all mortgages and investment loans.</p>
-
+<p class="mortgages-table">List all mortgages and investment loans.</p>
+<p class="mortgage-none d-none">No mortgages or investment loans.</p>
 </div>
 
-<table class="table table-striped">
+<table class="table table-striped mortgages-table">
 <thead>
 <th>Finance Company</th>
 <th>Balance</th>
@@ -682,12 +897,13 @@
 
 </tbody>
 </table>
-<div><a href="#" class="btn btn-info" id="addM">Add Mortgage Loan</a></div>
+<div><a href="#" class="btn btn-info mortgages-table" id="addM">Add Mortgage Loan</a> <label for="no-mortgages" class="mortgages-table"><input type="checkbox" id="noMortgages" name="noMortgages" class="mortgages-table" 
+value="" > I don't have any Mortgages or Investment Loans</label></div>
 
-<div class="m-5">
+<div class="m-5 mortgages-table">
 <hr>
 </div>
-
+</div>
 
 <script type="text/javascript">
 
@@ -755,6 +971,39 @@
         p--;
       });
   
+      $('#noMortgages').click(function(){
+        if($(this).prop("checked") == true){
+         $(".mortgages-table").addClass("d-none")
+         $(".mortgage-none").removeClass("d-none")
+        }
+     
+    });
+
+    $('#isHomeowner').click(function(){
+        if($(this).prop("checked") == true ){
+         $("#showMortgages").removeClass("d-none")
+         //$(".mortgage-none").removeClass("d-none")
+        }
+     
+    });
+
+     $("#residentialType").change(function() {
+        if ($(this).find("option:selected").attr("id") == "mort" || $(this).find("option:selected").attr("id") == "outright") {
+          $("#showMortgages").removeClass("d-none")
+        } 
+    });
+
+// || $("#residentialType").find("option:selected").attr("id") == "mort"
+
+    // $("#residentialType").change(function() {
+    //     if ($(this).find("option:selected").attr("id") == "mort" || $(this).find("option:selected").attr("id") == "outright") {
+    //         $("#homeowner").addClass("d-none");
+    //     } else  {
+    //             $("#homeowner").removeClass("d-none");
+    //     } 
+    // });
+
+
       
 </script>
 
@@ -764,7 +1013,7 @@
 
 </div>
 
-<div class="modal" tabindex="-1" role="dialog">
+<div class="modal" tabindex="-1" role="dialog" id="sorry">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -777,7 +1026,7 @@
         <p>You do not qualify for funding through this portal.  We do have options tailored more to your needs, please contact us on ### to discuss.</p>
       </div>
       <div class="modal-footer">
-      <input type="hidden" name="name" id="name" value="Incomplete">
+      <input type="hidden" name="category_id" id="category_id" value="1">
         <button type="submit" class="btn btn-primary">Save changes</button>
         
       </div>
@@ -785,12 +1034,14 @@
   </div>
 </div>
 
-<input type="hidden" name="name" id="name" value="Submitted">
+<input type="hidden" name="category_id" id="category_id" class="cat-submitted" value="2">
+
+
 
 <div class="form-navigation">
 <button type="button" class="previous btn btn-info float-left">Previous</button>
-<button id="next" type="button"  class="next btn btn-info float-right show-modal">Next</button>
-<button type="submit"  class="btn-btn success float-right">Submit</button>
+<button id="next" type="button"  class="next btn btn-info float-right show-modal" disabled>Next</button>
+<button type="submit"  class="btn-btn btn btn-info success float-right">Submit</button>
 </div>
 
 
@@ -801,6 +1052,7 @@
 </form>
 </div></div>
 <script type="text/javascript">
+
                   $('.dob').datepicker({  
                     format: 'dd-mm-yyyy'
                   });

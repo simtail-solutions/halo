@@ -22,15 +22,15 @@ class CreateApplicationsTable extends Migration
             $table->string('frequency')->nullable();
             $table->string('employment')->nullable();
             $table->string('residentialType')->nullable();
-            $table->integer('resTimeY')->nullable();
-            $table->integer('resTimeM')->nullable();
+            $table->string('resTimeY')->nullable();
+            $table->string('resTimeM')->nullable();
             $table->string('otherAddress')->nullable();
-            $table->integer('empTimeY')->nullable();
-            $table->integer('empTimeM')->nullable();
+            $table->string('empTimeY')->nullable();
+            $table->string('empTimeM')->nullable();
             $table->string('prevOccupation')->nullable();
             $table->string('prevEmployer')->nullable();
-            $table->integer('prevEmployerTimeY')->nullable();
-            $table->integer('prevEmployerTimeM')->nullable();
+            $table->string('prevEmployerTimeY')->nullable();
+            $table->string('prevEmployerTimeM')->nullable();
             $table->integer('income')->nullable();
             $table->string('incomeFreq')->nullable();
             $table->integer('partnerIncome')->nullable();
@@ -39,6 +39,7 @@ class CreateApplicationsTable extends Migration
             $table->string('rentFreq')->nullable();
             $table->string('rentShared')->nullable();
             $table->integer('category_id')->nullable();
+            $table->string('api_token', '20')->unique();
             $table->timestamps();
         });
     }

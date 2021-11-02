@@ -18,7 +18,7 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user)
     {
         // index.blade.php
         return view('users.index')
@@ -54,20 +54,7 @@ class UsersController extends Controller
      */
     public function show(User $user, Application $applications, Applicant $applicants, Request $request)
     {
-        // if (Application::where('user_id', $user->id)->exists()) {
-        //     $applications = 'true';
-        // }
-        // Application::where(function($query) { 
-        //     $query->has('user_id');
-        // })->find(1);
-        //$application = $applicant->application()
-        //$applications = $user->application();
 
-        // public function currentUser(Request $request){
-        //     $thisUser = $request->input('id');
-        //   }
-
-        //$thisUser = Input::get('id');
         $thisUser = $request->input('id');
 
         $applications = DB::table('applications')
@@ -77,7 +64,7 @@ class UsersController extends Controller
         return view('users.profile')
         ->with('user', $user)
         ->with('applicants', Applicant::all())
-        ->with('applications', Application::all());
+        ->with('applications', Application::paginate(10));
     }
 
     /**
@@ -86,9 +73,9 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        return view('users.update-profile')->with('user', auth()->user());
+        return view('users.edit')->with('user', $user);
     }
 
     /**
@@ -98,10 +85,10 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request)
+    public function update(User $user, Request $request)
     {
         // update.blade.php
-        $user = auth()->user();
+        //$user = auth()->user();
         
         $user->update([
             'name' => $request->name,
@@ -111,9 +98,15 @@ class UsersController extends Controller
             'phone' => $request->phone
         ]);
 
+        $user->save();
+
         session()->flash('success', 'User updated successfully');
 
         return redirect()->back();
+        
+        //dd(request()->all());
+
+        //return view('users.index'); // generates error: $user not defined
     }
 
     /**

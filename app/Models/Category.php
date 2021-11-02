@@ -10,15 +10,16 @@ class Category extends Model
     use HasFactory;
     protected $table = 'categories';
     protected $fillable = [
-        'application_id',
-        'name',
-        'reason',
-        'notes'
-
+        'name'
     ];
 
     public function application() 
     {
         return $this->belongsTo(Application::class);
+    }
+
+    public function updates()
+    {
+        return $this->hasMany(Update::class);
     }
 }

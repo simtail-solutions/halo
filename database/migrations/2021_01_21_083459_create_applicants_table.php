@@ -27,8 +27,8 @@ class CreateApplicantsTable extends Migration
             $table->integer('postcode')->length(4)->nullable();
             $table->string('phone');
             $table->string('email');
-            $table->integer('birth_day')->length(2)->nullable();
-            $table->integer('birth_month')->length(2)->nullable();
+            $table->string('birth_day')->length(2)->nullable();
+            $table->string('birth_month')->length(3)->nullable();
             $table->integer('birth_year')->length(4)->nullable();
             $table->boolean('currentDL')->nullable();
             $table->integer('DLnumber')->nullable();

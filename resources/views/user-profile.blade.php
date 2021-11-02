@@ -10,7 +10,13 @@
 </div>
 </div>
 <div class="card-body">
+<div class="d-flex justify-content-between">
+<a href="{{ route('users.edit', Auth::user()->id) }}" class="btn btn-primary">Update Profile</a>
 
+<a href="" class="btn btn-primary">Update Password</a>
+
+
+</div>
 <table class="table table-striped">
 <tbody>
 <tr class="m-3">
@@ -31,7 +37,7 @@
 </tr>
 <tr class="m-3">
     <th scope="column">Role</th>
-    <td>{{ Auth::user()->role }}</td>
+    <td>{{ ucfirst(trans(Auth::user()->role)) }}</td>
 </tr>
 <tr class="m-3">
     <th scope="column">User Created</th>
@@ -40,5 +46,5 @@
 </tbody>
 </table>
 
-
+@include('includes.footer')
 @endsection

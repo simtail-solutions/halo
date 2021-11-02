@@ -7,10 +7,10 @@
 <div class="d-flex justify-content-between">
 <h2>User Details</h2>
 <a class="btn btn-secondary noprint" href="/users">Back to all users</a>
+<a class="btn btn-secondary noprint" href="/users/profile/{{ $user->id }}/edit">Edit User</a>
 </div>
 </div>
 <div class="card-body">
-
 <table class="table table-striped">
 <tbody>
 <tr class="m-3">
@@ -31,7 +31,7 @@
 </tr>
 <tr class="m-3">
     <th scope="column">Role</th>
-    <td>{{ $user->role }}</td>
+    <td>{{ ucfirst(trans($user->role)) }}</td>
 </tr>
 <tr class="m-3">
     <th scope="column">User Created</th>
@@ -39,8 +39,6 @@
 </tr>
 </tbody>
 </table>
-
-
 <table class="table table-striped">
 <thead class="m-3">
     <tr>
@@ -59,21 +57,17 @@
 @foreach($applications as $application)
 @if ($application->user_id === $user->id)
 
-    <tr class="m-3 @foreach($application->categories->reverse() as $category)
-                        @if($application->hasCategory($category->id))
-                            {{ $category->name }}
-                        @endif
-                    @endforeach">
+    <tr class="m-3 {{ isset($application->category->name) ? $application->category->name : 'Not specified' }}">
         <td>{{ date('d M Y', strtotime($application->created_at ))}}</td>
         <td>
             {{  $application->applicant->apptitle }} {{  $application->applicant->firstname }} {{  $application->applicant->lastname }}
                 </td>
         <td>{{ $application->applicant->phone }} </td>
         <td>{{ $application->applicant->email }} </td>
-        <td>@if($application->hasCategory($category->id)) {{ $category->name }}  @endif</td>
+        <td>{{ isset($application->category->name) ? $application->category->name : 'Not specified' }}</td>
         <td>{{ date('d M Y', strtotime($application->updated_at ))}}</td>
         <td>{{"$ " . number_format($application->loanAmount, 0)  }}</td>
-        <td><a href="/applications/{{ $application->id }}" class="btn btn-primary">Open</a></td>
+        <td><a href="/applications/{{ $application->api_token }}" class="btn btn-primary">Open</a></td>
     </tr>
   
 
@@ -87,9 +81,22 @@
 </tbody>
 </table>
 
+<script>
+
+window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted || 
+                         ( typeof window.performance != "undefined" && 
+                              window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    // Handle page restore.
+    window.location.reload();
+  }
+});
+
+</script>
 
 
-
+@include('includes.footer')
 @endsection
 
 

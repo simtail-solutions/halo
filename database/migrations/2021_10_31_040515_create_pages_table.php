@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoriesTable extends Migration
+class CreatePagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('pages', function (Blueprint $table) {
             $table->id();
-            //$table->integer('application_id')->nullable();
-            $table->enum('name',['Incomplete','Submitted','Declined','Withdrawn','Approved'])->default("Incomplete");
-            //$table->string('name')->default("Incomplete");
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('pages');
     }
 }

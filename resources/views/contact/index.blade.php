@@ -75,5 +75,5 @@ Contact details and custom content here
 </div>
 
 </div></div>
-
+@include('includes.footer')
 @endsection

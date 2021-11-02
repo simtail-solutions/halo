@@ -6,6 +6,7 @@ use App\Models\Applicant;
 use App\Models\Application;
 use App\Models\Category;
 use App\Models\User;
+use App\Models\Update;
 
 use Illuminate\Database\Seeder;
 
@@ -18,12 +19,33 @@ class ApplicationsTableSeeder extends Seeder
      */
     public function run()
     {
+
+        $category1 = Category::create([
+            'name' => 'Incomplete'
+        ]);
+
+        $category2 = Category::create([
+            'name' => 'Submitted'
+        ]);
+
+        $category3 = Category::create([
+            'name' => 'Declined'
+        ]);
+
+        $category4 = Category::create([
+            'name' => 'Withdrawn'
+        ]);
+
+        $category5 = Category::create([
+            'name' => 'Approved'
+        ]);
+
         $user100 = User::create([
             'name' => 'Jan de Waal',
             'email' => 'jan@simtail.com',
             'role' => 'referrer',
             'businessName' => 'Simtail',
-            'password' => 'janPassword'
+            'password' => 'janPassword',
         ]);
 
         $user101 = User::create([
@@ -56,7 +78,7 @@ class ApplicationsTableSeeder extends Seeder
             'email' => 'boo@outlook.com.au',
             //'dob' => '2000-12-31',
             'birth_day' => '31',
-            'birth_month' => '12',
+            'birth_month' => 'DEC',
             'birth_year' => '2000',
             'currentDL' => false,
             'DLnumber' => '123456789',
@@ -81,7 +103,7 @@ class ApplicationsTableSeeder extends Seeder
             'email' => 'hello@gmail.com',
             //'dob' => '2000-12-31',
             'birth_day' => '31',
-            'birth_month' => '12',
+            'birth_month' => 'DEC',
             'birth_year' => '2000',
             'currentDL' => true,
             'DLnumber' => '599845',
@@ -107,7 +129,7 @@ class ApplicationsTableSeeder extends Seeder
             'email' => 'myemail@email.com.au',
             //'dob' => '2000-12-31',
             'birth_day' => '31',
-            'birth_month' => '12',
+            'birth_month' => 'DEC',
             'birth_year' => '2000',
             'currentDL' => false,
             'DLnumber' => '0012006',
@@ -140,7 +162,8 @@ class ApplicationsTableSeeder extends Seeder
             'rentMortgageBoard' => '1500',
             'rentFreq' => 'month',
             'rentShared' => 'yes',
-            //'category_id' => $category1->id 
+            'api_token' => bin2hex(openssl_random_pseudo_bytes(10)),
+            'category_id' => $category1->id
         ]);
 
         $application2 = Application::create([
@@ -166,7 +189,8 @@ class ApplicationsTableSeeder extends Seeder
             'rentMortgageBoard' => '300',
             'rentFreq' => 'week',
             'rentShared' => 'no',
-            //'category_id' => $category2->id
+            'api_token' => bin2hex(openssl_random_pseudo_bytes(10)),
+            'category_id' => $category2->id
         ]);
         
         $application3 = Application::create([
@@ -192,26 +216,24 @@ class ApplicationsTableSeeder extends Seeder
             'rentMortgageBoard' => '150',
             'rentFreq' => 'week',
             'rentShared' => 'no',
-            //'category_id' => $category3->id
-        ]);
+            'api_token' => bin2hex(openssl_random_pseudo_bytes(10)),
+            'category_id' => $category2->id
+        ]);    
 
-        $category1 = Category::create([
+        $update1 = Update::create([
             'application_id' => $application1->id,
-            'name' => 'Submitted'
+            'category_id' => $category1->id
         ]);
 
-        $category2 = Category::create([
+        $update2 = Update::create([
             'application_id' => $application2->id,
-            'name' => 'Incomplete'
+            'category_id' => $category2->id
         ]);
 
-        $category3 = Category::create([
+        $update3 = Update::create([
             'application_id' => $application3->id,
-            'name' => 'Incomplete'
+            'category_id' => $category2->id
         ]);
-        
-
-
         
     }
 }
