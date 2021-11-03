@@ -909,6 +909,6 @@ $(function () {
     })
 
 </script>
-@include('includes.footer')
+
 @endsection
 

@@ -312,8 +312,8 @@
  
 
 @if ($application->category->name === "Incomplete")
-<button class="btn btn-primary">Send to client</button>
-<a href="/applications/{{ $application->api_token }}/edit">Update Application</a>
+<!--button class="btn btn-primary">Send to client</button>
+<a href="/applications/{{ $application->api_token }}/edit">Update Application</a-->
 @endif
               
 @if ($application->category->name !== "Incomplete")

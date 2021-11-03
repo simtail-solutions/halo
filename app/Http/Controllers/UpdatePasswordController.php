@@ -63,7 +63,7 @@ class UpdatePasswordController extends Controller
      */
     public function edit($id)
     {
-        $users = admin::find(Auth::user()->id);
+        $users = Admin::find(Auth::user()->id);
         return view('users.updatepassword',compact('users'));
     }
 

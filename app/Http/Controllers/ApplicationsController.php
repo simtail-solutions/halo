@@ -14,6 +14,7 @@ use App\Models\Update;
 use App\Notifications\NewSubmissionAdded;
 
 use App\Http\Requests\Applications\CreateApplicationRequest;
+use App\Http\Requests\Applications\UpdateApplicationRequest;
 use Illuminate\Support\Arr;
 
 
@@ -206,7 +207,7 @@ class ApplicationsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Application $application, Applicant $applicant)
+    public function edit(Application $application, Applicant $applicant, User $user)
     {
         return view('applications.edit' )
         ->with('application', $application)

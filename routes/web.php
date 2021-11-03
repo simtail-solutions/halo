@@ -37,7 +37,12 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
+
+
 Route::middleware(['auth'])->group(function () { 
+    Route::get('/applicants/send', function () {
+        return view('send');
+    });
 
     Route::resource('applicants','App\Http\Controllers\ApplicantsController');
     Route::resource('applications', 'App\Http\Controllers\ApplicationsController');
@@ -56,8 +61,10 @@ Route::middleware(['auth'])->group(function () {
         return view('user-profile');
     });
 
-    Route::resource('updatepassword','App\Http\Controllers\UpdatePasswordController');
-    Route::get('updatepassword/{user}/edit', 'App\Http\Controllers\UpdatePasswordController@edit')->name('updatepassword.edit');
+    
+
+    // Route::resource('updatepassword','App\Http\Controllers\UpdatePasswordController');
+    // Route::get('updatepassword/{user}/edit', 'App\Http\Controllers\UpdatePasswordController@edit')->name('updatepassword.edit');
 
 });
 

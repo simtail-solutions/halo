@@ -4,11 +4,10 @@
 
 <div class="card card-default">
 <div class="card-header">
-  Customer Referral
+Email Application to Customer
 </div>
 
 @include('partials.referral')
 
 @include('includes.footer')
 @endsection
-

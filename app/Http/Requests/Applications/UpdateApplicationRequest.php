@@ -13,7 +13,7 @@ class UpdateApplicationRequest extends FormRequest
      */
     public function authorize()
     {
-        return transliterator_create_from_rules;
+        return true;
     }
 
     /**
@@ -30,23 +30,20 @@ class UpdateApplicationRequest extends FormRequest
             'employment' => 'required',
             'residentialType' => 'required',
             'resTimeY' => 'required',
-            'resTimeM' => 'required',
-            'otherAddress' => 'required',
+            'resTimeM',
+            'otherAddress',
             'empTimeY' => 'required',
             'empTimeM' => 'required',
-            'prevEmployer' => 'required',
-            'prevEmployerTimeY' => 'required',
-            'prevEmployerTimeM' => 'required',
+            'prevEmployer',
+            'prevEmployerTimeY',
+            'prevEmployerTimeM',
             'income' => 'required',
             'incomeFreq' => 'required',
-            'partnerIncome' => 'required',
-            'partnerIncomeFreq' => 'required',
-            'rentMortgageBoard' => 'required',
-            'rentFreq' => 'required',
-            'rentShared' => 'required',
-            'referenceName' => 'required',
-            'referencePhone' => 'required',
-            'referenceSuburb' => 'required'
+            'partnerIncome',
+            'partnerIncomeFreq',
+            'rentMortgageBoard',
+            'rentFreq' ,
+            'rentShared'
         ];
     }
 }

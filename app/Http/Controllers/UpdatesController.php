@@ -52,7 +52,7 @@ class UpdatesController extends Controller
             'category_id' => $request->category_id
         ]);
 
-        dd(request()->all());
+        //dd(request()->all());
 
         // flash message
 

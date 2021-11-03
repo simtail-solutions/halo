@@ -34,7 +34,7 @@
                         <input type="text" class="form-control" name="phone" id="phone" value="{{ $user->phone }}">
                     </form-group>
 
-                    <button type="submit" class="btn btn-success">Update User</button>
+                    <button type="submit" class="btn btn-success my-3">Update</button>
                     
                     </form>
 </div>

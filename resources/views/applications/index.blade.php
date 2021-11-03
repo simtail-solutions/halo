@@ -9,7 +9,7 @@
                     <span class="input-group-text"><i class="ti-search"></i></span>
                   </div>
                 </form>
-                <span class="badge bg-primary rounded-circle m-1" data-toggle="tooltip" title="Include spaces when search Phone Numbers #### ### ###" data-placement="right" >?</span>
+                <span class="badge bg-primary rounded-circle m-1 p-2" data-toggle="tooltip" title="Include spaces when search Phone Numbers #### ### ###" data-placement="right" >?</span>
                 </div>
     <a href="{{ route('applications.create') }}" class="btn btn-success">New Application</a>
 </div>
@@ -44,7 +44,7 @@
 
 
 @foreach($applications->reverse() as $application)
-
+@if(auth()->user()->isAdmin() or auth()->user()->id == $application->user_id)
 
     <tr class="m-3 {{ isset($application->category->name) ? $application->category->name : '' }}">
         <td>{{ date('d M Y', strtotime($application->created_at ))}}</td>
@@ -62,7 +62,7 @@
         @endif
     </tr>
     
-  
+  @endif
 @endforeach
 </tbody>
 </table>

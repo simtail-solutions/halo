@@ -4,7 +4,7 @@
 <div class="card card-default">
 <div class="card-header">Benefits to the Patient</div>
 <div class="card-body">
-<strong>Make content editable by admin</strong>
+<!--strong>Make content editable by admin</strong-->
 <h2>HALO Dental Payment Plans</h2>
 <h3>A Healthy Payment Alternative for your Dental Treatment</h3>
 <div class="row">
@@ -27,9 +27,9 @@
 <a href="#">E Brochure - download or preview from here</a></div>
 </div>
 <div class="d-flex justify-content-between m-3">
-    <a class="btn btn-secondary">Start Application</a>
-    <a class="btn btn-secondary inc">Quick Customer Referral</a>
-    <a class="btn btn-secondary filter-button sub">Email Application to Customer</a>
+    <a href="/applications/create" class="btn btn-secondary">Start Application</a>
+    <a href="/applicants/create" class="btn btn-secondary inc">Quick Customer Referral</a>
+    <a href="/applicants/create" class="btn btn-secondary filter-button sub">Email Application to Customer</a>
     <a class="btn btn-secondary filter-button dec">Email Brochure to customer</a>
 </div>
 </div></div>

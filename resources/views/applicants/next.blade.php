@@ -10,7 +10,7 @@
 
 <p>This page will also include details about the process, what to expect etc</p>
 
-<p>This will be the same process as "Send Application to client" however can have different messaging on this page and in the email to the client.</p>
+<p>"Quick Customer Referral" and "Send Application to client" follows the same process with different messaging to client/referrer.</p>
 
     </div>
 </div>

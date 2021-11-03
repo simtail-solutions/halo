@@ -43,6 +43,7 @@ class ApplicationsTableSeeder extends Seeder
         $user100 = User::create([
             'name' => 'Jan de Waal',
             'email' => 'jan@simtail.com',
+            'phone' => '0412 555 666',
             'role' => 'referrer',
             'businessName' => 'Simtail',
             'password' => 'janPassword',
@@ -51,16 +52,19 @@ class ApplicationsTableSeeder extends Seeder
         $user101 = User::create([
             'name' => 'Karlee Aitken',
             'email' => 'karlee@tbh.com.au',
+            'phone' => '0483 123 123',
             'role' => 'referrer',
             'businessName' => 'The Brand Hierarchy',
             'password' => 'karleePassword'
         ]);
 
         $user102 = User::create([
-            'name' => 'Jessica Powell',
-            'email' => 'jessica@simtail.com',
+            'name' => 'Kalen Harvey',
+            'email' => 'kalen@simtail.com',
+            'phone' => '0488 333 555',
             'role' => 'referrer',
-            'password' => 'jessPassword'
+            'businessName' => 'Simtail',
+            'password' => 'kalenPassword'
         ]);
 
         $applicant1 = Applicant::create([
@@ -147,11 +151,11 @@ class ApplicationsTableSeeder extends Seeder
             'frequency' => 'fortnightly',
             'employment' => 'Part time',
             'residentialType' => 'Mortgage',
-            'resTimeY' => '2',
-            'resTimeM' => '9',
+            'resTimeY' => '2 yrs',
+            'resTimeM' => '9 mnths',
             'otherAddress' => 'No',
-            'empTimeY' => '5',
-            'empTimeM' => '2',
+            'empTimeY' => '5 yrs',
+            'empTimeM' => '2 mnths',
             'prevEmployer' => 'No',
             'prevEmployerTimeY' => '0',
             'prevEmployerTimeM' => '0',
@@ -174,8 +178,8 @@ class ApplicationsTableSeeder extends Seeder
             'frequency' => 'monthly',
             'employment' => 'Full time',
             'residentialType' => 'Boarding',
-            'resTimeY' => '4',
-            'resTimeM' => '0',
+            'resTimeY' => '4 yrs',
+            'resTimeM' => '0 mnths',
             'otherAddress' => 'No',
             'empTimeY' => '6',
             'empTimeM' => '2',
@@ -201,11 +205,11 @@ class ApplicationsTableSeeder extends Seeder
             'frequency' => 'weekly',
             'employment' => 'Self employed',
             'residentialType' => 'Living with parents',
-            'resTimeY' => '30',
-            'resTimeM' => '0',
+            'resTimeY' => '30 yrs',
+            'resTimeM' => '0 mnths',
             'otherAddress' => 'none',
-            'empTimeY' => '3',
-            'empTimeM' => '0',
+            'empTimeY' => '3 yrs',
+            'empTimeM' => '0 mnths',
             'prevEmployer' => 'none',
             'prevEmployerTimeY' => '0',
             'prevEmployerTimeM' => '0',

@@ -11,11 +11,7 @@
 </div>
 <div class="card-body">
 <div class="d-flex justify-content-between">
-<a href="{{ route('users.edit', Auth::user()->id) }}" class="btn btn-primary">Update Profile</a>
-
-<a href="" class="btn btn-primary">Update Password</a>
-
-
+<a href="{{ route('users.edit', Auth::user()->id) }}" class="btn btn-primary my-3">Update Profile</a>
 </div>
 <table class="table table-striped">
 <tbody>

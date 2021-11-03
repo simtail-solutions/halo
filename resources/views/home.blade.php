@@ -22,7 +22,7 @@
                         <ul>
                             <li><a href="/applications/create">Start Application</a></li>
                             <li><a href="/applicants/create">Quick Customer Referral</a></li>
-                            <li><a href="#">Email Application to Customer</a></li>
+                            <li><a href="/applicants/send">Email Application to Customer</a></li>
                             <li><a href="#">Email HALO Brochure to Customer</a></li>
                             <li><a href="#">Print Application</a></li>
                             <li><a href="/contact">Contact Us</a></li>
