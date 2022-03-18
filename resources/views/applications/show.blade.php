@@ -18,11 +18,11 @@
 <div class="card-header">
 <div class="d-flex justify-content-between">
 <h2>Application Details</h2>
-<a class="btn btn-lg btn-info noprint" href="/applications">Back to all applications</a>
+<a class="btn btn-lg btn-info noprint" href="{{ route('applications.index') }}">Back to all applications</a>
 </div>
 </div>
 <div class="card-body">
-<p><a href="/users/profile/{{ $application->user->id }}" class="">
+<p><a href="{{ route('users.show', $application->user->id ) }}" class="">
                 Referred by: @if (isset($application->user->businessName)) 
                      {{ $application->user->businessName }} 
                 @else

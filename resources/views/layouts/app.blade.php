@@ -72,8 +72,8 @@
             Benefits
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="/patient">To The Patient</a></li>
-            <li><a class="dropdown-item" href="/practice">To The Practice</a></li>
+            <li><a class="dropdown-item" href="{{ asset('/patient') }}">To The Patient</a></li>
+            <li><a class="dropdown-item" href="{{ asset('/practice') }}">To The Practice</a></li>
 
           </ul>
         </li>
@@ -91,7 +91,7 @@
         
         @auth
         <li class="nav-item">
-          <a class="nav-link" href="/user-profile">Profile</a>        
+          <a class="nav-link" href="{{ asset('/user-profile') }}">Profile</a>        
         </li>
         @endauth
         <li class="nav-item">

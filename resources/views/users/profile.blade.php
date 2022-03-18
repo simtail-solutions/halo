@@ -6,11 +6,11 @@
 <div class="card-header">
 <div class="d-flex justify-content-between">
 <h2>User Details</h2>
-<a class="noprint" href="/users">Back to all users</a>
+<a class="noprint" href="{{route('users.index')}}">Back to all users</a>
 </div>
 <div class="d-flex justify-content-end">
 @if(auth()->user()->id !== $user->id)
-<a class="btn btn-secondary noprint mx-2" href="/users/profile/{{ $user->id }}/edit">Edit User</a>
+<a class="btn btn-secondary noprint mx-2" href="{{ route('users.edit', $user->id) }}">Edit User</a>
 @endif
 @if(!$user->isAdmin())
                     
@@ -37,7 +37,7 @@
         Deactivate User
     </button>
     @else
-    <button type="submit" class="btn btn-primary users-inactive" alt="Activate User" title="Activate user" name="activated" id="activated" value="1">
+    <button type="submit" class="btn btn-info users-inactive" alt="Activate User" title="Activate user" name="activated" id="activated" value="1">
         Activate User
     </button>
     @endif
@@ -82,7 +82,7 @@
     <td>@if($user->activated == 1)
         Active
         @else
-        inactive
+        <span style="font-style:italic;">Inactive</span>
         @endif
     </td>
 </tr>
@@ -118,9 +118,10 @@
         <td>{{ isset($application->name) ? $application->name : 'Not specified' }}</td>
         <td>{{ date('d M Y', strtotime($application->updated_at ))}}</td>
         <td>{{ $application->loanAmount  }}</td>
-        <td><a href="/applications/{{ $application->api_token }}" class="" alt="Open" title="Open"><svg xmlns="http://www.w3.org/2000/svg" class="bi bi-file-earmark-plus-fill" viewBox="0 0 16 16" width="24" height="24" fill="#0dcaf0">
+        <td>@if($application->deleted_at == null)
+            <a href="{{ route('application.show', $application->api_token) }}" class="" alt="Open" title="Open"><svg xmlns="http://www.w3.org/2000/svg" class="bi bi-file-earmark-plus-fill" viewBox="0 0 16 16" width="24" height="24" fill="#0dcaf0">
   <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM8.5 7v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 1 0z"></path>
-</svg></a></td>
+</svg></a>@endif</td>
     </tr>
 
 @endforeach

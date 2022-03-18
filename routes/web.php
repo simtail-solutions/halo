@@ -58,7 +58,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::resource('users','App\Http\Controllers\UsersController');
-    Route::get('users/profile/{user}', 'App\Http\Controllers\UsersController@show');
+    Route::get('users/profile/{user}', 'App\Http\Controllers\UsersController@show')->name('users.show');
     Route::get('users/profile/{user}/edit', 'App\Http\Controllers\UsersController@edit')->name('users.edit');    
     Route::put('users/profile/{user}/update', 'App\Http\Controllers\UsersController@update')->name('users.update');
     Route::put('users/profile/{user}', 'App\Http\Controllers\UsersController@activate')->name('users.activate');
