@@ -17,8 +17,8 @@ class CreatePersonalloansTable extends Migration
             $table->id();
             $table->integer('application_id');
             $table->string('financeCompany');
-            $table->integer('balance');
-            $table->integer('repayment');
+            $table->string('balance');
+            $table->string('repayment');
             $table->enum('frequency', ['Weekly','Fortnightly','Monthly']);
             $table->string('consolidate');
             $table->string('joint');

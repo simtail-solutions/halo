@@ -26,9 +26,7 @@ class CreateApplicationRequest extends FormRequest
         return [
             'applicant_id',
             'user_id' => 'required',  
-            'loanAmount' => 'required',
-            'loanTerm' => 'required',
-            'frequency' => 'required',
+            'loanAmount',
             'employment' => 'required',
             'residentialType' => 'required',
             'resTimeY' => 'required',
@@ -45,8 +43,8 @@ class CreateApplicationRequest extends FormRequest
             'partnerIncome',
             'partnerIncomeFreq',
             'rentMortgageBoard',
-            'rentFreq' => 'required',
-            'rentShared' => 'required',
+            'rentFreq',
+            'rentShared',
             'category_id',
             'api_token'
         ];

@@ -26,7 +26,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <!-- Scripts -->
-<!--script src="{{ URL::asset('js/app.js') }}" defer></script-->
+<script src="{{ URL::asset('js/app.js') }}" defer></script>
 <!--script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 
@@ -36,7 +36,10 @@
 <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
 <!-- Styles -->
-<!--link href="{{ URL::asset('css/app.css') }}" rel="stylesheet"-->
+<link href="{{ URL::asset('css/app.css') }}" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet"> 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
 
 </head>
@@ -44,20 +47,26 @@
     <div id="app">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
-    <a class="navbar-brand" href="{{ route('home') }}">Halo Finance</a>
-    @if (Route::has('login'))
-    @auth
+    <a class="navbar-brand" href="{{ route('home') }}">
+        <img src="{{ URL::asset('/img/halo-finance.png') }}">
+    </a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Home</a>
         </li>
+        
+        @auth
         <li class="nav-item">
           <a class="nav-link" href="{{ route('applications.index') }}">Applications</a>
         </li>
+        @endauth
+       
+
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Benefits
@@ -65,8 +74,7 @@
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="/patient">To The Patient</a></li>
             <li><a class="dropdown-item" href="/practice">To The Practice</a></li>
-            <!--li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li-->
+
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -80,21 +88,36 @@
             <li><a class="dropdown-item" href="#">Terms and Conditions</a></li>
           </ul>
         </li>
+        
+        @auth
+        <li class="nav-item">
+          <a class="nav-link" href="/user-profile">Profile</a>        
+        </li>
+        @endauth
+        <li class="nav-item">
+          <a class="nav-link" href="{{ route('contact.index') }}">Contact</a>
+        </li>
+
+        @auth 
+        @if(auth()->user()->isAdmin())
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
+          <a class="btn btn-info dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Admin
+          </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="/user-profile">User Profile</a></li>
-            @if(auth()->user()->isAdmin())
-            <li><a class="dropdown-item" href="/users">All Users</a></li>
-            <li><a class="dropdown-item" href="#">Add new user</a></li>
-            @endif
-          </ul>         
+            <li><a class="dropdown-item" href="{{ route('users.index') }}">All Users</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{ route('archived-applications.index') }}">Archived Applications</a></li>
+          </ul>
         </li>
+        @endif
+        @endauth
+
+
+        @if (Route::has('login'))
+        @auth
         <li class="nav-item">
-          <a class="nav-link" href="/contact">Contact</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
+          <a class="nav-link btn btn-secondary text-white ms-3" href="{{ route('logout') }}" onclick="event.preventDefault();
             document.getElementById('logout-form').submit();">Logout</a>
         </li>
         
@@ -102,16 +125,14 @@
             {{ csrf_field() }}
         </form>
         
-        <!--li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li-->
-      </ul>
-      @else
-      <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
-        <a href="{{ route('register') }}" class="btn btn-primary">{{ __('Register') }}</a>
-        <a href="/contact" class="btn btn-secondary">Contact</a>
 
-    @endauth
+      </ul>
+   @else
+      <a href="{{ route('login') }}" class="btn btn-info mx-2">Login</a>
+        <a href="{{ route('register') }}" class="btn btn-info mx-2">{{ __('Register') }}</a>
+        
+
+   @endauth 
     @endif
 
     </div>

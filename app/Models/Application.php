@@ -4,19 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use DB;
 
 
 
 class Application extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $table = 'applications';
     protected $fillable = [
         'applicant_id',
         'user_id',  
         'loanAmount',
-        'loanTerm',
-        'frequency',
         'employment',
         'residentialType',
         'resTimeY',
@@ -56,13 +56,8 @@ class Application extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function siteAdmin() {
-        //$role = $this->role==='admin';
+    public function siteAdmin(User $user) {
         return $this->belongsTo(User::class, 'user_id');
-        //return $this->belongsTo(User::where('role', 'admin')->first('user_id'));
-       //$AdminUser = User::where('role', 'admin')->first();
-        //return $this->role==='admin';
-        // needs to go to site admin
     }
 
     public function category()
@@ -141,46 +136,33 @@ class Application extends Model
         return in_array($mortgageId, $this->mortgages->pluck('id')->toArray());
     }
 
-    public function scopeSearched($query) {
+    // 
+    // public function scopeSearched($query) {
         
-        $search = request()->query('search');
-
-        if (!$search) {
-            return $query;
-        }
-
-        return $query->whereHas('applicant', function ($query) use($search){
-            $query->where('lastname', 'LIKE', '%' . $search . '%');
-        })
-        ->orWhereHas('applicant', function ($query) use($search){
-            $query->where('phone', 'LIKE', '%'.preg_replace('/\s+/', '', $search).'%')->limit(100);
-        })
-        ->orWhereHas('applicant', function ($query) use($search){
-            $query->where('email', 'LIKE', '%' . $search . '%');
-        })
-        ->orWhereHas('user', function ($query) use($search){
-            $query->where('businessName', 'LIKE', '%' . $search . '%');
-        })
-        ->orWhereHas('category', function ($query) use($search){
-            $query->where('name', 'LIKE', '%' . $search . '%');
-        });
-
-
-    }
-
-    // public function scopeFilterByCategories($builder)
-
-    // {
-    //     if (request()->query('category')) {
-    //         // filter
-    //         $category = Category::where('id', request()->query('category_id'))->first();
-
-    //         if ($category) {
-    //             return $builder->where('category_id', $category->id);
-    //         }
-    //         return $builder;
+    //     if (!$search) {
+    //       return $query;
     //     }
-    //     return $builder;
+
+    //     return $query->whereHas('applicant', function ($query) use($search){
+    //         $query->where('lastname', 'LIKE', '%' . $search . '%');
+    //     })
+    //     // ->orWhereHas('applicant', function ($query) use($search){
+    //     //     $query->where('phone', 'LIKE', '%'.preg_replace('/\s+/', '', $search).'%')->limit(100);
+    //     // }) // this breaks after implementing the updated phone format on the forms
+    //     ->orWhereHas('applicant', function ($query) use($search){
+    //         $query->where('phone', 'LIKE', '%' . $search . '%');
+    //     })
+    //     ->orWhereHas('applicant', function ($query) use($search){
+    //         $query->where('email', 'LIKE', '%' . $search . '%');
+    //     })
+    //     ->orWhereHas('user', function ($query) use($search){
+    //         $query->where('businessName', 'LIKE', '%' . $search . '%');
+    //     })
+    //     ->orWhereHas('category', function ($query) use($search){
+    //         $query->where('name', 'LIKE', '%' . $search . '%');
+    //     })->orderBy('id', 'desc');
+
+
     // }
 
     public function mostRecentCategory(Category $category) 

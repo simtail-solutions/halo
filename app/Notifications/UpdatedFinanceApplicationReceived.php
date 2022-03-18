@@ -7,18 +7,30 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class BrochureSend extends Notification
+use App\Models\Applicant;
+
+class UpdatedFinanceApplicationReceived extends Notification implements ShouldQueue
 {
     use Queueable;
+
+    /**
+     * 
+     * The new applicant
+     * 
+     * @var Applicant
+     * 
+     */
+
+    public $applicant;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Applicant $applicant)
     {
-        //
+        $this->applicant = $applicant;
     }
 
     /**
@@ -29,7 +41,7 @@ class BrochureSend extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -41,9 +53,11 @@ class BrochureSend extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->line('Your application has been submitted.')
+                    ->line('We will be in touch within two (2) business days of receiving 
+                    this information with finance options that will work best for your circumstances.')
+                    ->line('Please get in contact if you require further information.')
+                    ->action('Contact Us', route('contact.index'));
     }
 
     /**
@@ -55,7 +69,7 @@ class BrochureSend extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'applicant' => $this->applicant
         ];
     }
 }

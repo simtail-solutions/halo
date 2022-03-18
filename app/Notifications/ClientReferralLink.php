@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notification;
 use App\Models\Application;
 use App\Models\Applicant;
 
-class ClientReferralLink extends Notification
+class ClientReferralLink extends Notification implements ShouldQueue
 {
     use Queueable;
 

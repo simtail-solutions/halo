@@ -24,26 +24,29 @@ class UpdateApplicationRequest extends FormRequest
     public function rules()
     {
         return [
+            'applicant_id',
+            'user_id' => 'required',  
             'loanAmount' => 'required',
-            'loanTerm' => 'required',
-            'frequency' => 'required',
             'employment' => 'required',
             'residentialType' => 'required',
             'resTimeY' => 'required',
             'resTimeM',
             'otherAddress',
-            'empTimeY' => 'required',
-            'empTimeM' => 'required',
+            'empTimeY' ,
+            'empTimeM',
+            'prevOccupation',
             'prevEmployer',
             'prevEmployerTimeY',
             'prevEmployerTimeM',
-            'income' => 'required',
-            'incomeFreq' => 'required',
+            'income',
+            'incomeFreq',
             'partnerIncome',
             'partnerIncomeFreq',
             'rentMortgageBoard',
-            'rentFreq' ,
-            'rentShared'
+            'rentFreq' => 'required',
+            'rentShared' => 'required',
+            'category_id',
+            // 'api_token'
         ];
     }
 }

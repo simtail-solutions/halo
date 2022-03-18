@@ -8,7 +8,8 @@ use App\Models\Applicant;
 use App\Models\Category;
 use App\Models\Update;
 use App\Models\User;
-use App\Notifications\ClientReferralLink;
+use App\Notifications\PleaseCompleteApplication;
+use App\Notifications\QuickReferralSent;
 
 use App\Http\Requests\Applicants\CreateApplicantRequest;
 
@@ -40,12 +41,11 @@ class ApplicantsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateApplicantRequest $request, Application $application, Category $category)
+    public function store(CreateApplicantRequest $request, Application $application, Category $category, User $user)
     {
         $applicant = Applicant::create([
             'apptitle' => $request->apptitle,
             'firstname' => $request->firstname,
-            'middlename' => $request->middlename,
             'lastname' => $request->lastname,
             'phone' => $request->phone,
             'email' => $request->email
@@ -68,11 +68,22 @@ class ApplicantsController extends Controller
         $application->save();
         $update->save();
 
-        //$application->applicantEmail->notify(new ClientReferralLink($application));
+        $application->applicant->notify(new PleaseCompleteApplication($application, $applicant));
+        $application->user->notify(new QuickReferralSent($application));
+
+         //  Send mail to admin 
+         \Mail::send('applicants.create.adminMail', array( 
+            'firstname' => $request['firstname'], 
+            'lastname' => $request['lastname'],
+            'api_token' => $application['api_token'],
+            'user_business' => $application->user->businessName,
+            'email' => $request['email']),  
+            function($message) use ($request){ 
+                $message->from($request->email); 
+                $message->to('admin@admin.com', 'Admin')->subject('Quick Referral from' . ' ' . ($request->user()->businessName)); 
+                }); 
 
         //dd($request->all());
-        //return redirect(route('applications.update'));
-        //return redirect(route('applications.edit', $application->api_token));
         return View('applicants.next');
     }
 

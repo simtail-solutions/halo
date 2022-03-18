@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Application;
 use App\Models\Applicant;
+use App\Http\Requests\Users\CreateUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
 
 class UsersController extends Controller
@@ -25,6 +26,22 @@ class UsersController extends Controller
             ->with('users', User::paginate(10));
     }
 
+    public function trashed(User $user) 
+        {
+            /**
+             * Display a list of all archived applications.
+             *
+             * @return \Illuminate\Http\Response
+             */
+
+            // $trashed = User::withTrashed()
+            // ->where('deleted_at', '!=', null)
+            // ->paginate(5);
+
+            // return view('users.index')->withUsers($trashed);
+
+        }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -32,7 +49,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-        // create.blade.php
+        //return view('users.create');
     }
 
     /**
@@ -41,7 +58,7 @@ class UsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateUserRequest $request, User $user)
     {
         //
     }
@@ -55,16 +72,19 @@ class UsersController extends Controller
     public function show(User $user, Application $applications, Applicant $applicants, Request $request)
     {
 
-        $thisUser = $request->input('id');
+        $thisUser = $request->user->id;
 
-        $applications = DB::table('applications')
-                ->where('user_id', '=', '%' . $thisUser . '%')
-                ->get();
+        $applications = DB::table('applications')    
+                ->where('user_id', '=', $thisUser )           
+                ->join('applicants', 'applicants.id', 'applications.applicant_id')
+                ->join('categories', 'categories.id', 'applications.category_id')
+                ->select('applications.*', 'applicants.apptitle', 'applicants.firstname', 'applicants.lastname', 'applicants.email', 'applicants.phone', 'categories.name')
+                ->paginate(10);
 
         return view('users.profile')
         ->with('user', $user)
-        ->with('applicants', Applicant::all())
-        ->with('applications', Application::paginate(10));
+        ->with('applications', $applications);
+
     }
 
     /**
@@ -109,6 +129,23 @@ class UsersController extends Controller
         //return view('users.index'); // generates error: $user not defined
     }
 
+    public function activate(User $user, Request $request)
+    {
+        // update.blade.php
+        //$user = auth()->user();
+        
+        $user->update([
+            'activated' => $request->activated
+        ]);
+
+        $user->save();
+
+        session()->flash('success', 'User updated successfully');
+
+        return redirect()->back();
+        
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -117,6 +154,44 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // $user = User::withTrashed()->where('id', $id)->firstOrFail();
+
+        // if($user->trashed()) {
+        //     $user->forceDelete();
+        //     session()->flash('success', 'User removed');
+        //     return view('users.index');
+        // }
+        // else{
+        //     $user->delete();
+        //     session()->flash('success', 'User deactivated');
+        //     return redirect()->back();
+        // }
+
+        
+
+    }
+
+    public function makeAdmin(User $user) 
+    {
+        $user->role = 'admin';
+
+        $user->save();
+
+        session()->flash('success', 'User made admin successfully');
+
+        return redirect(route('users.index'));
+
+    }
+
+    public function removeAdmin(User $user) 
+    {
+        $user->role = 'referrer';
+
+        $user->save();
+
+        session()->flash('success', 'User admin privileges removed');
+
+        return redirect(route('users.index'));
+
     }
 }

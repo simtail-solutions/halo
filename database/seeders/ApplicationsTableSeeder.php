@@ -47,6 +47,7 @@ class ApplicationsTableSeeder extends Seeder
             'role' => 'referrer',
             'businessName' => 'Simtail',
             'password' => 'janPassword',
+            'industry' => 'Plastic Surgery'
         ]);
 
         $user101 = User::create([
@@ -55,7 +56,8 @@ class ApplicationsTableSeeder extends Seeder
             'phone' => '0483 123 123',
             'role' => 'referrer',
             'businessName' => 'The Brand Hierarchy',
-            'password' => 'karleePassword'
+            'password' => 'karleePassword',
+            'industry' => 'Dental'
         ]);
 
         $user102 = User::create([
@@ -64,21 +66,18 @@ class ApplicationsTableSeeder extends Seeder
             'phone' => '0488 333 555',
             'role' => 'referrer',
             'businessName' => 'Simtail',
-            'password' => 'kalenPassword'
+            'password' => 'kalenPassword',
+            'industry' => 'Varicose Veins'
         ]);
 
         $applicant1 = Applicant::create([
             'apptitle' => 'Ms',
             'firstname' => 'Jane',
-            'middlename' => 'Audrey',
             'lastname' => 'Smith',
             'status' => 'Married',
             'dependants' => '2',
-            'streetaddress' => '369 Newcastle Street',
-            'suburb' => 'Northbridge',
-            'state' => 'WA',
-            'postcode' => '6003',
-            'phone' => '0892141200',
+            'streetaddress' => '369 Newcastle Street, Northbridge WA 6003',
+            'phone' => '0892 141 200',
             'email' => 'boo@outlook.com.au',
             //'dob' => '2000-12-31',
             'birth_day' => '31',
@@ -95,15 +94,11 @@ class ApplicationsTableSeeder extends Seeder
         $applicant2 = Applicant::create([
             'apptitle' => 'Mr',
             'firstname' => 'James',
-            'lastname' => 'Smith',
             'lastname' => 'Jones',
             'status' => 'Single',
             'dependants' => '0',
-            'streetaddress' => '255 Beaufort Street',
-            'suburb' => 'Perth',
-            'state' => 'WA',
-            'postcode' => '6000',
-            'phone' => '0413578850',
+            'streetaddress' => '255 Beaufort Street, Perth WA 6000',
+            'phone' => '0413 578 850',
             'email' => 'hello@gmail.com',
             //'dob' => '2000-12-31',
             'birth_day' => '31',
@@ -120,15 +115,10 @@ class ApplicationsTableSeeder extends Seeder
         $applicant3 = Applicant::create([
             'apptitle' => 'Ms',
             'firstname' => 'Odette',
-            'middlename' => 'Audrey',
-            'lastname' => 'Smith',
             'lastname' => 'Tsar',
             'status' => 'De Facto',
             'dependants' => '1',
-            'streetaddress' => '1 Main Street',
-            'suburb' => 'Mt Lawley',
-            'state' => 'WA',
-            'postcode' => '6051',
+            'streetaddress' => '1 Main Street. Mt Lawley WA 6051',
             'phone' => '0412 123 554',
             'email' => 'myemail@email.com.au',
             //'dob' => '2000-12-31',
@@ -147,8 +137,6 @@ class ApplicationsTableSeeder extends Seeder
             'user_id' => $user100->id,
             'applicant_id' => $applicant1->id,
             'loanAmount' => '5000',
-            'loanTerm' => '2 years',
-            'frequency' => 'fortnightly',
             'employment' => 'Part time',
             'residentialType' => 'Mortgage',
             'resTimeY' => '2 yrs',
@@ -174,8 +162,6 @@ class ApplicationsTableSeeder extends Seeder
             'user_id' => $user101->id,
             'applicant_id' => $applicant2->id,
             'loanAmount' => '25000',
-            'loanTerm' => '5 years',
-            'frequency' => 'monthly',
             'employment' => 'Full time',
             'residentialType' => 'Boarding',
             'resTimeY' => '4 yrs',
@@ -201,8 +187,6 @@ class ApplicationsTableSeeder extends Seeder
             'user_id' => $user102->id,
             'applicant_id' => $applicant3->id,
             'loanAmount' => '3000',
-            'loanTerm' => '6 months',
-            'frequency' => 'weekly',
             'employment' => 'Self employed',
             'residentialType' => 'Living with parents',
             'resTimeY' => '30 yrs',

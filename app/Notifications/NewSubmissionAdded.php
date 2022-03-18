@@ -8,9 +8,10 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 use App\Models\Application;
+use App\Models\Applicant;
 use App\Models\User;
 
-class NewSubmissionAdded extends Notification
+class NewSubmissionAdded extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -29,9 +30,10 @@ class NewSubmissionAdded extends Notification
      *
      * @return void
      */
-    public function __construct(Application $application)
+    public function __construct(Application $application, Applicant $applicant)
     {
         $this->application = $application;
+        $this->applicant = $applicant;
     }
 
     /**
@@ -53,10 +55,13 @@ class NewSubmissionAdded extends Notification
      */
     public function toMail($notifiable)
     {
+        $applicantFirstName = $this->applicant->firstname;
+        $applicantLastName = $this->applicant->lastname;
         return (new MailMessage)
-                    ->line('A new submission has been added to the portal.')
-                    ->action('View Application', route('application.show', $this->application->api_token))
-                    ->line('Thank you for using our application!');
+                    ->line('A quick referral Aplication link has been sent to your client: ' . $applicantFirstName . ' ' . $applicantLastName)
+                    ->line('We will notify you when they complete their application, in the meantime you can login to track the progress of your client applications.')
+                    ->action('View Applications', route('applications.index'));
+                    
     }
 
     /**

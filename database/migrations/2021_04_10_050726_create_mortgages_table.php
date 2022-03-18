@@ -17,9 +17,9 @@ class CreateMortgagesTable extends Migration
             $table->id();
             $table->integer('application_id');
             $table->string('financeCompany');
-            $table->integer('balance');
-            $table->integer('repayment');
-            $table->enum('frequency', ['Weekly','Fortnightly','Monthly']);
+            $table->string('balance');
+            $table->string('repayment');
+            $table->enum('frequency', ['Weekly','Fortnightly','Monthly'])->nullable();
             $table->string('investmentProperty');
             $table->string('joint');
             $table->timestamps();

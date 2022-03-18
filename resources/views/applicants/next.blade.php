@@ -3,15 +3,20 @@
 @section('content')
 
 <div class="card">
-    <div class="card-header">Thank you</div>
-    <div class="card-body">
-        <p>Submitting this form generates an email to the client with a link to complete the form.
-</p>
+    <div class="card-header">Sent to Customer</div>
+    <div class="card-body text-center">
+        <p>&nbsp;</p>
+        <h1>Sent!</h1>
 
-<p>This page will also include details about the process, what to expect etc</p>
+<p>Your client has been sent a link to complete their finance application form online.</p>
 
-<p>"Quick Customer Referral" and "Send Application to client" follows the same process with different messaging to client/referrer.</p>
-
+<p>You can login to your dashboard and view the progress of all your referrals at anytime.</p>
+<p>&nbsp;</p>
+<a href="{{ route('applications.index') }}" class="btn btn-info">All Applications</a>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
     </div>
 </div>
 

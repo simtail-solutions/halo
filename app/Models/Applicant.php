@@ -4,25 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Applicant extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $table = 'applicants';
     protected $fillable = [
         'apptitle', 
         'firstname', 
-        'middlename', 
         'lastname', 
         'status', 
         'phone', 
         'email', 
         'dependants', 
         'streetaddress', 
-        'suburb', 
-        'state', 
-        'postcode', 
         'birth_day', 
         'birth_month', 
         'birth_year', 
@@ -33,7 +30,9 @@ class Applicant extends Model
         'MCimage', 
         'occupation', 
         'employername', 
-        'employercontactnumber'
+        'employercontactnumber',
+        'payslip1',
+        'payslip2'
     ];
 
     /**

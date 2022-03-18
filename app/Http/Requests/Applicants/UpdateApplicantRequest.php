@@ -24,24 +24,28 @@ class UpdateApplicantRequest extends FormRequest
     public function rules()
     {
         return [
+            'apptitle' => 'required',
             'firstname' => 'required',
-            'middlename' => 'required',
             'lastname' => 'required',
+            'status' => 'required',
             'dependants' => 'required',
             'streetaddress' => 'required',
-            'suburb' => 'required',
-            'state' => 'required',
-            'postcode' => 'required',
             'phone' => 'required|numeric',
             'email' => 'required',
-            'DOB' => 'required',
-            'currentDL' => 'required',
-            //'DLnumber' => 'required',
-            'MCnumber' => 'required',
+            'birth_day' => 'numeric',
+            'birth_month',
+            'birth_year' => 'numeric',
+            'currentDL',
+            'DLnumber' => 'numeric',
+            'MCnumber' => 'numeric|required',
+            'DLimage',
+            'MCimage',
             'occupation' => 'required',
             'employername' => 'required',
             'employercontactnumber' => 'required',
-            'api_token'
+            'payslip1',
+            'payslip2',
+            'api_token'            
         ];
     }
 }

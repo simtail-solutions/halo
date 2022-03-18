@@ -15,16 +15,12 @@ class CreateApplicantsTable extends Migration
     {
         Schema::create('applicants', function (Blueprint $table) {
             $table->id();
-            $table->string('apptitle');
+            $table->string('apptitle')->nullable();
             $table->string('firstname');
-            $table->string('middlename')->nullable();
             $table->string('lastname');
             $table->string('status')->nullable();
             $table->string('dependants')->default('0');
             $table->string('streetaddress')->nullable();
-            $table->string('suburb')->nullable();
-            $table->string('state')->nullable();
-            $table->integer('postcode')->length(4)->nullable();
             $table->string('phone');
             $table->string('email');
             $table->string('birth_day')->length(2)->nullable();
@@ -33,7 +29,7 @@ class CreateApplicantsTable extends Migration
             $table->boolean('currentDL')->nullable();
             $table->integer('DLnumber')->nullable();
             $table->string('DLimage')->nullable();
-            $table->integer('MCnumber')->nullable();
+            $table->string('MCnumber')->nullable();
             $table->string('MCimage')->nullable();
             $table->string('occupation')->nullable();
             $table->string('employername')->nullable();

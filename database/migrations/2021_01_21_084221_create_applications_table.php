@@ -17,9 +17,7 @@ class CreateApplicationsTable extends Migration
             $table->id();
             $table->integer('applicant_id'); 
             $table->integer('user_id');  //referrer id
-            $table->integer('loanAmount')->nullable();
-            $table->string('loanTerm')->nullable();
-            $table->string('frequency')->nullable();
+            $table->string('loanAmount')->nullable();
             $table->string('employment')->nullable();
             $table->string('residentialType')->nullable();
             $table->string('resTimeY')->nullable();
@@ -31,11 +29,11 @@ class CreateApplicationsTable extends Migration
             $table->string('prevEmployer')->nullable();
             $table->string('prevEmployerTimeY')->nullable();
             $table->string('prevEmployerTimeM')->nullable();
-            $table->integer('income')->nullable();
+            $table->string('income')->nullable();
             $table->string('incomeFreq')->nullable();
-            $table->integer('partnerIncome')->nullable();
+            $table->string('partnerIncome')->nullable();
             $table->string('partnerIncomeFreq')->nullable();
-            $table->integer('rentMortgageBoard')->nullable();
+            $table->string('rentMortgageBoard')->nullable();
             $table->string('rentFreq')->nullable();
             $table->string('rentShared')->nullable();
             $table->integer('category_id')->nullable();

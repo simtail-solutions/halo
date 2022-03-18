@@ -17,7 +17,7 @@ class CreateCreditcardsTable extends Migration
             $table->id();
             $table->integer('application_id');
             $table->string('financeCompany');
-            $table->integer('creditLimit');
+            $table->string('creditLimit');
             $table->string('consolidate');
             $table->timestamps();
         });

@@ -6,10 +6,12 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use DB;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +24,7 @@ class User extends Authenticatable
         'phone',
         'email',
         'password',
+        'activated'
     ];
 
     /**
@@ -46,6 +49,13 @@ class User extends Authenticatable
     public function isAdmin() 
     {
         return $this->role==='admin';
+        //return $this->belongsTo(User::where('role', 'admin')->first('id'));
+        
+    }
+
+    public function siteAdmin()
+    {
+        return $this->belongsTo(User::find(1)->role->isAdmin());
     }
 
     public function applications()

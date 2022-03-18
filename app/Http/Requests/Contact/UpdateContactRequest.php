@@ -26,6 +26,7 @@ class UpdateContactRequest extends FormRequest
         return [
             'firstName' => 'required',
             'lastName' => 'required',
+            'businessName' => 'required',
             'email' => 'required',
             'phone',
             'message'

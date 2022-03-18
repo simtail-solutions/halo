@@ -5,3 +5,7 @@
 [data-tooltip]:before {
     content: attr(data-tooltip);
 }
+body {
+    background: orange;
+}
+

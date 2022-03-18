@@ -26,22 +26,14 @@ class CreateApplicantRequest extends FormRequest
         return [
             'apptitle' => 'required',
             'firstname' => 'required',
-            'middlename',
             'lastname' => 'required',
-            'phone' => 'required|numeric',
+            'phone' => 'required',
             'email' => 'required',
             'birth_day' => 'numeric',
             'birth_month',
             'birth_year' => 'numeric',
-            // 'DOB'/* => 'required'*/,
-            // 'currentDL'/* => 'required'*/,
             'DLnumber' => 'numeric',
-            //'DLimage' => 'image',
-            'MCnumber' => 'numeric',
-            //'MCimage' => 'image',
-            // 'occupation' => 'required',
-            // 'employername' => 'required',
-            // 'employercontactnumber' => 'required'
+            'MCnumber' => 'numeric'
         ];
     }
 }

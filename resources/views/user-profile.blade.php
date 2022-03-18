@@ -6,13 +6,10 @@
 <div class="card-header">
 <div class="d-flex justify-content-between">
 <h2>Profile</h2>
-
+<a href="{{ route('users.edit', Auth::user()->id) }}" class="btn btn-lg btn-info">Update Profile</a>
 </div>
 </div>
 <div class="card-body">
-<div class="d-flex justify-content-between">
-<a href="{{ route('users.edit', Auth::user()->id) }}" class="btn btn-primary my-3">Update Profile</a>
-</div>
 <table class="table table-striped">
 <tbody>
 <tr class="m-3">
