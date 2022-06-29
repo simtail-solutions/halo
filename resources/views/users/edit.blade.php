@@ -45,6 +45,18 @@
 </div>
 
 <div class="row m-3">
+<div class="col-md-6">
+    <form-group>
+        <label for="abn">ABN</label>
+        <input type="text" class="form-control" name="abn" minlength="11" maxlength="11" id="abn" value="{{ isset($user->abn) ? $user->abn : '' }}" placeholder="Enter ABN no spaces" >
+    </form-group>
+</div>
+<div class="col-md-6">
+    
+</div>
+</div>
+
+<div class="row m-3">
     <div class="col">
         <button type="submit" class="btn btn-lg btn-info">Update</button>
     </div>

@@ -13,6 +13,44 @@ use App\Http\Controllers\AutoAddressController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// Route::get('ping', function () {
+//     $mailchimp = new \MailchimpMarketing\ApiClient();
+
+//     $mailchimp->setConfig([
+//         'apiKey' => config('services.mailchimp.key'),
+//         'server' => 'us13'
+//     ]);
+
+//     //$response = $mailchimp->ping->get();
+//     //$response = $mailchimp->lists->getAllLists();
+//     $response = $mailchimp->lists->getListMergeFields(config('services.mailchimp.lists.test'));
+//     // $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), "leanne.testing@simtail.com", [
+//     //     "email_address" => "leanne.testing@simtail.com",
+//     //     "status_if_new" => "subscribed",
+//     //     "merge_fields" => [
+//     //               "FNAME" => "Leanne",
+//     //               "LNAME" => "Bishop",
+//     //               "PHONE" => "0412456456"                  
+//     //     ]
+//     // ]);
+
+//     // $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), "leanne.testing@simtail.com", [
+//     //     "tags" => [["name" => "testTag", "status" => "active"]],
+//     // ]);
+
+//     // $response = $mailchimp->lists->addListMember(config('services.mailchimp.lists.test'), [
+//     //     "email_address" => "leanne.test.1@simtail.com",
+//     //     "status" => "transactional",
+//     //     "merge_fields" => [
+//     //       "FNAME" => "Leanne",
+//     //       "LNAME" => "Bishop",
+//     //       "PHONE" => "0412456456"
+//     //     ]
+//     //     ]);
+//     ddd($response);
+// });
+
 Route::get('auto-complete-address', [AutoAddressController::class, 'googleAutoAddress']);
 Route::get('/', function () {
     return view('home');
@@ -26,7 +64,7 @@ Route::group(['middleware' => 'prevent-back-history'],function(){\
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('applications/{application}/edit', 'App\Http\Controllers\ApplicationsController@edit')->name('application.edit');
+
 Route::get('contact', [ContactFormController::class, 'createForm'])->name('contact.index');
 Route::post('contact', [ContactFormController::class, 'ContactForm'])->name('contact.store');
 
@@ -38,24 +76,25 @@ Route::get('/practice', function () {
     return view('practice');
 });
 
-
-Route::resource('applicants','App\Http\Controllers\ApplicantsController');
 Route::resource('applications', 'App\Http\Controllers\ApplicationsController');
-Route::get('archived-applications', 'App\Http\Controllers\ApplicationsController@trashed')->name('archived-applications.index');
-Route::get('applications/{application}/restore', 'App\Http\Controllers\ApplicationsController@restore')->name('applications.restore');
-Route::get('applications/{application}', 'App\Http\Controllers\ApplicationsController@show')->name('application.show');
-Route::put('applications/{application}/update', 'App\Http\Controllers\ApplicationsController@update');
-Route::resource('emails','App\Http\Controllers\EmailsController');
-//Route::get('applications/{application}', 'App\Http\Controllers\ApplicationsController@resendEmail')->name('application.resendEmail');
-Route::resource('brochures','App\Http\Controllers\BrochureController');
-
-Route::put('applications/{application}/updates', 'App\Http\Controllers\UpdatesController@store')->name('updates.store');
+Route::get('applications/{application}/edit', 'App\Http\Controllers\ApplicationsController@edit')->name('applications.edit');
 
 Route::middleware(['auth'])->group(function () { 
     Route::get('/applicants/send', function () {
         return view('send');
     });
 
+    Route::resource('applicants','App\Http\Controllers\ApplicantsController');
+    
+    Route::get('archived-applications', 'App\Http\Controllers\ApplicationsController@trashed')->name('archived-applications.index');
+    Route::get('applications/{application}/restore', 'App\Http\Controllers\ApplicationsController@restore')->name('applications.restore');
+    Route::get('applications/{application}', 'App\Http\Controllers\ApplicationsController@show')->name('application.show');
+    Route::put('applications/{application}/update', 'App\Http\Controllers\ApplicationsController@update');
+    Route::resource('emails','App\Http\Controllers\EmailsController');
+    Route::get('applications/{application}/resend', 'App\Http\Controllers\ApplicationsController@resendEmail')->name('application.resendEmail');
+    Route::resource('brochures','App\Http\Controllers\BrochureController');
+    
+    Route::put('applications/{application}/updates', 'App\Http\Controllers\UpdatesController@store')->name('updates.store');
 
     Route::resource('users','App\Http\Controllers\UsersController');
     Route::get('users/profile/{user}', 'App\Http\Controllers\UsersController@show')->name('users.show');
@@ -75,4 +114,7 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('updatepassword/{user}/edit', 'App\Http\Controllers\UpdatePasswordController@edit')->name('updatepassword.edit');
 
 });
+
+
+
 

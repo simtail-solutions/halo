@@ -12,7 +12,8 @@ class Applicant extends Model
 
     protected $table = 'applicants';
     protected $fillable = [
-        'apptitle', 
+        'apptitle',
+        'gender', 
         'firstname', 
         'lastname', 
         'status', 
@@ -23,7 +24,7 @@ class Applicant extends Model
         'birth_day', 
         'birth_month', 
         'birth_year', 
-        'currentDL', 
+        'currentDL' => 'boolean', 
         'DLnumber', 
         'DLimage', 
         'MCnumber', 

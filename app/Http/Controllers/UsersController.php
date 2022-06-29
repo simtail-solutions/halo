@@ -107,14 +107,14 @@ class UsersController extends Controller
      */
     public function update(User $user, Request $request)
     {
-        // update.blade.php
-        //$user = auth()->user();
+        
         
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'role' => $request->role,
             'businessName' => $request->businessName,
+            'abn' => $request->abn,
             'phone' => $request->phone
         ]);
 
@@ -124,15 +124,11 @@ class UsersController extends Controller
 
         return redirect()->back();
         
-        //dd(request()->all());
-
-        //return view('users.index'); // generates error: $user not defined
     }
 
     public function activate(User $user, Request $request)
     {
-        // update.blade.php
-        //$user = auth()->user();
+        
         
         $user->update([
             'activated' => $request->activated
@@ -154,20 +150,7 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        // $user = User::withTrashed()->where('id', $id)->firstOrFail();
-
-        // if($user->trashed()) {
-        //     $user->forceDelete();
-        //     session()->flash('success', 'User removed');
-        //     return view('users.index');
-        // }
-        // else{
-        //     $user->delete();
-        //     session()->flash('success', 'User deactivated');
-        //     return redirect()->back();
-        // }
-
-        
+        //
 
     }
 

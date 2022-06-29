@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notification;
 
 use App\Models\Applicant;
 
-class UpdatedFinanceApplicationReceived extends Notification implements ShouldQueue
+class UpdatedFinanceApplicationReceived extends Notification /* implements ShouldQueue */
 {
     use Queueable;
 

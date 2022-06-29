@@ -54,7 +54,7 @@ class FinanceApplicationForm extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $applicantFirstName = $this->applicant->firstname;
+        $applicantFirstName = $this->application->applicant->firstname;
         $referrer = $this->application->user->businessName;
         $applyLink = $this->application->api_token;
 

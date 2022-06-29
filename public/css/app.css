@@ -27,8 +27,83 @@ a:hover {
     border-radius: 5px;
 }
 
-.btn-info:hover {
-    color: #c5f0f9;
+.btn-info {
+    background-color: #9DD8C3;
+    border-color: #9DD8C3;
+}
+
+.btn-info.disabled, .btn-info:disabled {
+    color: #000;
+    background-color: #ACBDB7;
+    border-color: #ACBDB7;
+}
+
+.btn-info:hover,
+.btn-check:focus+.btn-info, 
+.btn-info:focus {
+    background-color: #ACBDB7;
+    border-color: #ACBDB7;
+    color: #fff;
+}
+
+.btn-check:active+.btn-info:focus, 
+.btn-check:checked+.btn-info:focus, 
+.btn-info.active:focus, 
+.btn-info:active:focus, 
+.show>.btn-info.dropdown-toggle:focus, 
+.btn-info:focus {
+    box-shadow: 0 0 0 0.15rem rgb(157 216 195 / 50%);
+}
+
+.btn-check:active+.btn-info, 
+.btn-check:checked+.btn-info, 
+.btn-info.active, 
+.btn-info:active, 
+.show>.btn-info.dropdown-toggle {
+    color: #fff;
+    background-color: #ACBDB7;
+    border-color: #ACBDB7;
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #e98787;
+    border-color: #e98787;
+}
+
+.btn-light {
+    background-color: #cbd2d0;
+    border-color: #cbd2d0;
+}
+
+.btn-light:hover {
+    background-color: #ced5d3;
+    border-color: #ced5d3;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #36D49C ;
+    border-color: #36D49C ;
+}
+
+.btn-primary:hover {
+    background-color: #9DD8C3;
+    border-color: #9DD8C3;
+}
+
+.btn-check:active+.btn-primary, .btn-check:checked+.btn-primary, .btn-primary.active, .btn-primary:active, .show>.btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #9DD8C3;
+    border-color: #9DD8C3;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    background-color: rgb(157 216 195 / 25%);
+}
+
+.nav-item+.btn-info {
+    color: #fff;
 }
 
 .btn-success {
@@ -65,10 +140,10 @@ a:hover {
 }
 
 .alert-success {
-    color: #04677b;
-    background-color: #b0ebf7;
-    border-color: #a6dee9;
-  }
+    color: #454545;
+    background-color: #9DD8C355;
+    border-color: #9DD8C355;
+}
 
   .alert-danger {
     color: #bb417895;
@@ -90,6 +165,16 @@ a:hover {
  .navbar-light .navbar-nav .nav-link {
     color: #4e4e56;
     font-size: 1em;
+}
+
+ol li,
+ul li {
+    line-height: 2;
+}
+
+li.font-italic {
+    font-style: italic;
+    line-height: 1.5;
 }
 
 @media (min-width: 992px) {
@@ -158,6 +243,11 @@ select:invalid {
     padding: 0;
  }
 
+ #warning {
+    color: #37ae83;
+    font-style: italic;
+    font-weight: 600;
+ }
 
  #filter-buttons a,
  #filter-buttons a.active {
@@ -242,33 +332,33 @@ select:invalid {
  }
 
  .btn-secondary {
-    background-color: #acacb7;
-    border-color: #acacb7;
+    background-color: #ACBDB7;
+    border-color: #ACBDB7;
   }
 
 .btn-secondary:hover {
-    background: #0dcaf0;
-    border-color: #0dcaf0;
+    background: #9DD8C3;
+    border-color: #9DD8C3;
     color: #fff;
 }
 
 .btn-secondary:active {
      background: #fff !important;
-     border-color: #0dcaf0 !important;
+     border-color: #9DD8C3 !important;
      color: #0dcaf0 !important;
  }
 
 .btn-link {
-    color: #0dcaf0;
+    color: #9DD8C3;
 }
 
 .btn-link:hover {
-    color: #0ca5c4;
+    color: #9DD8C3;
 }
 
 .form-check-input:checked {
-    background-color: #0dcaf0;
-    border-color: #0dcaf0;
+    background-color: #9DD8C3;
+    border-color: #9DD8C3;
   }
 
  span.application-status {
@@ -304,4 +394,51 @@ select:invalid {
  .modal-footer {
      border-top: 0;
      justify-content: space-around;
+ }
+
+ /* Finance tables */
+
+ #mortgageContainer .row:nth-child(2n),
+ #securedLoanContainer .row:nth-child(2n),
+ #personalLoanContainer .row:nth-child(2n),
+ #creditCardContainer .row:nth-child(2n) {
+     background-color: rgba(0, 0, 0, 0.05);
+ }
+
+ @media (max-width: 991px) {
+    .navbar-nav {
+        background: #f4f4f6cc;
+        padding: 2rem;
+        }
+        
+    .ms-3 {
+        margin-left: 0 !important;
+        margin-top: 0.5rem;
+        }
+        
+    .form-control {
+        margin-bottom: 0.5rem;
+        }        
+        
+    input#currentDL,
+    input#isHomeowner {
+        margin-bottom: 1.5rem; 
+        }
+
+    .navbar-collapse {
+        z-index: 1;
+    }
+
+    #filter-buttons {
+        display: none !important;
+    }
+
+    #benefits-btn {
+        display: block !important;
+    }
+
+    #benefits-btn .btn {
+        margin: 1rem !important;
+        width: 100%;
+    }
  }

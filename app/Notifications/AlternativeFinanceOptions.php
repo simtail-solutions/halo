@@ -71,7 +71,7 @@ class AlternativeFinanceOptions extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'applicant' => $this->applicant
+            'application' => $this->application
         ];
     }
 }

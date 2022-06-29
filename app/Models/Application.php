@@ -80,6 +80,11 @@ class Application extends Model
         return $this->hasMany(PersonalLoan::class);
     }
 
+    public function securedLoans()
+    {
+        return $this->hasMany(SecuredLoan::class);
+    }
+
     public function mortgages()
     {
         return $this->hasMany(Mortgage::class);
@@ -136,34 +141,6 @@ class Application extends Model
         return in_array($mortgageId, $this->mortgages->pluck('id')->toArray());
     }
 
-    // 
-    // public function scopeSearched($query) {
-        
-    //     if (!$search) {
-    //       return $query;
-    //     }
-
-    //     return $query->whereHas('applicant', function ($query) use($search){
-    //         $query->where('lastname', 'LIKE', '%' . $search . '%');
-    //     })
-    //     // ->orWhereHas('applicant', function ($query) use($search){
-    //     //     $query->where('phone', 'LIKE', '%'.preg_replace('/\s+/', '', $search).'%')->limit(100);
-    //     // }) // this breaks after implementing the updated phone format on the forms
-    //     ->orWhereHas('applicant', function ($query) use($search){
-    //         $query->where('phone', 'LIKE', '%' . $search . '%');
-    //     })
-    //     ->orWhereHas('applicant', function ($query) use($search){
-    //         $query->where('email', 'LIKE', '%' . $search . '%');
-    //     })
-    //     ->orWhereHas('user', function ($query) use($search){
-    //         $query->where('businessName', 'LIKE', '%' . $search . '%');
-    //     })
-    //     ->orWhereHas('category', function ($query) use($search){
-    //         $query->where('name', 'LIKE', '%' . $search . '%');
-    //     })->orderBy('id', 'desc');
-
-
-    // }
 
     public function mostRecentCategory(Category $category) 
     {

@@ -23,7 +23,7 @@ class LinkToYourFinanceApplication extends Notification implements ShouldQueue
      * 
      */
 
-    public $application;
+    public $application, $applicant;
 
     /**
      * Create a new notification instance.

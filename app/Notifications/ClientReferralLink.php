@@ -55,7 +55,7 @@ class ClientReferralLink extends Notification implements ShouldQueue
     {
         return (new MailMessage)
                     ->line('Here is the link to complete your Finance Application')
-                    ->action('Complete Application', route('application.edit', $this->application->api_token))
+                    ->action('Complete Application', route('applications.edit', $this->application->api_token))
                     ->line('Note - this application will not affect your credit score.');
     }
 

@@ -37,7 +37,8 @@ class CreditCardsContoller extends Controller
         $creditCard = CreditCard::create([
             'financeCompany' => $request->financeCompany,
             'creditLimit' => $request->creditLimit,
-            'consolidate' => $request->consolidate
+            'consolidate' => $request->consolidate,
+            'amount_owing' => $request->amount_owing
             ]);
     }
 

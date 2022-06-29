@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+use MailchimpMarketing\ApiClient;
+
 class RegisterController extends Controller
 {
     /*
@@ -52,14 +54,15 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'businessName' => ['required', 'string'],
-            'phone' => ['required', 'string', 'min:8', 'max:10'],
+            'phone' => ['required', 'string', 'min:10', 'max:10'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'abn' => ['required', 'string'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'industry' => ['required', 'string'],
         ]);
     }
 
-    // $table->string('businessName')->nullable();
-    // $table->integer('phone')->nullable();
+
 
     /**
      * Create a new user instance after a valid registration.
@@ -69,12 +72,39 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'businessName' => $data['businessName'],
             'phone' => $data['phone'],
             'email' => $data['email'],
+            'abn' => $data['abn'],
             'password' => Hash::make($data['password']),
+            'industry' => $data['industry'],
         ]);
+        
+        // Add to Mailchimp
+        $mailchimp = new \MailchimpMarketing\ApiClient();
+
+        $mailchimp->setConfig([
+            'apiKey' => config('services.mailchimp.key'),
+            'server' => 'us13'
+        ]);
+
+        $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $data['email'], [
+            "email_address" => $data['email'],
+            "status_if_new" => "subscribed",
+            "merge_fields" => [
+                    "FNAME" => $data['name'],
+                    "PHONE" => $data['phone'],
+                    "BNAME" => $data['businessName']
+                    ]
+        ]);
+
+        $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $data['email'], [
+            "tags" => [["name" => $data['industry'], "status" => "active"]],
+        ]);
+
+        return $user;
+       
     }
 }

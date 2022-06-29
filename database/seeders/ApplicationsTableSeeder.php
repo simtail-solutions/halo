@@ -40,6 +40,10 @@ class ApplicationsTableSeeder extends Seeder
             'name' => 'Approved'
         ]);
 
+        $category6 = Category::create([
+            'name' => 'Partial'
+        ]);
+
         $user100 = User::create([
             'name' => 'Jan de Waal',
             'email' => 'jan@simtail.com',

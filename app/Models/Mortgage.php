@@ -14,7 +14,8 @@ class Mortgage extends Model
         'repayment',
         'frequency',
         'investmentProperty',
-        'joint'
+        'joint',
+        'home_value'
     ];
 
     public function applications() 

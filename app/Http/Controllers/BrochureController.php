@@ -13,7 +13,10 @@ use App\Models\User;
 
 use App\Notifications\HaloFinanceBrochure;
 use App\Notifications\BrochureSent;
+use App\Notifications\HaloFinanceBrochureSentToProspectiveClient;
 use App\Http\Requests\BrochureRequest;
+
+use MailchimpMarketing\ApiClient;
 
 class BrochureController extends Controller
 {
@@ -54,6 +57,27 @@ class BrochureController extends Controller
             'category_id' => $request->category_id
         ]);
 
+        // Add to Mailchimp
+        $mailchimp = new \MailchimpMarketing\ApiClient();
+
+        $mailchimp->setConfig([
+            'apiKey' => config('services.mailchimp.key'),
+            'server' => 'us13'
+        ]);
+
+        $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $request->email, [
+            "email_address" => $request->email,
+            "status_if_new" => "subscribed",
+            "merge_fields" => [
+                    "FNAME" => $request->firstname,
+                    "LNAME" => $request->lastname,
+                    "PHONE" => $request->phone
+                    ]
+        ]);
+
+        $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $request->email, [
+            "tags" => [["name" => "Brochure", "status" => "active"]],
+        ]);
 
         $applicant->save();
         $application->save();
@@ -62,20 +86,9 @@ class BrochureController extends Controller
         $application->applicant->notify(new HaloFinanceBrochure($application, $applicant));
         $application->user->notify(new BrochureSent($application));
 
-         //  Send mail to admin 
-         \Mail::send('emails.create.adminMail', array( 
-            'firstname' => $request['firstname'], 
-            'lastname' => $request['lastname'],
-            'api_token' => $application['api_token'],
-            'user_business' => $application->user->businessName,
-            'email' => $request['email']),  
-            function($message) use ($request){ 
-                $message->from($request->email); 
-                $message->to('admin@admin.com', 'Admin')->subject('Halo Brochure sent to client from' . ' ' . ($request->user()->businessName)); 
-                }); 
+        
+        \Notification::route('mail', config('mail.from.address'))->notify(new HaloFinanceBrochureSentToProspectiveClient($application, $applicant));
 
-
-        //dd($request->all());
         return View('brochures.next');
     }
 

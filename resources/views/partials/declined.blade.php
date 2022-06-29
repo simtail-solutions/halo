@@ -1,0 +1,2 @@
+<p>You do not qualify for funding through this portal.</p>  
+        <p>We do have options tailored more to your needs, please contact us on <a href="tel:{{config('services.contact.phone')}}"><strong>{{ config('services.contact.phone') }}</strong></a> to discuss.</p>

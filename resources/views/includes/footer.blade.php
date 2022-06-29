@@ -1,7 +1,7 @@
 <footer class="pt-4 my-md-5 pt-md-5 border-top">
   <div class="d-flex justify-content-between">
-    <div class="justify-content-end">&copy; Halo Finance {{ now()->year }} | Site by <a href="https://simtail.com" target="_blank">Simtail</a></div>
-      <div class="justify-content-end"><a href="{{ route('contact.index') }}">Contact</a> | <a href="">Privacy</a> | <a href="">Terms</a></div>
+    <div class="justify-content-end">&copy; Halo Finance {{ now()->year }} <em>Powed by Pretty Penny Finance</em> | Portal developed by <a href="https://simtail.com" target="_blank">Simtail</a></div>
+      <div class="justify-content-end"><a href="{{ route('contact.index') }}">Contact</a> | <a href="{{ URL::asset('/img/Privacy-Policy.pdf') }}" target="_blank">Privacy Policy</a> | <a href="{{ URL::asset('/img/Credit-Guide.pdf') }}" target="_blank">Credit Guide</a></div>
   </div>
     
   </footer>

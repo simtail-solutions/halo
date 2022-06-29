@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notification;
 
 use App\Models\Applicant; 
 
-class FinanceApplicationReceived extends Notification implements ShouldQueue
+class FinanceApplicationReceived extends Notification /*implements ShouldQueue*/
 {
     use Queueable;
 
@@ -59,10 +59,10 @@ class FinanceApplicationReceived extends Notification implements ShouldQueue
                     ->line('- Medicare card')
                     ->line('- 2 most recent payslips')
                     ->line('Please note blurry copies will not be accepted.')
-                    ->line('All docuemnts can be submitted by clicking the link below to email.  You can also text clear copies to 0400 000 000 if you prefer.')
-                    ->action('Email documents', 'hello@halofinance.com.au')
+                    ->line('All docuemnts can be submitted by clicking the link below to email.  You can also text clear copies to 0421 431 885 if you prefer.')
+                    ->action('Email documents', config('mail.from.address'))
                     ->line('We will continue this application once the above information is received.')
-                    ->line('Include link to Privacy Consent form.');
+                    ->line('Our Privacy Policy is availabe on our website.');
     }
 
     /**
@@ -74,7 +74,8 @@ class FinanceApplicationReceived extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'applicant' => $this->applicant
+            // 'applicant' => $this->applicant
+            'application' => $this->application
         ];
     }
 }

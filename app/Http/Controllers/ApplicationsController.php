@@ -15,11 +15,16 @@ use App\Models\Category;
 use App\Models\Update;
 use App\Models\Result;
 
+use Illuminate\Support\Facades\Storage;
+
 use App\Notifications\FinanceApplicationSubmitted;
 use App\Notifications\AlternativeFinanceOptions;
 use App\Notifications\FinanceApplicationReceived;
 use App\Notifications\UpdatedFinanceApplicationReceived;
 use App\Notifications\LinkToYourFinanceApplication;
+use App\Notifications\ResumeYourApplication;
+use App\Notifications\NewApplication;
+use App\Notifications\ApplicationUpdates;
 
 
 use App\Http\Requests\Applications\CreateApplicationRequest;
@@ -27,6 +32,7 @@ use App\Http\Requests\Applications\UpdateApplicationRequest;
 use App\Http\Requests\Applicants\UpdateApplicantRequest;
 use Illuminate\Support\Arr;
 
+use MailchimpMarketing\ApiClient;
 
 class ApplicationsController extends Controller
 {
@@ -37,13 +43,16 @@ class ApplicationsController extends Controller
      */
     public function index(Application $application, Applicant $applicant, Category $category, Update $update, User $user, Request $request, Result $result)
     {    
-        if(auth()->user()->isAdmin())
+        if(!auth()->user()) {
+            return view('home');
+         }
+        else if(auth()->user()->isAdmin())
         {
             $query = DB::table('applications')
             ->join('applicants', 'applicants.id', '=', 'applications.applicant_id')
             ->join('users', 'users.id', '=', 'applications.user_id')
             ->join('categories', 'categories.id', '=', 'applications.category_id')
-            ->select('applications.*', 'applicants.apptitle', 'applicants.firstname', 'applicants.lastname', 'applicants.email', 'applicants.phone', 'categories.name', 'users.businessName')
+            ->select('applications.*', 'applicants.gender', 'applicants.firstname', 'applicants.lastname', 'applicants.email', 'applicants.phone', 'categories.name', 'users.businessName')
             ->orderBy('updated_at', 'desc')
             ->where('applications.deleted_at', NULL)
             ->where(function($query) use ($request) {
@@ -72,7 +81,7 @@ class ApplicationsController extends Controller
                     ->where('user_id', '=', $thisUser )           
                     ->join('applicants', 'applicants.id', 'applications.applicant_id')
                     ->join('categories', 'categories.id', 'applications.category_id')
-                    ->select('applications.*', 'applicants.apptitle', 'applicants.firstname', 'applicants.lastname', 'applicants.email', 'applicants.phone', 'categories.name')
+                    ->select('applications.*', 'applicants.gender', 'applicants.firstname', 'applicants.lastname', 'applicants.email', 'applicants.phone', 'categories.name')
                     ->orderBy('updated_at', 'desc')
             ->where('applications.deleted_at', NULL)
             ->where(function($query) use ($request) {
@@ -97,7 +106,7 @@ class ApplicationsController extends Controller
 
         return view('applications.index')
             ->with('applications', $applications);
-           // ->with('applications', Application::compiled());
+          
          
         }
     public function trashed(Application $apps, Request $request) 
@@ -112,14 +121,14 @@ class ApplicationsController extends Controller
             ->join('applicants', 'applicants.id', '=', 'applications.applicant_id')
             ->join('users', 'users.id', '=', 'applications.user_id')
             ->join('categories', 'categories.id', '=', 'applications.category_id')
-            ->select('applications.*', 'applicants.apptitle', 'applicants.firstname', 'applicants.lastname', 'applicants.email', 'applicants.phone', 'categories.name', 'users.businessName')
+            ->select('applications.*', 'applicants.gender', 'applicants.firstname', 'applicants.lastname', 'applicants.email', 'applicants.phone', 'categories.name', 'users.businessName')
             ->orderBy('updated_at', 'desc')
             ->where('applications.deleted_at', '!=', 'NULL');
 
             $apps = $query->paginate(20);
             
             
-            $trashed = $apps;//->orderBy('updated_at','DESC')->paginate(5);
+            $trashed = $apps;
 
              return view('applications.index')->withApplications($trashed);
 
@@ -158,7 +167,7 @@ class ApplicationsController extends Controller
     {       
 
         $applicant = Applicant::create([
-            'apptitle' => $request->apptitle,
+            'gender' => $request->gender,
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'status' => $request->status,
@@ -209,7 +218,8 @@ class ApplicationsController extends Controller
                     ->create([                    
                         'financeCompany' => $creditCard['financeCompany'],
                         'creditLimit' => $creditCard['creditLimit'],
-                        'consolidate' => $creditCard['consolidate']                   
+                        'consolidate' => $creditCard['consolidate'],
+                        'amount_owing' => $creditCard['amount_owing']                  
                         ])
                     );
 
@@ -225,11 +235,23 @@ class ApplicationsController extends Controller
                         ])
                     );
 
+            collect($request->securedLoans)
+                ->each(fn ($securedLoan) => $application->securedLoans()
+                    ->create([                    
+                        'financeCompany' => $securedLoan['financeCompany'],
+                        'balance' => $securedLoan['balance'],
+                        'repayment' => $securedLoan['repayment'],
+                        'frequency' => $securedLoan['frequency'],
+                        'asset_value' => $securedLoan['asset_value']
+                        ])
+                    );
+
             collect($request->mortgages)
                 ->each(fn ($mortgages) => $application->mortgages()
                     ->create([                    
                         'financeCompany' => $mortgages['financeCompany'],
                         'balance' => $mortgages['balance'],
+                        'home_value' => $mortgages['home_value'],
                         'repayment' => $mortgages['repayment'],
                         'frequency' => $mortgages['frequency'],
                         'investmentProperty' => $mortgages['investmentProperty'],
@@ -241,36 +263,49 @@ class ApplicationsController extends Controller
                 'application_id' => $application->id,
                 'category_id' => $request->category_id
             ]); 
+
+            // Add to Mailchimp
+            $mailchimp = new \MailchimpMarketing\ApiClient();
+
+            $mailchimp->setConfig([
+                'apiKey' => config('services.mailchimp.key'),
+                'server' => 'us13'
+            ]);
+
+            $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $request->email, [
+                "email_address" => $request->email,
+                "status_if_new" => "subscribed",
+                "merge_fields" => [
+                        "FNAME" => $request->firstname,
+                        "LNAME" => $request->lastname,
+                        "PHONE" => $request->phone
+                        ]
+            ]);
+
+            $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $request->email, [
+                "tags" => [["name" => "Application", "status" => "active"]],
+            ]);
             
             $application->user->notify(new FinanceApplicationSubmitted($application));
-            if ($application->empTimeY !== null) {
-                $applicant->notify(new FinanceApplicationReceived($applicant));
-            } else {
+        
+            if ($request->category_id == 1) {
+                $application->applicant->notify(new ResumeYourApplication($application, $applicant));
+                session()->flash('success', 'Application saved - an email has been sent to the Applicant with a link to resume application');
+            } else if ($request->category_id == 3) {
                 $applicant->notify(new AlternativeFinanceOptions($applicant));
+                session()->flash('success', 'Application updated - client to contact Halo Finance for further options.');
+            } else {
+                $applicant->notify(new FinanceApplicationReceived($applicant));
+                session()->flash('success','Application created successfully.');
             }
             
-        
-        //  Send mail to admin 
-         \Mail::send('applications.create.adminMail', array( 
-            'firstname' => $request['firstname'], 
-            'lastname' => $request['lastname'],
-            'api_token' => $application['api_token'],
-            'user' => $application->user->businessName,
-            'email' => $request['email']),  
-            function($message) use ($request){ 
-                $message->from($request->email); 
-                $message->to('admin@admin.com', 'Admin')->subject('New Application from' . ' ' . ($request->get('firstname')) . ' ' . ($request->get('lastname'))); 
-                }); 
-        
-        // flash message
-        //dd(request()->all());
-        session()->flash('success', 'Application created successfully.');
+            \Notification::route('mail', config('mail.from.address'))->notify(new NewApplication($application, $applicant));
 
         // redirect the user
 
         return redirect(route('home'));
 
-        // Close screen?? Application needed to open up in a new window with no navigation
+        
     }
 
     /**
@@ -314,22 +349,24 @@ class ApplicationsController extends Controller
     {
         if ($request->hasFile('DLimage')) {
             $DLimage = $request->DLimage->store('applicants');
-        } else { $DLimage = null; }
+        } else { $DLimage = old('DLimage', $application->applicant->DLimage); }
         if ($request->hasFile('payslip2')) {
             $payslip2 = $request->payslip2->store('applicants');
-        } else { $payslip2 = null; }       
-        $MCimage = $request->MCimage->store('applicants');
+        } else { $payslip2 = null; }  
+        if ($request->hasFile('MCimage'))  {
+            $MCimage = $request->MCimage->store('applicants');
+        } else { $MCimage = old('MCimage', $application->applicant->MCimage); }       
         if ($request->hasFile('payslip1')) {
             $payslip1 = $request->payslip1->store('applicants');
         } else {
-            $payslip1 = null;
+            $payslip1 = old('payslip1', $application->applicant->payslip1);
         }
         
         $application_id = $request->application_id;
         $applicant_id = $request->applicant_id;
         
         Applicant::where('id', $applicant_id)->update([
-            'apptitle' => $request->apptitle,
+            'gender' => $request->gender,
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'status' => $request->status,
@@ -381,7 +418,8 @@ class ApplicationsController extends Controller
                     ->create([                    
                         'financeCompany' => $creditCard['financeCompany'],
                         'creditLimit' => $creditCard['creditLimit'],
-                        'consolidate' => $creditCard['consolidate']                   
+                        'consolidate' => $creditCard['consolidate'],
+                        'amount_owing' => $creditCard['amount_owing']                  
                         ])
                     );
 
@@ -397,11 +435,23 @@ class ApplicationsController extends Controller
                         ])
                     );
 
+            collect($request->securedLoans)
+                ->each(fn ($securedLoan) => $application->securedLoans()
+                    ->create([                    
+                        'financeCompany' => $securedLoan['financeCompany'],
+                        'balance' => $securedLoan['balance'],
+                        'repayment' => $securedLoan['repayment'],
+                        'frequency' => $securedLoan['frequency'],
+                        'asset_value' => $securedLoan['asset_value']
+                        ])
+                    );
+
             collect($request->mortgages)
                 ->each(fn ($mortgages) => $application->mortgages()
                     ->create([                    
                         'financeCompany' => $mortgages['financeCompany'],
                         'balance' => $mortgages['balance'],
+                        'home_value' => $mortgages['home_value'],
                         'repayment' => $mortgages['repayment'],
                         'frequency' => $mortgages['frequency'],
                         'investmentProperty' => $mortgages['investmentProperty'],
@@ -414,31 +464,48 @@ class ApplicationsController extends Controller
                 'category_id' => $request->category_id
             ]);           
             
+
+            // Add to Mailchimp
+            $mailchimp = new \MailchimpMarketing\ApiClient();
+
+            $mailchimp->setConfig([
+                'apiKey' => config('services.mailchimp.key'),
+                'server' => 'us13'
+            ]);
+
+            $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $request->email, [
+                "email_address" => $request->email,
+                "status_if_new" => "subscribed",
+                "merge_fields" => [
+                        "FNAME" => $request->firstname,
+                        "LNAME" => $request->lastname,
+                        "PHONE" => $request->phone
+                        ]
+            ]);
+
+            $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $request->email, [
+                "tags" => [["name" => "ApplicationUpdated", "status" => "active"]],
+            ]);
                 
             $application->user->notify(new FinanceApplicationSubmitted($application));
-            $application->applicant->notify(new UpdatedFinanceApplicationReceived($applicant));
+           
+            if ($request->category_id == 1) {
+                $application->applicant->notify(new ResumeYourApplication($application, $applicant));
+                session()->flash('success', 'Application saved - an email has been sent to the Applicant with a link to resume application '. $request->category_id);
+            } else if ($request->category_id == 3) {
+                $applicant->notify(new AlternativeFinanceOptions($applicant));
+                // flash message
+                session()->flash('success', 'Application updated - client to contact Halo Finance for further options.');
+            } else {
+                $application->applicant->notify(new UpdatedFinanceApplicationReceived($applicant));
+                // flash message
+                session()->flash('success', 'Application updated successfully.');
+            }
             
+            \Notification::route('mail', config('mail.from.address'))->notify(new ApplicationUpdates($application, $applicant));
     
-         //  Send mail to admin 
-         \Mail::send('applications.update.adminMail', array( 
-            'firstname' => $request['firstname'], 
-            'lastname' => $request['lastname'],
-            'api_token' => $application['api_token'],
-            'user' => $application->user->businessName,
-            'email' => $request['email']),  
-            function($message) use ($request){ 
-                $message->from($request->email); 
-                $message->to('admin@admin.com', 'Admin')->subject('New Application from' . ' ' . ($request->get('firstname')) . ' ' . ($request->get('lastname'))); 
-                }); 
-
-        // flash message
-
-        session()->flash('success', 'Application updated successfully.');
-
-        // redirect the user
-
-        return redirect(route('home'));
-        // close window after successful completion
+       return view('home');
+        
     }
 
     /**
@@ -452,6 +519,10 @@ class ApplicationsController extends Controller
         $application = Application::withTrashed()->where('id', $id)->firstOrFail();
 
         if ($application->trashed()) {
+            Storage::delete($application->applicant->DLimage);
+            Storage::delete($application->applicant->MCimage);
+            Storage::delete($application->applicant->payslip1);
+            Storage::delete($application->applicant->payslip2);
             $application->forceDelete();
         } else {
             $application->delete(); 
@@ -481,18 +552,11 @@ class ApplicationsController extends Controller
 
     public function resendEmail(Application $application, Applicant $applicant) {
 
-        $application = Application::where('applications.id', $application->id)->firstOrFail()->get();
-        $applicant = $application->applicant;
-        // Error: Property [applicant] does not exist on this collection instance. 
-       
-    
-            // $applicantFirstName = $this->application->firstname;
-            // $referrer = $this->application->user->businessName;
-            // $applyLink = $this->application->api_token;
+            $application = Application::where('applications.id', $application->id)->firstOrFail();
+            $applicant = Applicant::where('id', $application->applicant_id)->firstOrFail();
+
             
-            $application->notify(new LinkToYourFinanceApplication($application));
-    
-            dd(request()->all());
+            $application->applicant->notify(new LinkToYourFinanceApplication($application, $applicant));
     
             session()->flash('success', 'Application link resent to customer');
     
@@ -500,5 +564,10 @@ class ApplicationsController extends Controller
     
     
         }
+
+    public function notifications(Notifications $notifications, Application $application) {
+
+        $notifications = Notifications::where('notifiable_id', $application->id);
+    }
 
 }

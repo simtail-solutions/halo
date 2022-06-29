@@ -10,6 +10,17 @@
     </div>
     @endif
 
+    <div class="row m-3">
+      <div class="col mx-3">
+        <p>If you'd prefer HALO to handle the application with the customer, complete the <strong>Quick Referral</strong> section and we'll handle the rest!</p>
+        <ol>
+          <li>Simply enter your customers details and submit!</li>
+          <li>An email containing our eBrochure will be sent to the customer. The email will also contain our contact details and a link to apply when they're ready.</li>
+          <li>If the customer has decided to proceed and has submitted the application, you'll be able to track it in your HALO portal.</li>
+        </ol>
+      </div>
+    </div>
+
 <form class="application-form" action="{{ route('applicants.store') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
 @csrf
 
@@ -24,23 +35,8 @@
     
 
   <div class="row m-3">
-    <div class="col-lg-1">
-      <div class="form-group">
-        <label for="repayment">Title</label>
-          <select class="form-control" id="apptitle"  name="apptitle" value=""  required>
-          <option></option>
-            <option value="Mr">Mr</option>
-            <option value="Mrs">Mrs</option>
-            <option value="Ms">Ms</option>
-            <option value="Miss">Miss</option>
-            <option value="Dr">Dr</option>
-            <option value="Prof">Prof</option>
-            <option value="Sir">Sir</option>
-          </select>
-      </div>
-    </div>
 
-    <div class="col-5">
+    <div class="col-6">
       <div class="form-group">
         <label for="first_name">First Name</label>
         <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name"  value=" "  required>
@@ -63,10 +59,22 @@
     <div class="col-lg-6">
       <div class="form-group">
         <label for="phone">Mobile Number</label>
-        <input type="text" class="form-control" id="phone" name="phone" placeholder="" required>
+        <input type="text" class="form-control" onKeyUp=check() minlength="12" id="phone" name="phone" placeholder="" required>
+      </div>
+      <div id="warning" class="mx-3">
+
       </div>
     </div>
-
+    <script>
+      function check() {
+            stringLength = document.getElementById('phone').value.length;
+            if (stringLength <= 11) {
+                document.getElementById('warning').innerText = "Not enough digits!"
+            } else {
+                document.getElementById('warning').innerText = ""
+            }
+        }
+    </script>
     <div class="col-lg-6">
       <div class="form-group">
         <label for="email">Email Address</label>
@@ -76,11 +84,23 @@
       
   </div>
 
+  <div class="row mx-3">
+      
+      <span class="my-4 d-flex justify-content-center">
+        
+      <label id="sample" class="form-check-label mr-5" for="defaultCheck1">
+        <input type="checkbox" id="acceptance" name="acceptance" value="" required>
+          &nbsp;&nbsp;Clicking "Submit" confirms you've obtained the customer's consent to provide their contact details to HALO Finance
+        </label>
+       
+      </span>
+    
+</div>
   
 
 <div class="form-navigation d-flex justify-content-center">
 <input type="hidden" name="category_id" id="category_id" value="1">
-<button type="submit"  class="btn btn-lg btn-info success m-3">Send to client</button>
+<button type="submit"  class="btn btn-lg btn-info success m-3">Submit</button>
 </div>                
          
 </form>

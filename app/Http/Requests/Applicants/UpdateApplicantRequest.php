@@ -25,6 +25,7 @@ class UpdateApplicantRequest extends FormRequest
     {
         return [
             'apptitle' => 'required',
+            'gender' => 'required',
             'firstname' => 'required',
             'lastname' => 'required',
             'status' => 'required',

@@ -84,8 +84,8 @@
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="#">eBrochures</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Privacy Policy</a></li>
-            <li><a class="dropdown-item" href="#">Terms and Conditions</a></li>
+            <li><a class="dropdown-item" href="/img/Privacy-Policy.pdf" target="_new">Privacy Policy</a></li>
+            <li><a class="dropdown-item" href="/img/Credit-Guide.pdf" target="_new">Credit Guide</a></li>
           </ul>
         </li>
         
@@ -101,7 +101,7 @@
         @auth 
         @if(auth()->user()->isAdmin())
         <li class="nav-item dropdown">
-          <a class="btn btn-info dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="btn btn-info dropdown-toggle nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Admin
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -128,9 +128,12 @@
 
       </ul>
    @else
+   <li class="nav-item my-2">
       <a href="{{ route('login') }}" class="btn btn-info mx-2">Login</a>
-        <a href="{{ route('register') }}" class="btn btn-info mx-2">{{ __('Register') }}</a>
-        
+   </li>
+   <li class="nav-item my-2">
+      <a href="{{ route('register') }}" class="btn btn-info mx-2">{{ __('Register') }}</a>
+   </li>
 
    @endauth 
     @endif

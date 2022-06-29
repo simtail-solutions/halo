@@ -27,6 +27,7 @@ class CreateUserRequest extends FormRequest
             'name' => 'required',
             'email' => 'required',
             'role',
+            'abn' => 'numeric|11',
             'businessName' => 'required',
             'phone' => 'required'
         ];

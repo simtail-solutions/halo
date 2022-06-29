@@ -24,7 +24,8 @@ class CreateApplicantRequest extends FormRequest
     public function rules()
     {
         return [
-            'apptitle' => 'required',
+            'apptitle',
+            'gender',
             'firstname' => 'required',
             'lastname' => 'required',
             'phone' => 'required',

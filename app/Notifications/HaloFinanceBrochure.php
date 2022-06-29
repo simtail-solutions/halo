@@ -54,7 +54,7 @@ class HaloFinanceBrochure extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $applicantFirstName = $this->applicant->firstname;
+        $applicantFirstName = $this->application->applicant->firstname;
         $referrer = $this->application->user->businessName;
         $applyLink = $this->application->api_token;
 
@@ -63,7 +63,7 @@ class HaloFinanceBrochure extends Notification implements ShouldQueue
                     ->line('We are delighted you\'ve requested a Halo Finance Brochure from ' .  $referrer)
                     ->line('***Add link to brochure***')
                     ->line('Halo provide an obligation free quote that doesn\'t affect your credit file.')
-                    ->line('if you\'d like to get the ball rolling the applicaiton should only take a few minutes.')
+                    ->line('if you\'d like to get the ball rolling the application should only take a few minutes.')
                     ->action('Apply Here', route('applications.edit', $applyLink) )
                     ->line('Please ensure the application is completed in full and truthfully.')
                     ->line('We will require a few documents to confirm your income and ID:')

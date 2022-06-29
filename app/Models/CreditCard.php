@@ -13,7 +13,8 @@ class CreditCard extends Model
         'application_id',
         'financeCompany',
         'creditLimit',
-        'consolidate'
+        'consolidate',
+        'amount_owing'
     ];
 
 

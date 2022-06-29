@@ -73,7 +73,7 @@
 </div>
 
 <div class="row m-3">
-    <div class="form-group col">
+    <div class="form-group col-md-6">
         <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
@@ -83,6 +83,18 @@
                     <strong>{{ $message }}</strong>
                 </span>
             @enderror
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="abn" class="col-md-4 col-form-label text-md-right">{{ __('ABN') }}</label>
+                <input type="text" id="abn" class="form-control @error('abn') is-valid @enderror" name="abn" minlength="11" maxlength="11" value="{{  old('abn') }}" required placeholder="Enter ABN with no spaces"  >
+            
+                @error('abn')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+
         </div>
     </div>                    
 

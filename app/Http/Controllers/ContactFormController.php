@@ -1,10 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+use Notification;
 
 use Illuminate\Http\Request;
 use App\Models\Contact;
 use App\Http\Requests\Contact\CreateContactRequest;
+
+use App\Notifications\ThankYouForContactingHaloFinance;
+use App\Notifications\ContactForm;
 
 use Mail;
 
@@ -16,8 +20,8 @@ class ContactFormController extends Controller
       }
   
       // Store Contact Form data
-      public function ContactForm(CreateContactRequest $request) {
-  //dd($request->all());
+      public function ContactForm(CreateContactRequest $request, Contact $contact) {
+  
           // Form validation
           $this->validate($request, [
               'firstName' => 'required',
@@ -28,33 +32,16 @@ class ContactFormController extends Controller
               'message' => 'required'
            ]);
   
+           
           //  Store data in database
-          Contact::create($request->all());
-          //dd($request->all());
-    
-
+          $contact = Contact::create($request->all());
+         
            //  Send mail to admin 
-            \Mail::send('contact.contactMail', array( 
-                'firstName' => $request['firstName'], 
-                'lastName' => $request['lastName'],
-                'businessName' => $request['businessName'],
-                'email' => $request['email'], 
-                'phone' => $request['phone'], 
-                'form_message' => $request['message']), 
-                function($message) use ($request){ 
-                    $message->from($request->email); 
-                    $message->to('admin@admin.com', 'Admin')->subject('Contact form from' . ' ' . ($request->get('businessName'))); 
-                    }); 
-            //  Send mail to entrant 
-            \Mail::send('contact.responseMail', array( 
-                'firstName' => $request['firstName'], 
-                'businessName' => $request['businessName'],
-                'email' => $request['email']), 
-                function($message) use ($request){ 
-                    $message->from('admin@admin.com', 'Admin'); 
-                    $message->to($request->email, $request->businessName)->subject('Thank you for contacting Halo Finance'); 
-                    }); 
-  
+           \Notification::route('mail', config('mail.from.address'))->notify(new ContactForm($contact));
+          
+            // //  Send mail to entrant 
+            $contact->notify(new ThankYouForContactingHaloFinance($contact));
+            
           // success
           return back()->with('success', 'We have received your message and would like to thank you for writing to us.');
 

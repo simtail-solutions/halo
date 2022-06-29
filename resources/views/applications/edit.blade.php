@@ -20,7 +20,8 @@
     @endif
 
 
-@if($application->category_id !== 1)
+
+@if($application->category->name !== "Incomplete")
 
 <div class="p-5 text-center">
 <div class="alert alert-danger"><h4>Sorry this link is no longer valid</h4></div>
@@ -36,10 +37,9 @@
 <div id="intro" class="m-3 py-3 px-5">
   
   <div class="row text-center">
-        <p>This application should only take a few minutes and will not impact your credit score.<br>Please ensure the application is 
-        completed in full and truthfully.<p> 
-        <p>Halo makes borrowing more rewarding with flexible loans tailored to your budget helping borrowers get ahead in life and achieve more with their money. <br>It's fairer finance that works for everyone</p>
-
+        <p>Please ensure the application is completed in full and truthfully.</p>
+        <p>Once the application is complete HALO's customer support team will be in contact providing your obligation free quote.</p>
+        <p>Halo makes borrowing more flexible with loans tailored to your budget helping you achieve your treatment sooner.</p>
         <h1 class="p-5">Let's get Started!</h1>
   
 
@@ -79,29 +79,8 @@ document.getElementById('start-button').onclick = function () {
 
     <div class="col-lg-3">
       <div class="form-group">
-        <label class="" for="loanAmount">Dental Treatment Cost</label>
-        <input type="text" class="form-control" name="loanAmount" data-type="currency" id="loanAmount" placeholder="$2,000 to $50,000 (optional)" value="{{ isset($application) ? $application->loanAmount : '' }}" >
-      </div>
-    </div>
-
-    <div class="col-lg-1">
-      <div class="form-group">
-        <label class="" for="apptitle">Title</label>
-        @if(isset($application->applicant))
-        <input type="text" class="form-control"id="apptitle"  name="apptitle" value="{{ $application->applicant->apptitle }}"  >
-        @endif
-        @if(!isset($application->applicant))
-          <select class="form-control" id="apptitle"  name="apptitle" value=" "  required>
-          <option value="" disabled selected hidden> </option>
-            <option value="Mr">Mr</option>
-            <option value="Mrs">Mrs</option>
-            <option value="Ms">Ms</option>
-            <option value="Miss">Miss</option>
-            <option value="Dr">Dr</option>
-            <option value="Prof">Prof</option>
-            <option value="Sir">Sir</option>
-          </select>
-          @endif
+        <label class="" for="loanAmount">Treatment Cost</label>
+        <input type="text" class="form-control" name="loanAmount" data-type="currency" id="loanAmount" placeholder="$2,000 to $70,000 (estimate if unknown)" value="{{ isset($application) ? $application->loanAmount : '' }}" >
       </div>
     </div>
 
@@ -118,65 +97,78 @@ document.getElementById('start-button').onclick = function () {
         <input type="text" class="form-control" id="lastname" name="lastname" placeholder=""  value="{{ isset($application) ? $application->applicant->lastname : '' }}"  required>
       </div>
     </div>
+
+    <div class="col-lg-1">
+      <div class="form-group">
+        <label class="" for="gender">Gender</label>
+          <select class="form-control" id="gender"  name="gender" required>
+          <option value="" disabled selected hidden> </option>
+            <option {{ ($application->applicant->gender) == 'Male' ? 'selected' : '' }} value="Male">Male</option>
+            <option {{ ($application->applicant->gender) == 'Female' ? 'selected' : '' }} value="Female">Female</option>
+            <option {{ ($application->applicant->gender) == 'Non-binary' ? 'selected' : '' }} value="Non-binary">Non-binary</option>
+            <option {{ ($application->applicant->gender) == 'Trans' ? 'selected' : '' }} value="Trans">Trans</option>
+            <option {{ ($application->applicant->gender) == 'Other' ? 'selected' : '' }} value="Other">Other</option>
+          </select>
+      </div>
+    </div>
       
   </div>
 
   <div class="row m-3">
-      
   <div class="col-lg-4">
       <div class="form-group">
         <label class=" " for="dob">Date of Birth</label>
       <div class="row mx-0">
         <select class="form-control d-inline col mr-1" id="birth_day" name="birth_day" required>
         <option value="" disabled selected hidden>Day</option>
-        <option>01</option>
-            <option>02</option>
-            <option>03</option>
-            <option>04</option>
-            <option>05</option>
-            <option>06</option>
-            <option>07</option>
-            <option>08</option>
-            <option>09</option>
-            <option>10</option>
-            <option>11</option>
-            <option>12</option>
-            <option>13</option>
-            <option>14</option>
-            <option>15</option>
-            <option>16</option>
-            <option>17</option>
-            <option>18</option>
-            <option>19</option>
-            <option>20</option>
-            <option>21</option>
-            <option>22</option>
-            <option>23</option>
-            <option>24</option>
-            <option>25</option>
-            <option>26</option>
-            <option>27</option>
-            <option>28</option>
-            <option>29</option>
-            <option>30</option>
-            <option>31</option>
+        <option {{ ($application->applicant->birth_day) == '01' ? 'selected' : '' }} value="01">01</option>
+            <option {{ ($application->applicant->birth_day) == '02' ? 'selected' : '' }} value="02">02</option>
+            <option {{ ($application->applicant->birth_day) == '03' ? 'selected' : '' }} value="03">03</option>
+            <option {{ ($application->applicant->birth_day) == '04' ? 'selected' : '' }} value="04">04</option>
+            <option {{ ($application->applicant->birth_day) == '05' ? 'selected' : '' }} value="05">05</option>
+            <option {{ ($application->applicant->birth_day) == '06' ? 'selected' : '' }} value="06">06</option>
+            <option {{ ($application->applicant->birth_day) == '07' ? 'selected' : '' }} value="07">07</option>
+            <option {{ ($application->applicant->birth_day) == '08' ? 'selected' : '' }} value="08">08</option>
+            <option {{ ($application->applicant->birth_day) == '09' ? 'selected' : '' }} value="09">09</option>
+            <option {{ ($application->applicant->birth_day) == '10' ? 'selected' : '' }} value="10">10</option>
+            <option {{ ($application->applicant->birth_day) == '11' ? 'selected' : '' }} value="11">11</option>
+            <option {{ ($application->applicant->birth_day) == '12' ? 'selected' : '' }} value="12">12</option>
+            <option {{ ($application->applicant->birth_day) == '13' ? 'selected' : '' }} value="13">13</option>
+            <option {{ ($application->applicant->birth_day) == '14' ? 'selected' : '' }} value="14">14</option>
+            <option {{ ($application->applicant->birth_day) == '15' ? 'selected' : '' }} value="15">15</option>
+            <option {{ ($application->applicant->birth_day) == '16' ? 'selected' : '' }} value="16">16</option>
+            <option {{ ($application->applicant->birth_day) == '17' ? 'selected' : '' }} value="17">17</option>
+            <option {{ ($application->applicant->birth_day) == '18' ? 'selected' : '' }} value="18">18</option>
+            <option {{ ($application->applicant->birth_day) == '19' ? 'selected' : '' }} value="19">19</option>
+            <option {{ ($application->applicant->birth_day) == '20' ? 'selected' : '' }} value="20">20</option>
+            <option {{ ($application->applicant->birth_day) == '21' ? 'selected' : '' }} value="21">21</option>
+            <option {{ ($application->applicant->birth_day) == '22' ? 'selected' : '' }} value="22">22</option>
+            <option {{ ($application->applicant->birth_day) == '23' ? 'selected' : '' }} value="23">23</option>
+            <option {{ ($application->applicant->birth_day) == '24' ? 'selected' : '' }} value="24">24</option>
+            <option {{ ($application->applicant->birth_day) == '25' ? 'selected' : '' }} value="25">25</option>
+            <option {{ ($application->applicant->birth_day) == '26' ? 'selected' : '' }} value="26">26</option>
+            <option {{ ($application->applicant->birth_day) == '27' ? 'selected' : '' }} value="27">27</option>
+            <option {{ ($application->applicant->birth_day) == '28' ? 'selected' : '' }} value="28">28</option>
+            <option {{ ($application->applicant->birth_day) == '29' ? 'selected' : '' }} value="29">29</option>
+            <option {{ ($application->applicant->birth_day) == '30' ? 'selected' : '' }} value="30">30</option>
+            <option {{ ($application->applicant->birth_day) == '31' ? 'selected' : '' }} value="31">31</option>
         </select>
         <select class="form-control d-inline col mr-1" id="birth_month" name="birth_month" required>
             <option value="" disabled selected hidden>Month</option>
-            <option>JAN</option>
-            <option>FEB</option>
-            <option>MAR</option>
-            <option>APR</option>
-            <option>MAY</option>
-            <option>JUN</option>
-            <option>JUL</option>
-            <option>AUG</option>
-            <option>SEP</option>
-            <option>OCT</option>
-            <option>NOV</option>
-            <option>DEC</option>
+            <option {{ ($application->applicant->birth_month) == 'JAN' ? 'selected' : '' }} value="JAN">JAN</option>
+            <option {{ ($application->applicant->birth_month) == 'FEB' ? 'selected' : '' }} value="FEB">FEB</option>
+            <option {{ ($application->applicant->birth_month) == 'MAR' ? 'selected' : '' }} value="MAR">MAR</option>
+            <option {{ ($application->applicant->birth_month) == 'APR' ? 'selected' : '' }} value="APR">APR</option>
+            <option {{ ($application->applicant->birth_month) == 'MAY' ? 'selected' : '' }} value="MAY">MAY</option>
+            <option {{ ($application->applicant->birth_month) == 'JUN' ? 'selected' : '' }} value="JUN">JUN</option>
+            <option {{ ($application->applicant->birth_month) == 'JUL' ? 'selected' : '' }} value="JUL">JUL</option>
+            <option {{ ($application->applicant->birth_month) == 'AUG' ? 'selected' : '' }} value="AUG">AUG</option>
+            <option {{ ($application->applicant->birth_month) == 'SEP' ? 'selected' : '' }} value="SEP">SEP</option>
+            <option {{ ($application->applicant->birth_month) == 'OCT' ? 'selected' : '' }} value="OCT">OCT</option>
+            <option {{ ($application->applicant->birth_month) == 'NOV' ? 'selected' : '' }} value="NOV">NOV</option>
+            <option {{ ($application->applicant->birth_month) == 'DEC' ? 'selected' : '' }} value="DEC">DEC</option>
           </select>
-        <input type="text" class="form-control d-inline col" id="birth_year" name="birth_year" size="4" maxlength="4" placeholder="Year">
+        <input type="text" class="form-control d-inline col" id="birth_year" name="birth_year" size="4" maxlength="4" value="{{ isset($application) ? $application->applicant->birth_year : '' }}" placeholder="Year">
       </div>
       </div>            
     </div>
@@ -187,13 +179,13 @@ document.getElementById('start-button').onclick = function () {
         <label class="" for="dependants">Number of Dependants</label>
           <select class="form-control" id="dependants" name="dependants" value="{{ isset($applicant) ? $applicant->dependants : '' }}" required>
             <option value="" disabled selected hidden> </option>  
-            <option>0</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-            <option>5+</option>
+            <option {{ ($application->applicant->dependants) == '0' ? 'selected' : '' }} value="0">0</option>
+            <option {{ ($application->applicant->dependants) == '1' ? 'selected' : '' }} value="1">1</option>
+            <option {{ ($application->applicant->dependants) == '2' ? 'selected' : '' }} value="2">2</option>
+            <option {{ ($application->applicant->dependants) == '3' ? 'selected' : '' }} value="3">3</option>
+            <option {{ ($application->applicant->dependants) == '4' ? 'selected' : '' }} value="4">4</option>
+            <option {{ ($application->applicant->dependants) == '5' ? 'selected' : '' }} value="5">5</option>
+            <option {{ ($application->applicant->dependants) == '5+' ? 'selected' : '' }} value="5+">5+</option>
           </select>
       </div>
     </div>
@@ -203,12 +195,12 @@ document.getElementById('start-button').onclick = function () {
         <label class="" for="status">Marital Status</label>
           <select class="form-control" id="status" name="status" value="{{ isset($applicant) ? $applicant->status : '' }}" required>
           <option value="" disabled selected hidden> </option>
-            <option id="single">Single</option>
-            <option id="married">Married</option>
-            <option id="defacto">De Facto</option>
-            <option id="separated">Seperated</option>
-            <option id="divorced">Divorced</option>
-            <option id="widowed">Widowed</option>
+            <option {{ ($application->applicant->status) == 'Single' ? 'selected' : '' }} value="Single" id="single">Single</option>
+            <option {{ ($application->applicant->status) == 'Married' ? 'selected' : '' }} value="Married"  id="married">Married</option>
+            <option {{ ($application->applicant->status) == 'De Facto' ? 'selected' : '' }} value="De Facto"  id="defacto">De Facto</option>
+            <option {{ ($application->applicant->status) == 'Separated' ? 'selected' : '' }} value="Separated"  id="separated">Seperated</option>
+            <option {{ ($application->applicant->status) == 'Divorced' ? 'selected' : '' }} value="Divorced"  id="divorced">Divorced</option>
+            <option {{ ($application->applicant->status) == 'Widowed' ? 'selected' : '' }} value="Widowed"  id="widowed">Widowed</option>
           </select>
       </div>
     </div>
@@ -228,50 +220,70 @@ document.getElementById('start-button').onclick = function () {
 
   <div class="row m-3">
       
-    <div class="col-lg-4">
+    <div class="col-lg-3">
       <div class="form-group">
         <label class="" for="phone">Mobile Number</label>
-        <input type="text" class="form-control" id="phone" name="phone" value="{{ isset($application) ? $application->applicant->phone : '' }}" placeholder="" required>
+        <input type="text" class="form-control" id="phone" onKeyUp=check() minlength="12" name="phone" value="{{ isset($application) ? $application->applicant->phone : '' }}" placeholder="" required>
+      </div>
+      <div id="warning" class="mx-3">
+
       </div>
     </div>
+    <script>
+      function check() {
+            stringLength = document.getElementById('phone').value.length;
+            if (stringLength <= 11) {
+                document.getElementById('warning').innerText = "Add more digits"
+            } else {
+                document.getElementById('warning').innerText = ""
+            }
+        }
+    </script>
 
-    <div class="col-lg-4">
+    <div class="col-lg-3">
       <div class="form-group">
         <label class="" for="email">Email Address</label>
         <input type="email" class="form-control" id="email" name="email" value="{{ isset($application) ? $application->applicant->email : '' }}" placeholder="" required>
       </div>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-lg-3">
       <div class="form-group">
         <label class="" for="employment">Employment Status</label>
-          <select class="form-control" id="employment" name="employment" value="{{ isset($application) ? $application->employment : '' }}" required>
+          <select class="form-control" id="employment" name="employment" value="" required>
           <option value="" disabled selected hidden></option>
-          <option id="fullTime">Full Time</option>
-            <option id="partTime">Part Time</option>
-            <option id="casual">Casual</option>
-            <option id="selfEmployed">Self Employed</option>
-            <option id="contract">Contract</option>
-            <option id="pension">Pension</option>
-            <option id="unemployed">Unemployed</option>
-            <option id="centrelink">Centrelink</option>
-            <option id="other">Other</option>
+          <option {{ ($application->employment) == 'Full Time' ? 'selected' : '' }} value="Full Time"  id="fullTime">Full Time</option>
+            <option {{ ($application->employment) == 'Part Time' ? 'selected' : '' }} value="Part Time" id="partTime">Part Time</option>
+            <option {{ ($application->employment) == 'Casual' ? 'selected' : '' }} value="Casual" id="casual">Casual</option>
+            <option {{ ($application->employment) == 'Self Employed' ? 'selected' : '' }} value="Self Employed" id="selfEmployed">Self Employed</option>
+            <option {{ ($application->employment) == 'Contract' ? 'selected' : '' }} value="Contract" id="contract">Contract</option>
+            <option {{ ($application->employment) == 'Pension' ? 'selected' : '' }} value="Pension" id="pension">Pension</option>
+            <option {{ ($application->employment) == 'Unemployed' ? 'selected' : '' }} value="Unemployed" id="unemployed">Unemployed</option>
+            <option {{ ($application->employment) == 'Centrelink' ? 'selected' : '' }} value="Centrelink" id="centrelink">Centrelink</option>
+            <option {{ ($application->employment) == 'Other' ? 'selected' : '' }} value="Other" id="other">Other</option>
           </select>
       </div>
     </div>
-      
+    
+    <div class="col-lg-3">
+          <div class="form-group">
+            <label class="" for="occupation">Occupation</label>
+            <input type="text" class="form-control" id="occupation" name="occupation" placeholder="" value="{{ isset($applicant) ? $application->applicant->occupation : '' }}" >
+          </div>
+        </div>
+
   </div>
 
   <div class="row m-3">
       
     <div class="col-lg-6">
-      <div class="form-group" id="DLnumber">
+      <div class="form-group" id="DLnumber"  >
         <label class="" for="DLnumber">Drivers Licence Number</label>
-        <input type="text" class="form-control" id="DLnumber" name="DLnumber" value="{{ isset($applicant) ? $applicant->DLnumber : '' }}"  placeholder="" 
+        <input type="text" class="form-control" id="DLnumber" name="DLnumber" value="{{ isset($applicant) ? $application->applicant->DLnumber : '' }}"  placeholder="" 
         >
       </div> 
       <div  class="form-group">
-      <input type="checkbox" id="currentDL" name="currentDL" value=""><label for="drivers_check" class="long-label"> I don't have a drivers licence</label>        
+      <input type="checkbox" id="currentDL" name="currentDL" value="0" ><label for="drivers_check" class="long-label"> I don't have a drivers licence</label>        
       </div>  
     </div>
 
@@ -280,7 +292,7 @@ document.getElementById('start-button').onclick = function () {
     <div class="col-lg-6">
       <div class="form-group">
         <label class="" for="MCnumber">Medicare Card Number</label>
-        <input type="text" class="form-control" id="MCnumber" name="MCnumber" value="{{ isset($applicant) ? $applicant->MCnumber : '' }}"
+        <input type="text" class="form-control" id="MCnumber" name="MCnumber" value="{{ isset($applicant) ? $application->applicant->MCnumber : '' }}"
         placeholder="">
       </div>
     </div>
@@ -289,8 +301,9 @@ document.getElementById('start-button').onclick = function () {
 
   </div>
   @if(isset($application->applicant))
-  <div class="row m-3">
 
+  <div class="row m-3">
+  @if(!isset($application->applicant->DLimage))
   <div class="col-lg-6">
     <div class="form-group">
         <label for="DLimage" class="DLimage file-upload-label">Upload a copy of your Drivers Licence</label>
@@ -298,14 +311,15 @@ document.getElementById('start-button').onclick = function () {
         </div> 
       
   </div>
-
+@endif
+@if(!isset($application->applicant->MCimage))
   <div class="col-lg-6">
     <div class="form-group">
         <label for="MCimage" class="form-label file-upload-label">Upload a copy of your Medicare Card</label>
         <input type="file" class="form-control form-control-file-upload" name="MCimage" id="MCimage">
         </div>
 </div>
-
+@endif
   </div>
   @endif
 
@@ -314,7 +328,7 @@ document.getElementById('start-button').onclick = function () {
     <div class="col-lg-6">
       <div class="form-group">
         <label class="" for="address">Street Address</label>
-        <input type="text" name="streetaddress" id="streetaddress" class="form-control" placeholder="Start typing address">
+        <input type="text" name="streetaddress" id="streetaddress" class="form-control" placeholder="Start typing address" value="{{ isset($applicant) ? $application->applicant->streetaddress : '' }}">
       </div>
     </div>
 
@@ -323,12 +337,12 @@ document.getElementById('start-button').onclick = function () {
         <label class="" for="residentialType">Residential Type</label>
           <select class="form-control" id="residentialType" name="residentialType" value="{{ isset($application) ? $application->residentialType : '' }}" required>
             <option value="" disabled selected hidden> </option>
-            <option id="renting">Renting</option>
-            <option id="mort">Mortgage</option>
-            <option id="boarding">Boarding</option>
-            <option id="parents">Living with parents</option>
-            <option id="outright">Own home outright</option>
-            <option id="resOther">Other</option>
+            <option {{ ($application->residentialType) == 'Renting' ? 'selected' : '' }} value="Renting" id="renting">Renting</option>
+            <option {{ ($application->residentialType) == 'Mortgage' ? 'selected' : '' }} value="Mortgage" id="mort">Mortgage</option>
+            <option {{ ($application->residentialType) == 'Boarding' ? 'selected' : '' }} value="Boarding" id="boarding">Boarding</option>
+            <option {{ ($application->residentialType) == 'Living with parents' ? 'selected' : '' }} value="Living with parents" id="parents">Living with parents</option>
+            <option {{ ($application->residentialType) == 'Own home outright' ? 'selected' : '' }} value="Own home outright" id="outright">Own home outright</option>
+            <option {{ ($application->residentialType) == 'Other' ? 'selected' : '' }} value="Other" id="resOther">Other</option>
           </select>
       </div>
       <div  class="form-group d-none" id="homeowner">
@@ -342,31 +356,33 @@ document.getElementById('start-button').onclick = function () {
         <div class="row mx-0">
         <select class="form-control d-inline col mr-1" id="resTimeY" name="resTimeY" required>
             <option value="" disabled selected hidden>Years</option>
-            <option id="oneYear">1 yr</option>
-            <option>2 yrs</option>
-            <option>3 yrs</option>
-            <option>4 yrs</option>
-            <option id="resTimeY5">5+ yrs</option>
+            <option {{ ($application->resTimeY) == '1 yr' ? 'selected' : '' }} value="1 yr" id="oneYear">1 yr</option>
+            <option {{ ($application->resTimeY) == '2 yrs' ? 'selected' : '' }} value="2 yrs" >2 yrs</option>
+            <option {{ ($application->resTimeY) == '3 yrs' ? 'selected' : '' }} value="3 yrs" >3 yrs</option>
+            <option {{ ($application->resTimeY) == '4 yrs' ? 'selected' : '' }} value="4 yrs" >4 yrs</option>
+            <option {{ ($application->resTimeY) == '5+ yrs' ? 'selected' : '' }} value="5+ yrs"  id="resTimeY5">5+ yrs</option>
           </select>
           <select class="form-control d-inline col" id="resTimeM" name="resTimeM" required>
             <option value="" disabled selected hidden>Months</option>
-            <option id="resTimeM0">0 mth</option>
-            <option>1 mth</option>
-            <option>2 mths</option>
-            <option>3 mths</option>
-            <option>4 mths</option>
-            <option>5 mths</option>
-            <option>6 mth</option>
-            <option>7 mths</option>
-            <option>8 mths</option>
-            <option>9 mths</option>
-            <option>10 mths</option>
-            <option>11 mths</option>
+            <option {{ ($application->resTimeM) == '0 mth' ? 'selected' : '' }} value="0 mth" id="resTimeM0">0 mth</option>
+            <option {{ ($application->resTimeM) == '1 mth' ? 'selected' : '' }} value="1 mth">1 mth</option>
+            <option {{ ($application->resTimeM) == '2 mths' ? 'selected' : '' }} value="2 mths">2 mths</option>
+            <option {{ ($application->resTimeM) == '3 mths' ? 'selected' : '' }} value="3 mths">3 mths</option>
+            <option {{ ($application->resTimeM) == '4 mths' ? 'selected' : '' }} value="4 mths">4 mths</option>
+            <option {{ ($application->resTimeM) == '5 mths' ? 'selected' : '' }} value="5 mths">5 mths</option>
+            <option {{ ($application->resTimeM) == '6 mths' ? 'selected' : '' }} value="6 mths">6 mth</option>
+            <option {{ ($application->resTimeM) == '7 mths' ? 'selected' : '' }} value="7 mths">7 mths</option>
+            <option {{ ($application->resTimeM) == '8 mths' ? 'selected' : '' }} value="8 mths">8 mths</option>
+            <option {{ ($application->resTimeM) == '9 mths' ? 'selected' : '' }} value="9 mths">9 mths</option>
+            <option {{ ($application->resTimeM) == '10 mths' ? 'selected' : '' }} value="10 mths">10 mths</option>
+            <option {{ ($application->resTimeM) == '11 mths' ? 'selected' : '' }} value="11 mths">11 mths</option>
           </select>
         </div>    
       </div>
-    </div>
+    </div>    
   </div>
+
+ 
 
   <script>
 
@@ -387,12 +403,12 @@ document.getElementById('start-button').onclick = function () {
 
 </script>
 
-    <div class="row m-3 d-none" id="previous-address">
+    <div class="row m-3 {{ ($application->resTimeY) == '1 yr' ? ' ' : 'd-none' }}" id="previous-address">
       
     <div class="col-lg-12">
       <div class="form-group">
         <label class="" for="address">Previous Address</label>
-        <input type="text" name="otherAddress" id="otherAddress" class="form-control" placeholder="Start typing previous address">
+        <input type="text" name="otherAddress" id="otherAddress" class="form-control" value="{{ isset($application) ? $application->otherAddress : '' }}" placeholder="Start typing previous address">
         <label class="long-label">Minimum of two years residential address required</label>
       </div>
     </div>
@@ -405,7 +421,7 @@ document.getElementById('start-button').onclick = function () {
         
         <label id="sample" class="form-check-label mr-5" for="defaultCheck1">
           <input type="checkbox" id="acceptance" name="acceptance" value="" required>
-            &nbsp;&nbsp;I have read, understood and agree to the terms
+            &nbsp;&nbsp;I have read, understood and agree to the <a href="#terms" id="click-terms" data-toggle="modal" data-target="#terms">terms</a>
           </label>
          
         </span>
@@ -440,21 +456,26 @@ document.getElementById('start-button').onclick = function () {
         }
     });
 
-    $("#employment").change(function() {
-        if ($(this).find("option:selected").attr("id") == "centrelink") {
-          $('#next').on('click', function() {
-              $('#sorry').show()
-              $('.cat-submitted').remove();
-              });
-            } 
-        });
+    // $("#employment").change(function() {
+    //     if ($(this).find("option:selected").attr("id") == "centrelink") {
+    //       $('#next').on('click', function() {
+    //           $('#sorry').show()
+    //           $('.cat-submitted').remove();
+    //           });
+    //         } 
+    //     });
 
         // shows modal box if employment criteria not met
 $("#employment").change(function() {
     if ($(this).find("option:selected").attr("id") == "centrelink" || $(this).find("option:selected").attr("id") == "unemployed" || $(this).find("option:selected").attr("id") == "pension") {
       $('#next').on('click', function() {
-          $('#sorry').show()
-          $('.cat-submitted').remove();
+        var required = $('input,textarea,select').filter('[required]:visible').length;
+            if (required === 0) {
+              $('#sorry').show()
+              $('.cat-submitted').remove();
+              $('.save-later').remove();  
+            }
+            return required  
           });
         } 
     });
@@ -489,54 +510,41 @@ $('#sorry').on('shown.bs.modal', function () {
 <div class="form-section">
 
 <div class="row m-3">
-
-      <div class="col-lg-3">
-          <div class="form-group">
-            <label class="" for="occupation">Occupation</label>
-            <input type="text" class="form-control" id="occupation" name="occupation" placeholder="" value="{{ isset($applicant) ? $applicant->occupation : '' }}" >
-          </div>
-        </div>
         
-        <div class="col-lg-3">
+        <div class="col-lg-8">
           <div class="form-group">
             <label class="" for="employername">Employer Name</label>
-            <input type="text" class="form-control" id="employername" name="employername" placeholder="" value="{{ isset($applicant) ? $applicant->employername : '' }}" >
+            <input type="text" class="form-control" id="employername" name="employername" placeholder="" value="{{ isset($applicant) ? $application->applicant->employername : '' }}" >
           </div>
         </div>
 
-        <div class="col-lg-3">
-          <div class="form-group">
-            <label class="" for="employercontactnumber">Employer Contact Number</label>
-            <input type="text" class="form-control" id="employercontactnumber" name="employercontactnumber" placeholder="" value="{{ isset($applicant) ? $applicant->employercontactnumber : '' }}" >
-          </div>
-        </div>
 
-        <div class="col-lg-3">
+        <div class="col-lg-4">
         <div class="form-group">
           <label for="empTimeCurrent">Duration</label>
         <div class="row mx-0">
         <select class="form-control d-inline col" id="empTimeY" name="empTimeY">
           <option value="" disabled selected hidden>Years</option>
-            <option id="oneYearEmp">1 yr</option>
-            <option>2 yrs</option>
-            <option>3 yrs</option>
-            <option>4 yrs</option>
-            <option id="empTimeY5">5+ yrs</option>
+            <option {{ ($application->empTimeY) == '1 yr' ? 'selected' : '' }} value="1 yr" id="oneYearEmp">1 yr</option>
+            <option {{ ($application->empTimeY) == '2 yrs' ? 'selected' : '' }} value="2 yrs">2 yrs</option>
+            <option {{ ($application->empTimeY) == '3 yrs' ? 'selected' : '' }} value="3 yrs">3 yrs</option>
+            <option {{ ($application->empTimeY) == '4 yrs' ? 'selected' : '' }} value="4 yrs">4 yrs</option>
+            <option {{ ($application->empTimeY) == '5+ yrs' ? 'selected' : '' }} value="5+ yrs" id="empTimeY5">5+ yrs</option>
           </select>
           <select class="form-control d-inline col" id="empTimeM" name="empTimeM">
             <option value="" disabled selected hidden>Months</option>
-            <option id="empTimeM0">0 mth</option>
-            <option>1 mth</option>
-            <option>2 mths</option>
-            <option>3 mths</option>
-            <option>4 mths</option>
-            <option>5 mths</option>
-            <option>6 mth</option>
-            <option>7 mths</option>
-            <option>8 mths</option>
-            <option>9 mths</option>
-            <option>10 mths</option>
-            <option>11 mths</option>
+            <option {{ ($application->empTimeM) == '0 mth' ? 'selected' : '' }} value="0 mth" id="empTimeM0">0 mth</option>
+            <option {{ ($application->empTimeM) == '1 mth' ? 'selected' : '' }} value="1 mth" >1 mth</option>
+            <option {{ ($application->empTimeM) == '2 mths' ? 'selected' : '' }} value="2 mths" >2 mths</option>
+            <option {{ ($application->empTimeM) == '3 mths' ? 'selected' : '' }} value="3 mths" >3 mths</option>
+            <option {{ ($application->empTimeM) == '4 mths' ? 'selected' : '' }} value="4 mths" >4 mths</option>
+            <option {{ ($application->empTimeM) == '5 mths' ? 'selected' : '' }} value="5 mths" >5 mths</option>
+            <option {{ ($application->empTimeM) == '6 mths' ? 'selected' : '' }} value="6 mths" >6 mth</option>
+            <option {{ ($application->empTimeM) == '7 mths' ? 'selected' : '' }} value="7 mths" >7 mths</option>
+            <option {{ ($application->empTimeM) == '8 mths' ? 'selected' : '' }} value="8 mths" >8 mths</option>
+            <option {{ ($application->empTimeM) == '9 mths' ? 'selected' : '' }} value="9 mths" >9 mths</option>
+            <option {{ ($application->empTimeM) == '10 mths' ? 'selected' : '' }} value="10 mths" >10 mths</option>
+            <option {{ ($application->empTimeM) == '11 mths' ? 'selected' : '' }} value="11 mths" >11 mths</option>
           </select>
         </div>
       </div>
@@ -548,7 +556,7 @@ $('#sorry').on('shown.bs.modal', function () {
 
 </div>
 
-<div id="previous-employment" class="row m-3 previous-employment d-none">
+<div id="previous-employment" class="row m-3 previous-employment {{ ($application->prevOccupation) !== 'NULL' ? '' : 'd-none' }}">
 
     <div class="col-lg-4">
       <div class="form-group">
@@ -570,26 +578,26 @@ $('#sorry').on('shown.bs.modal', function () {
     <div class="row mx-0">
         <select class="form-control d-inline col" id="prevEmployerTimeY" name="prevEmployerTimeY" >
           <option value="" disabled selected hidden>Years</option>
-            <option>1 yr</option>
-            <option>2 yrs</option>
-            <option>3 yrs</option>
-            <option>4 yrs</option>
-            <option id="empTimePrevY5">5+ yrs</option>
+            <option {{ ($application->prevEmployerTimeY) == '1 yr' ? 'selected' : '' }} value="1 yr" >1 yr</option>
+            <option {{ ($application->prevEmployerTimeY) == '2 yrs' ? 'selected' : '' }} value="2 yrs" >2 yrs</option>
+            <option {{ ($application->prevEmployerTimeY) == '3 yrs' ? 'selected' : '' }} value="3 yrs" >3 yrs</option>
+            <option {{ ($application->prevEmployerTimeY) == '4 yrs' ? 'selected' : '' }} value="4 yrs" >4 yrs</option>
+            <option {{ ($application->prevEmployerTimeY) == '5+ yrs' ? 'selected' : '' }} value="5+ yrs"  id="empTimePrevY5">5+ yrs</option>
           </select>
           <select class="form-control d-inline col" id="prevEmployerTimeM" name="prevEmployerTimeM">
             <option value="" disabled selected hidden>Months</option>
-            <option id="empTimePrevM0">0 mth</option>
-            <option>1 mth</option>
-            <option>2 mths</option>
-            <option>3 mths</option>
-            <option>4 mths</option>
-            <option>5 mths</option>
-            <option>6 mth</option>
-            <option>7 mths</option>
-            <option>8 mths</option>
-            <option>9 mths</option>
-            <option>10 mths</option>
-            <option>11 mths</option>
+            <option {{ ($application->prevEmployerTimeM) == '0 mth' ? 'selected' : '' }} value="0 mth"  id="empTimePrevM0">0 mth</option>
+            <option {{ ($application->prevEmployerTimeM) == '1 mth' ? 'selected' : '' }} value="1 mth">1 mth</option>
+            <option {{ ($application->prevEmployerTimeM) == '2 mths' ? 'selected' : '' }} value="2 mths">2 mths</option>
+            <option {{ ($application->prevEmployerTimeM) == '3 mths' ? 'selected' : '' }} value="3 mths">3 mths</option>
+            <option {{ ($application->prevEmployerTimeM) == '4 mths' ? 'selected' : '' }} value="4 mths">4 mths</option>
+            <option {{ ($application->prevEmployerTimeM) == '5 mths' ? 'selected' : '' }} value="5 mths">5 mths</option>
+            <option {{ ($application->prevEmployerTimeM) == '6 mths' ? 'selected' : '' }} value="6 mths">6 mth</option>
+            <option {{ ($application->prevEmployerTimeM) == '7 mths' ? 'selected' : '' }} value="7 mths">7 mths</option>
+            <option {{ ($application->prevEmployerTimeM) == '8 mths' ? 'selected' : '' }} value="8 mths">8 mths</option>
+            <option {{ ($application->prevEmployerTimeM) == '9 mths' ? 'selected' : '' }} value="9 mths">9 mths</option>
+            <option {{ ($application->prevEmployerTimeM) == '10 mths' ? 'selected' : '' }} value="10 mths">10 mths</option>
+            <option {{ ($application->prevEmployerTimeM) == '11 mths' ? 'selected' : '' }} value="11 mths">11 mths</option>
           </select>
         </div>
     </div>
@@ -649,7 +657,7 @@ $("#empTimePrevY").change(function() {
            
 <div class="col-lg-3">
       <div class="form-group">
-        <label class="" for="income">Income Amount <span class="badge bg-primary rounded-circle m-1" data-toggle="tooltip" title="After tax - your take home income" data-placement="top" >?</span></label> 
+        <label class="" for="income">After Tax Income</label> 
         <input type="text" class="form-control" id="income" name="income" data-type="currency" placeholder="" value="{{ isset($application) ? $application->income : '' }}"> 
       </div>
     </div>
@@ -659,10 +667,10 @@ $("#empTimePrevY").change(function() {
         <label class="" for="incomeFreq">Frequency</label>
           <select class="form-control" id="incomeFreq" name="incomeFreq" placeholder="" value="{{ isset($application) ? $application->incomeFreq : '' }}" >
             <option value="" disabled selected hidden></option>
-            <option value="Weekly">Weekly</option>
-            <option value="Fortnightly">Fortnightly</option>
-            <option value="Monthly">Monthly</option>
-            <option value="Annually">Annually</option>
+            <option {{ ($application->incomeFreq) == 'Weekly' ? 'selected' : '' }} value="Weekly">Weekly</option>
+            <option {{ ($application->incomeFreq) == 'Fortnightly' ? 'selected' : '' }} value="Fortnightly">Fortnightly</option>
+            <option {{ ($application->incomeFreq) == 'Monthly' ? 'selected' : '' }} value="Monthly">Monthly</option>
+            <option {{ ($application->incomeFreq) == 'Annually' ? 'selected' : '' }} value="Annually">Annually</option>
           </select>
       </div>
     </div>    
@@ -680,16 +688,16 @@ $("#empTimePrevY").change(function() {
           <label class="" for="partnerIncomeFreq">Frequency</label>
             <select class="form-control" id="partnerIncomeFreq" name="partnerIncomeFreq" placeholder="" value="{{ isset($application) ? $application->partnerIncomeFreq : '' }}">
             <option value="" disabled selected hidden> </option>
-            <option value="Weekly">Weekly</option>
-            <option value="Fortnightly">Fortnightly</option>
-            <option value="Monthly">Monthly</option>
-            <option value="Annually">Annually</option>
+            <option {{ ($application->partnerIncomeFreq) == 'Weekly' ? 'selected' : '' }}  value="Weekly">Weekly</option>
+            <option {{ ($application->partnerIncomeFreq) == 'Fortnightly' ? 'selected' : '' }} value="Fortnightly">Fortnightly</option>
+            <option {{ ($application->partnerIncomeFreq) == 'Monthly' ? 'selected' : '' }} value="Monthly">Monthly</option>
+            <option {{ ($application->partnerIncomeFreq) == 'Annually' ? 'selected' : '' }} value="Annually">Annually</option>
             </select>
         </div>
       </div>
     
 </div>
-
+@if(!isset($application->applicant->payslip1))
 <div class="row m-3">
   <div class="col">
   Please upload your two (2) most recent payslips
@@ -710,7 +718,7 @@ $("#empTimePrevY").change(function() {
         </div> 
   </div>
 </div>
-
+@endif
 
 <div class="row m-3" id="rentPayable">
 
@@ -726,9 +734,9 @@ $("#empTimePrevY").change(function() {
       <label class="" for="rentFreq">Frequency</label>
         <select class="form-control" id="rentFreq" name="rentFreq" value="{{ isset($application) ? $application->rentFreq : '' }}" >
             <option value="" disabled selected hidden> </option>
-            <option value="Weekly">Weekly</option>
-            <option value="Fortnightly">Fortnightly</option>
-            <option value="Monthly">Monthly</option>
+            <option {{ ($application->rentFreq) == 'Weekly' ? 'selected' : '' }} value="Weekly">Weekly</option>
+            <option {{ ($application->rentFreq) == 'Fortnightly' ? 'selected' : '' }} value="Fortnightly">Fortnightly</option>
+            <option {{ ($application->rentFreq) == 'Monthly' ? 'selected' : '' }} value="Monthly">Monthly</option>
         </select>
     </div>
   </div>
@@ -738,8 +746,8 @@ $("#empTimePrevY").change(function() {
       <label class="" for="rentShared">Shared?</label>
         <select class="form-control" id="rentShared" name="rentShared" value="{{ isset($application) ? $application->rentShared : '' }}" >
           <option value="" disabled selected hidden></option>
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
+          <option {{ ($application->rentShared) == 'Yes' ? 'selected' : '' }} value="Yes">Yes</option>
+          <option {{ ($application->rentShared) == 'No' ? 'selected' : '' }} value="No">No</option>
         </select>
     </div>
   </div>
@@ -753,6 +761,9 @@ $("#empTimePrevY").change(function() {
 </div>
 
 <div class="form-section">
+  <div class="row m-3">
+    <p>All loans and credit cards will show on a customer's credit file. Please ensure all liabilities in your name are disclosed. It'll make the application faster and easier to assess.</p>
+  </div>
 
 <div class="row m-3">
 
@@ -764,11 +775,11 @@ $("#empTimePrevY").change(function() {
 </div>
 
 
-<table class="table table-striped credit-card-table m-3">
+<!--table class="table table-striped credit-card-table m-3"-->
 
-<tbody id="creditCardContainer">
+<div id="creditCardContainer" class="mx-3">
 
-</tbody>
+      </div>
 </table>
 <div class="m-3"><a href="#" class="btn btn-transparent credit-card-table" id="addRow"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#0dcaf075" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
@@ -779,19 +790,19 @@ $("#empTimePrevY").change(function() {
     let i = 1;
 
     document.getElementById('addRow').onclick = function () {
-    let template = `<td>
+    let template = `<div class="col-lg-3 mb-2">
       <div class="form-group">
       <label for="financeCompany-${i}" class="">Finance Company name #${i}</label>
       <input type="text" class="form-control" id="financeCompany-${i}" name="creditCards[${i}][financeCompany]" value="" placeholder="" />
       </div> 
-      </td>
-      <td>
+      </div>
+      <div class="col-lg-3 mb-2">
       <div class="form-group">
       <label for="creditLimit-${i}" class="">Credit limit</label>
       <input type="text" class="form-control" data-type="currency" id="creditLimit-${i}" name="creditCards[${i}][creditLimit]" value="" placeholder="$" />
       </div>  
-      </td>
-      <td>
+      </div>
+      <div class="col-lg-2 mb-2">
       <div class="form-group">
       <label for="consolidate-${i}" class="">Consolidate?</label>
       <select class="form-control" name="creditCards[${i}][consolidate]" id="consolidate-${i}">
@@ -800,18 +811,25 @@ $("#empTimePrevY").change(function() {
       <option value="no">No</option>
       </select>
       </div>  
-      </td>
-      <td><a href="#" class="btn btn-transparent rounded-circle remove fw-bold"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#dc354555" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+      </div>
+      <div class="col-lg-3 col-sm-10 mb-2">
+      <div class="form-group">
+      <label for="amount_owing-${i}" class="">Amount Owing</label>
+      <input type="text" class="form-control" data-type="currency" id="amount_owing-${i}" name="creditCards[${i}][amount_owing]" value="" placeholder="$" />
+      </div>  
+      </div>
+      <div class="col-lg-1 col-sm-2 mb-2"><a href="#" class="btn btn-transparent rounded-circle remove fw-bold"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#dc354555" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
-</svg></a></td>`;
+</svg></a></div>`;
     let container = document.getElementById('creditCardContainer');
-    let tr = document.createElement('tr');
+    let tr = document.createElement('div');
+    tr.classList.add('row', 'pt-2');
     tr.innerHTML = template;
     container.appendChild(tr);      
     i++;
   };
 
-  $('tbody').on('click', '.remove', function(){
+  $('#creditCardContainer').on('click', '.remove', function(){
         $(this).parent().parent().remove();
         i--;
       });
@@ -842,17 +860,17 @@ $("#empTimePrevY").change(function() {
 <div class="row m-3">
 
 <h3>Personal Loans</h3>
-<p class="personal-loan-table">List all secured and unsecured loans.</p>
+<p class="personal-loan-table">List all unsecured personal loans.</p>
 <p class="no-loans d-none">No unsecured loans.</p>
 
 </div>
 
-<table class="table table-striped personal-loan-table m-3">
+<!--table class="table table-striped personal-loan-table m-3"-->
 
-<tbody id="personalLoanContainer">
+<div id="personalLoanContainer" class="mx-3">
 
-</tbody>
-</table>
+  </div>
+<!--/table-->
 <div class="m-3"><a href="#" class="btn btn-transparent personal-loan-table" id="addPL"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#0dcaf075" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
 </svg></a> <span id="hideMe2"><label for="no-personal-loans" class="personal-loan-table my-3"><input type="checkbox" id="noLoans" name="noLoans" class="m-2" value="" > I don't have any Personal Loans</label></span></div>
@@ -862,26 +880,26 @@ $("#empTimePrevY").change(function() {
     let p = 1;
 
     document.getElementById('addPL').onclick = function () {
-    let template = `<td>
+    let template = `<div class="col-lg-3 mb-2">
 <div class="form-group">
       <label for="financeCompanyPL-${p}" class="">Finance Company name</label>
       <input type="text" class="form-control" name="personalLoans[${p}][financeCompany]" id="financeCompanyPL-${p}" value="" placeholder="" />
     </div> 
-  </td>
-<td>
+  </div>
+<div class="col-lg-2 mb-2">
 <div class="form-group">
       <label for="balance-${p}" class="">Balance</label>
       <input type="text" class="form-control" data-type="currency" name="personalLoans[${p}][balance]" id="balance-${p}" value="" placeholder="$" />
     </div>    
-  </td>
-<td>
+  </div>
+<div class="col-lg-2 col-md-6 mb-2">
 <div class="form-group">
       <label for="repayment-${p}" class="">Repayment</label>
       <input type="text" class="form-control" data-type="currency" name="personalLoans[${p}][repayment]" id="repayment-${p}" value="" placeholder="$" />
     </div>   
-  </td>
+  </div>
 
-<td>
+<div class="col-lg-2 col-md-6 mb-2">
 <div class="form-group">
       <label for="frequency-${p}" class="">Frequency</label>
       <select class="form-control" name="personalLoans[${p}][frequency]" id="frequency-${p}">
@@ -890,8 +908,8 @@ $("#empTimePrevY").change(function() {
         <option value="Fortnightly">Fortnightly</option>
         <option value="Monthly">Monthly</option>
       </select>
-    </div></td>
-<td>
+    </div></div>
+<div class="col-lg-1 col-md-6 mb-2">
 <div class="form-group">
       <label for="consolidatePL-${p}" class="">Consolidate? </label>
         <select class="form-control" name="personalLoans[${p}][consolidate]" id="consolidatePL-${p}" >
@@ -899,8 +917,8 @@ $("#empTimePrevY").change(function() {
         <option value="Yes">Yes</option>
         <option value="No">No</option>
         </select>
-    </div></td>
-<td>
+    </div></div>
+<div class="col-lg-1 col-md-4 col-sm-10 mb-2">
 <div class="form-group">
       <label for="jointLoanPL-${p}" class="">Joint? </label>
         <select class="form-control" name="personalLoans[${p}][joint]" id="jointPL-${p}" >
@@ -909,20 +927,22 @@ $("#empTimePrevY").change(function() {
         <option value="Yes">Yes</option>
         </select>
     </div>    
-</td>
-<td>
+</div>
+<div class="col-lg-1 col-md-2 col-sm-2 mb-2">
   <a href="#" class="btn btn-transparent rounded-circle fw-bold removePL"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#dc354555" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
 </svg></a>
-</td>`;
+</div>`;
     let container = document.getElementById('personalLoanContainer');
-    let tr = document.createElement('tr');
+    let tr = document.createElement('div');
+    tr.classList.add('row', 'pt-2');
     tr.innerHTML = template;
     container.appendChild(tr);      
     p++;
   };
 
-  $('tbody').on('click', '.removePL', function(){
+  $('#personalLoanContainer').on('click', '.removePL', function($e){
+        $e.preventDefault();
         $(this).parent().parent().remove();
         p--;
       });
@@ -938,7 +958,8 @@ $("#empTimePrevY").change(function() {
         }
     });
 
-    $('#addPL').click(function(){
+    $('#addPL').click(function($e){
+      $e.preventDefault();
       $('#hideMe2').addClass('d-none');
     })
       
@@ -948,6 +969,107 @@ $("#empTimePrevY").change(function() {
 <hr>
 </div>
 
+<div class="row m-3">
+
+<h3>Secured Loans</h3>
+<p class="secured-loan-table">List all loans secured to car or asset.</p>
+<p class="no-sloans d-none">No secured loans.</p>
+
+</div>
+
+<!--table class="table table-striped secured-loan-table m-3"-->
+
+<div id="securedLoanContainer" class="mx-3">
+
+  </div>
+<!--/table-->
+<div class="m-3"><a href="#" class="btn btn-transparent secured-loan-table" id="addSL"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#0dcaf075" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+</svg></a> <span id="hideMe22"><label for="no-secured-loans" class="secured-loan-table my-3"><input type="checkbox" id="noSLoans" name="noSLoans" class="m-2" value="" > I don't have any Secured Loans</label></span></div>
+
+<script type="text/javascript">
+
+    let s = 1;
+
+    document.getElementById('addSL').onclick = function () {
+    let template = `<div class="col-lg-3 mb-2">
+<div class="form-group">
+      <label for="financeCompanySL-${s}" class="">Finance Company name</label>
+      <input type="text" class="form-control" name="securedLoans[${s}][financeCompany]" id="financeCompanySL-${s}" value="" placeholder="" />
+    </div> 
+  </div>
+<div class="col-lg-2 col-md-6 mb-2">
+<div class="form-group">
+      <label for="balanceSL-${s}" class="">Balance</label>
+      <input type="text" class="form-control" data-type="currency" name="securedLoans[${s}][balance]" id="balance-${s}" value="" placeholder="$" />
+    </div>    
+  </div>
+<div class="col-lg-2 col-md-6 mb-2">
+<div class="form-group">
+      <label for="repaymentSL-${s}" class="">Repayment</label>
+      <input type="text" class="form-control" data-type="currency" name="securedLoans[${s}][repayment]" id="repayment-${s}" value="" placeholder="$" />
+    </div>   
+  </div>
+
+<div class="col-lg-2 col-md-6 mb-2">
+<div class="form-group">
+      <label for="frequencySL-${s}" class="">Frequency</label>
+      <select class="form-control" name="securedLoans[${s}][frequency]" id="frequency-${s}">
+      <option value="" disabled selected hidden> </option>
+      <option value="Weekly">Weekly</option>
+        <option value="Fortnightly">Fortnightly</option>
+        <option value="Monthly">Monthly</option>
+      </select>
+    </div></div>
+    <div class="col-lg-2 col-md-4 col-sm-10 mb-2"
+<div class="form-group">
+      <label for="assetValueSL-${s}" class="">Asset Value</label>
+      <input type="text" class="form-control" data-type="currency" name="securedLoans[${s}][asset_value]" id="assetValue-${s}" value="" placeholder="$" />
+    </div>   
+  </div>
+
+<div class="col-lg-1 col-md-2 col-sm-2 mb-2">
+  <a href="#" class="btn btn-transparent rounded-circle fw-bold removeSL"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#dc354555" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+</svg></a>
+</div>`;
+    let container = document.getElementById('securedLoanContainer');
+    let tr = document.createElement('div');
+    tr.classList.add('row', 'pt-2');
+    tr.innerHTML = template;
+    container.appendChild(tr);      
+    s++;
+  };
+
+  $('#securedLoanContainer').on('click', '.removeSL', function($e){
+      $e.preventDefault();
+        $(this).parent().parent().remove();
+        s--;
+      });
+  
+      $('#noSLoans').click(function(){
+        if($(this).prop("checked") == true){
+        //alert("you checked checkbox.");
+        $(".secured-loan-table").addClass("d-none")
+        $(".no-sloans").removeClass("d-none");
+      }else if($(this).prop("checked") == false){
+        //alert("you unchecked checkbox.");
+        $(".secured-loan-table").removeClass("d-none");
+        }
+    });
+
+    $('#addSL').click(function($e){
+      $e.preventDefault();
+      $('#hideMe22').addClass('d-none');
+    })
+      
+</script>
+
+<div class="m-5 secured-loan-table">
+<hr>
+</div>
+
+
 <div id="showMortgages" class="d-none">
 <div class="row m-3">
 
@@ -956,67 +1078,13 @@ $("#empTimePrevY").change(function() {
 <p class="mortgage-none d-none">No mortgages or investment loans.</p>
 </div>
 
-<table class="table table-striped mortgages-table m-3">
 
-<tbody id="mortgageContainer">
-<!--tr>
-<td>
-  <div class="form-group">
-      <label for="financeCompanyM-1" class=" ">Finance Company name</label>
-      <input type="text" class="form-control" name="mortgages[1][financeCompany]" id="financeCompanyM-1" value="" placeholder="" />
-    </div>  
-  </td>
-  <td>
-  <div class="form-group">
-      <label for="balanceM-11" class="">Balance</label>
-      <input type="text" class="form-control" data-type="currency" name="mortgages[1][balance]" id="balanceM-1" value="" placeholder="$" />
-    </div>    
-  </td>
-  <td>
-  <div class="form-group">
-      <label for="repaymentM-1" class="">Repayment</label>
-      <input type="text" class="form-control" data-type="currency" name="mortgages[1][repayment]" id="repaymentM-1" value="" placeholder="$" />
-    </div>   
-  </td>
-  <td>
-  <div class="form-group">
-      <label for="frequencyM-1" class="">Frequency</label>
-      <select class="form-control" name="mortgages[1][frequency]" id="frequencyM-1">
-      <option value="" disabled selected hidden> </option>
-        <option value="Weekly">Weekly</option>
-        <option value="Fortnightly">Fortnightly</option>
-        <option value="Monthly">Monthly</option>
-      </select>
-    </div>
-  </td>
-  <td>
-  <div class="form-group">
-      <label for="investmentProperty-1" class="">Investment? </label>
-      <select class="form-control" name="mortgages[1][investmentProperty]" id="investmentProperty-1" >
-      <option value="" disabled selected hidden> </option>
-        <option value="No">No</option>
-        <option value="Yes">Yes</option>
-        </select>
-    </div>
-  </td>
-  <td>
-   <div class="form-group">
-      <label for="jointM-1" class="">Joint? </label>
-        <select class="form-control" name="mortgages[1][joint]" id="jointM-1" >
-        <option value="" disabled selected hidden> </option>
-        <option value="No">No</option>
-        <option value="Yes">Yes</option>
-        </select>
-    </div>    
-</td>
-<td>
-  <a href="#" class="btn btn-transparent rounded-circle fw-bold removeM"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#dc354555" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
-</svg></a>
-</td>
-</tr-->
-</tbody>
-</table>
+<div id="mortgageContainer" class="mx-3">
+
+
+  </div>
+
+
 <div class="m-3"><a href="#" class="btn btn-transparent mortgages-table" id="addM"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#0dcaf075" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
 </svg></a> <span class="" id="hideMe3"><label for="no-mortgages" class="mortgages-table my-3"><input type="checkbox" id="noMortgages" class="m-2" name="noMortgages" class="mortgages-table" 
@@ -1032,25 +1100,31 @@ value="" > I don't have any Mortgages or Investment Loans</label></span></div>
     let m = 1;
 
     document.getElementById('addM').onclick = function () {
-    let template = `<td>
+    let template = `<div class="col-lg-4 mb-2">
   <div class="form-group">
       <label for="financeCompanyM-${m}" class="">Finance Company name</label>
       <input type="text" class="form-control" name="mortgages[${m}][financeCompany]" id="financeCompanyM-${m}" value="" placeholder="" />
     </div>  
-  </td>
-  <td>
+  </div>
+  <div class="col-lg-4 col-md-6 mb-2">
   <div class="form-group">
       <label for="balanceM-${m}1" class="">Balance</label>
       <input type="text" class="form-control" data-type="currency" name="mortgages[${m}][balance]" id="balanceM-${m}" value="" placeholder="$" />
     </div>    
-  </td>
-  <td>
+  </div>
+  <div class="col-lg-4 col-md-6 mb-2">
+  <div class="form-group">
+      <label for="value-${m}1" class="">Property Value</label>
+      <input type="text" class="form-control" data-type="currency" name="mortgages[${m}][home_value]" id="home_value-${m}" value="" placeholder="$" />
+    </div>    
+  </div>
+  <div class="col-lg-3 col-md-6 mb-2">
   <div class="form-group">
       <label for="repaymentM-${m}" class="">Repayment</label>
       <input type="text" class="form-control" data-type="currency" name="mortgages[${m}][repayment]" id="repaymentM-${m}" value="" placeholder="$" />
     </div>   
-  </td>
-  <td>
+  </div>
+  <div class="col-lg-3 col-md-6 mb-2">
   <div class="form-group">
       <label for="frequencyM-${m}" class="">Frequency</label>
       <select class="form-control" name="mortgages[${m}][frequency]" id="frequencyM-${m}">
@@ -1060,8 +1134,8 @@ value="" > I don't have any Mortgages or Investment Loans</label></span></div>
         <option value="Monthly">Monthly</option>
       </select>
     </div>
-  </td>
-  <td>
+  </div>
+  <div class="col-lg-3 col-md-6 mb-2">
   <div class="form-group">
       <label for="investmentProperty-${m}" class="">Investment? </label>
       <select class="form-control" name="mortgages[${m}][investmentProperty]" id="investmentProperty-${m}" >
@@ -1070,8 +1144,8 @@ value="" > I don't have any Mortgages or Investment Loans</label></span></div>
         <option value="Yes">Yes</option>
         </select>
     </div>
-  </td>
-  <td>
+  </div>
+  <div class="col-lg-2 col-md-4 col-sm-10 mb-2">
    <div class="form-group">
       <label for="jointM-${m}" class="">Joint? </label>
         <select class="form-control" name="mortgages[${m}][joint]" id="jointM-${m}" >
@@ -1080,23 +1154,29 @@ value="" > I don't have any Mortgages or Investment Loans</label></span></div>
         <option value="Yes">Yes</option>
         </select>
     </div>    
-</td>
-<td>
+</div>
+<div class="col-lg-1 col-md-2 col-sm-2 mb-2">
   <a href="#" class="btn btn-transparent rounded-circle fw-bold removeM"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#dc354555" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
 </svg></a>
-</td>`;
+</div>`;
     let container = document.getElementById('mortgageContainer');
-    let tr = document.createElement('tr');
+    let tr = document.createElement('div');
+    tr.classList.add('row', 'pt-2');
     tr.innerHTML = template;
     container.appendChild(tr);      
     m++;
   };
 
-  $('tbody').on('click', '.removeM', function(){
+  $('#mortgageContainer').on('click', '.removeM', function($e){
+        $e.preventDefault();
         $(this).parent().parent().remove();
         p--;
       });
+
+  $('#addM').click(function($e){
+      $e.preventDefault();
+  })
   
       $('#noMortgages').click(function(){
         if($(this).prop("checked") == true){
@@ -1104,7 +1184,7 @@ value="" > I don't have any Mortgages or Investment Loans</label></span></div>
          $(".mortgage-none").removeClass("d-none")
         }
      
-    });
+    }); 
 
     $('#isHomeowner').click(function(){
         if($(this).prop("checked") == true ){
@@ -1225,11 +1305,12 @@ input[0].setSelectionRange(caret_pos, caret_pos);
 
       </div>
       <div class="modal-body">
-        <p>You do not qualify for funding through this portal.</p>  
-        <p>We do have options tailored more to your needs, please contact us on ### to discuss.</p>
+
+      @include('partials.declined')
+
       </div>
       <div class="modal-footer">
-      <input type="hidden" name="category_id" id="category_id" value="1">
+      <input type="hidden" name="category_id" id="category_id" value="3">
         <button type="submit" class="btn btn-info">Save and Close</button>
         
       </div>
@@ -1237,17 +1318,36 @@ input[0].setSelectionRange(caret_pos, caret_pos);
   </div>
 </div>
 
+
+
 <input type="hidden" name="category_id" id="category_id" class="cat-submitted" value="2">
+<input type="hidden" name="category_id" class="save-later" id="category_id" value="1">
 
 
-
-<div class="form-navigation d-none">
+<div class="form-nav-buttons">
   <div class="d-flex justify-content-center">
-<button type="button" class="previous btn btn-lg btn-info mx-1">Previous</button>
-<button id="next" type="button"  class="next btn-lg btn btn-info mx-1 show-modal" disabled>Next</button>
-<button type="submit"  class="btn-lg btn btn-info success mx-1">Submit</button>
+  <div class="save-button mx-1">
+      <button id="save-button" type="submit" class="btn btn-lg btn-light mx-1 d-none">Save + Exit</button>
+    </div>
+    <div class="form-navigation d-none">
+      <button type="button" class="previous btn btn-lg btn-info mx-1">Previous</button>
+      <button id="next" type="button"  class="next btn-lg btn btn-info mx-1 show-modal" disabled>Next</button>
+      <button type="submit"  class="btn-lg btn btn-info success mx-1" id="form-submit">Submit</button>
+    </div>
+
 </div>
 </div>
+
+
+<script>
+    $('#form-submit').on('click', function() {
+          $('.save-later').remove();
+          });
+
+    $('#next').on('click', function() {
+          $('#save-button').removeClass('d-none');
+          });
+</script>
 
 
                   
@@ -1255,6 +1355,37 @@ input[0].setSelectionRange(caret_pos, caret_pos);
 
 
 </form>
+
+<div class="modal" tabindex="-1" role="dialog" id="terms">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content p-5">
+      <div class="modal-header">
+        <h5 class="modal-title">Customer Disclosure &amp; Consent</h5>
+      
+      </div>
+      <div class="modal-body">
+        
+      @include('partials.terms')
+
+      </div>
+      <div class="modal-footer">
+        <button  id="close-terms" type="button" data-dismiss="modal" class="btn btn-info close">Close and continue</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+      // terms modal box
+      $('#click-terms').click(function(){
+        $('#terms').show();
+      })
+
+      $('#close-terms').click(function() {
+        $('#terms').hide();
+      })
+    </script>
 
 @endif
 
@@ -1379,9 +1510,6 @@ var place = otherAddress.getPlace();
         inputElement.addEventListener('keydown',enforceFormat);
         inputElement.addEventListener('keyup',formatToPhone);
 
-        const inputElement2 = document.getElementById('employercontactnumber');
-        inputElement2.addEventListener('keydown',enforceFormat);
-        inputElement2.addEventListener('keyup',formatToPhone);
 
         
 // format medicare number

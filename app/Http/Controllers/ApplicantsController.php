@@ -10,8 +10,11 @@ use App\Models\Update;
 use App\Models\User;
 use App\Notifications\PleaseCompleteApplication;
 use App\Notifications\QuickReferralSent;
+use App\Notifications\QuickReferral;
 
 use App\Http\Requests\Applicants\CreateApplicantRequest;
+
+use MailchimpMarketing\ApiClient;
 
 class ApplicantsController extends Controller
 {
@@ -44,7 +47,6 @@ class ApplicantsController extends Controller
     public function store(CreateApplicantRequest $request, Application $application, Category $category, User $user)
     {
         $applicant = Applicant::create([
-            'apptitle' => $request->apptitle,
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'phone' => $request->phone,
@@ -63,6 +65,28 @@ class ApplicantsController extends Controller
             'category_id' => $request->category_id
         ]);
 
+        // Add to Mailchimp
+        $mailchimp = new \MailchimpMarketing\ApiClient();
+
+        $mailchimp->setConfig([
+            'apiKey' => config('services.mailchimp.key'),
+            'server' => 'us13'
+        ]);
+
+        $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $request->email, [
+            "email_address" => $request->email,
+            "status_if_new" => "subscribed",
+            "merge_fields" => [
+                    "FNAME" => $request->firstname,
+                    "LNAME" => $request->lastname,
+                    "PHONE" => $request->phone
+                    ]
+        ]);
+
+        $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $request->email, [
+            "tags" => [["name" => "QuickReferral", "status" => "active"]],
+        ]);
+
 
         $applicant->save();
         $application->save();
@@ -71,19 +95,8 @@ class ApplicantsController extends Controller
         $application->applicant->notify(new PleaseCompleteApplication($application, $applicant));
         $application->user->notify(new QuickReferralSent($application));
 
-         //  Send mail to admin 
-         \Mail::send('applicants.create.adminMail', array( 
-            'firstname' => $request['firstname'], 
-            'lastname' => $request['lastname'],
-            'api_token' => $application['api_token'],
-            'user_business' => $application->user->businessName,
-            'email' => $request['email']),  
-            function($message) use ($request){ 
-                $message->from($request->email); 
-                $message->to('admin@admin.com', 'Admin')->subject('Quick Referral from' . ' ' . ($request->user()->businessName)); 
-                }); 
+        \Notification::route('mail', config('mail.from.address'))->notify(new QuickReferral($application, $applicant));
 
-        //dd($request->all());
         return View('applicants.next');
     }
 

@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "lukeraymonddowning/laravel-address-lookup": "^1.1",
+        "mailchimp/marketing": "^3.0",
         "protonemedia/laravel-cross-eloquent-search": "^2.4"
     },
     "require-dev": {

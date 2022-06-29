@@ -15,8 +15,6 @@ class BrochureSent extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    use Queueable;
-
     /**
      * 
      * The new application

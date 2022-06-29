@@ -15,9 +15,10 @@
                         </div>
                     @endif
 @auth                   
-Hi {{ Auth::user()->name }} 
-@if (isset(Auth::user()->businessName)) <span> - </span> {{ Auth::user()->businessName }} 
-{{ __('You are logged in!') }}
+Hello  
+@if (isset(Auth::user()->businessName))   
+    {{ Auth::user()->businessName }}<span>,</span> 
+{{ __('welcome back!') }}
 @endif
 @endauth
 
@@ -25,7 +26,7 @@ Hi {{ Auth::user()->name }}
  Please <a href="{{ route('login') }}" class="">login</a> or <a href="{{ route('register') }}" class="">register</a> to use all the features of this portal
 @endguest
 <div class="row align-items-center my-4">
-    <div class="col-md-4 dashboard p-5">
+    <div class="col-lg-4 col-md-6 dashboard p-5">
         <a href="{{ route('applications.create') }}">
         <div class="d-flex h-75 align-items-center justify-content-center">
             <img src="{{ URL::asset('/img/start-2.png') }}" alt="">
@@ -35,7 +36,7 @@ Hi {{ Auth::user()->name }}
         </div>
         </a>
     </div>
-    <div class="col-md-4 dashboard p-5">
+    <div class="col-lg-4 col-md-6 dashboard p-5">
     <a href="{{ route('applicants.create') }}">
         <div class="d-flex h-75 align-items-center justify-content-center">
             <img src="{{ URL::asset('/img/quick-2.png') }}" alt="">
@@ -45,38 +46,38 @@ Hi {{ Auth::user()->name }}
         </div>
         </a>
     </div>
-    <div class="col-md-4 dashboard p-5">
+    <div class="col-lg-4 col-md-6 dashboard p-5">
     <a href="{{ route('emails.create') }}">
         <div class="d-flex h-75 align-items-center justify-content-center">
             <img src="{{ URL::asset('/img/email-2.png') }}" alt="">
         </div>
         <div class="d-flex h-25 align-items-center justify-content-center">
-            <strong>Email Application to Client</strong>
+            <strong>Email Application to Customer</strong>
         </div>
         </a>
     </div>
 
-    <div class="col-md-4 dashboard p-5">
+    <div class="col-lg-4 col-md-6 dashboard p-5">
     <a href="{{ route('brochures.create') }}">
         <div class="d-flex h-75 align-items-center justify-content-center">
             <img src="{{ URL::asset('/img/brochure-2.png') }}" alt="">
         </div>
         <div class="d-flex h-25 align-items-center justify-content-center">
-            <strong>Email HALO Brochure to Client</strong>
+            <strong>Email HALO Brochure to Customer</strong>
         </div>
         </a>
     </div>
-    <div class="col-md-4 dashboard p-5">
-    <a href="">
+    <div class="col-lg-4 col-md-6 dashboard p-5">
+    <a href="{{ URL::asset('/img/Application-Pad.pdf') }}" target="_blank">
         <div class="d-flex h-75 align-items-center justify-content-center">
             <img src="{{ URL::asset('/img/print-2.png') }}" alt="">
         </div>
         <div class="d-flex h-25 align-items-center justify-content-center">
-            <strong>Print Application</strong>
+            <strong>Printable Application Form</strong>
         </div>
         </a>
     </div>
-    <div class="col-md-4 dashboard p-5">
+    <div class="col-lg-4 col-md-6 dashboard p-5">
     <a href="{{ route('contact.index') }}">
         <div class="d-flex h-75 align-items-center justify-content-center">
             <img src="{{ URL::asset('/img/contact-2.png') }}" alt="">
@@ -87,7 +88,8 @@ Hi {{ Auth::user()->name }}
         </a>
     </div>
 </div>
-                       
+
+                 
                 
                    
 

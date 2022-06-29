@@ -10,7 +10,16 @@
 }
     
 </style>
+@guest 
+<h1>You shouldn't be here!</h1>
+@endguest
 
+@auth
+@if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
 
 <div class="row">
 <div class="col">
@@ -32,11 +41,11 @@
 <tbody>
 <thead>
 <tr>
-<th scope="row" class="text-uppercase">Finance Required</th>
+<th scope="row" class="text-uppercase border-0">Finance Required</th>
 </tr>
 </thead>
 <tr>
-<th scope="col">Dental Treatment Cost</th>
+<th scope="col">Treatment Cost</th>
 <td>
 @if(isset($application->loanAmount))    
 {{ $application->loanAmount   }}
@@ -50,7 +59,12 @@ Not specified
 </tr>
 <tr>
 <th>Name</th>
-<td>{{$application->applicant->apptitle}} {{$application->applicant->firstname}} {{$application->applicant->lastname}} </td>
+<td>{{$application->applicant->firstname}} {{$application->applicant->lastname}} </td>
+</tr>
+<tr>
+<th>Gender</th>
+<td>  
+{{ isset($application->applicant->gender) ? $application->applicant->gender : 'Not specified' }}</td>
 </tr>
 <tr>
 <th scope="col">Address</th>
@@ -126,10 +140,6 @@ Not specified
 <td>{{$application->applicant->employername}}</td>
 </tr>
 <tr>
-<th scope="col">Employer Contact number</th>
-<td>{{$application->applicant->employercontactnumber}}</td>
-</tr>
-<tr>
 <th scope="col">Time with current employer</th>
 <td>{{$application->empTimeY}} {{ isset($application->empTimeM) ? $application->empTimeM : '' }}</td>
 </tr>
@@ -196,6 +206,7 @@ Not specified
     <th>Finance Company</th>
     <th>Credit Limit</th>
     <th>Consolidate?</th>
+    <th>Amount Owing</th>
     </thead>
     <tbody>
     @foreach($application->creditCards as $creditCard)
@@ -208,6 +219,9 @@ Not specified
     </td>
     <td>
     {{ $creditCard->consolidate }}
+    </td>
+    <td>
+        {{ "$ " . number_format($creditCard->amount_owing) }}
     </td>
     </tr>
     @endforeach
@@ -270,6 +284,50 @@ Not specified
 </td>
 </tr>
 <tr>
+<th scope="col">Secured Loans</th>
+<td></td>
+</tr>
+<tr>
+<td colspan="2">
+@if (count($application->securedLoans) > 0)
+<table class="table">
+<thead>
+<th>Finance Company</th>
+<th>Balance</th>
+<th>Repayment</th>
+<th>Frequency</th>
+<th>Asset Value</th>
+</thead>
+<tbody>
+@foreach($application->securedLoans as $securedLoan)
+<tr>
+  <td>
+    {{ $securedLoan->financeCompany}} 
+  </td>
+  <td>
+  {{"$ " . number_format($securedLoan->balance, 0)  }}  
+  </td>
+  <td>
+  {{"$ " . number_format($securedLoan->repayment, 0)  }}   
+  </td>
+  <td>
+    {{ $securedLoan->frequency }}
+  </td>
+  <td>
+  {{"$ " . number_format($securedLoan->asset_value, 0)  }}   
+  </td>
+</tr>
+@endforeach
+</tbody>
+</table>
+
+@else
+
+<div>No secured loans to show</div>
+@endif
+</td>
+</tr>
+<tr>
 <th scope="col">Mortgages</th>
 <td></td>
 </tr>
@@ -281,10 +339,11 @@ Not specified
 <thead>
 <th>Finance Company</th>
 <th>Balance</th>
+<th>Value</th>
 <th>Repayment</th>
 <th>Frequency</th>
-<th>Investment Property?</th>
-<th>Joint Loan?</th>
+<th>Investment?</th>
+<th>Joint?</th>
 </thead>
 <tbody>
 @foreach($application->mortgages as $mortgage)
@@ -293,10 +352,13 @@ Not specified
   {{ $mortgage->financeCompany }}  
   </td>
   <td>
-  {{ $mortgage->balance }}    
+  {{"$ " . number_format($mortgage->balance, 0)  }}   
   </td>
   <td>
-  {{ $mortgage->repayment }}
+    {{ "$" . number_format($mortgage->home_value, 0) }}
+  </td>
+  <td>
+  {{ "$" . number_format($mortgage->repayment, 0) }}
   </td>
   <td>
   {{ $mortgage->frequency }}
@@ -333,12 +395,28 @@ Not specified
  
 
 @if ($application->category->name === "Incomplete")
-<form class="" action="{{-- {{ route('application.resendEmail', $application->api_token) }} --}}" method="POST" enctype="multipart/form-data">
+<form class="" action="{{ route('application.resendEmail', $application->api_token) }}" method="POST" enctype="multipart/form-data">
 @csrf
 @method ('GET')
 <button class="btn btn-info" type="submit">Send to client</button>
 </form>
+<div class="my-3">
+<ul>
+@if($application->applicant->notifications)
+@foreach($application->applicant->notifications as $notification)
+@if($notification->type == 'App\Notifications\LinkToYourFinanceApplication')
+<li class="font-italic">Resent {{ date('d M Y', strtotime($notification->created_at)) }}</li>
+@endif
+@endforeach
+
+@endif
+</ul>
+</div>
+
+
+<!--comment out when testing complete-->
 <!--a href="/applications/{{ $application->api_token }}/edit">Update Application</a-->
+<!--comment out above when testing complete-->
 @endif
               
 @if ($application->category->name !== "Incomplete")
@@ -391,7 +469,7 @@ Last updated: {{ date('d M Y', strtotime($application->updated_at ))}}</p>
         <div class="form-group my-1">
             <label for="category_id">Approve / Withdraw / Decline</label>
                 <select class="form-control" name="category_id" id="category_id" value="">
-                @foreach($categories->reverse()->slice(0, 3) as $category)
+                @foreach($categories->reverse()->slice(1, 3) as $category)
                     <option value="{{ $category->id }}" id="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach                   
                 </select>
@@ -458,7 +536,19 @@ Last updated: {{ date('d M Y', strtotime($application->updated_at ))}}</p>
         } 
     });
 
+
+window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted || 
+                         ( typeof window.performance != "undefined" && 
+                              window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    // Handle page restore.
+    window.location.reload();
+  }
+});
+
 </script>
+@endauth
 
 @include('includes.footer')
 @endsection

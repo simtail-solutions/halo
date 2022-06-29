@@ -26,7 +26,8 @@ class CreateCreditCardRequest extends FormRequest
         return [
             'financeCompany' => 'required',
             'creditLimit' => 'required',
-            'consolidate' => 'required'
+            'consolidate' => 'required',
+            'amount_owing' => 'required'
         ];
     }
 }

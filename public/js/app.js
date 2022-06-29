@@ -66,17 +66,36 @@ if ($(this).find("option:selected").attr("id") == "mort" || $(this).find("option
     }
 });
 
+// terms modal box
+$('#click-terms').click(function(){
+  $('#terms').show();
+})
+
+$('#close-terms').click(function() {
+  $('#terms').hide();
+})
+
+
 // shows modal box if employment criteria not met
 $("#employment").change(function() {
     if ($(this).find("option:selected").attr("id") == "centrelink" || $(this).find("option:selected").attr("id") == "unemployed" || $(this).find("option:selected").attr("id") == "pension") {
-      $('#next').on('click', function() {
-          $('#sorry').show()
-          $('.cat-submitted').remove();
-          });
+      $('#next').on('click', function() {                 
+            var required = $('input,textarea,select').filter('[required]:visible').length;
+            if (required === 0) {
+              $('#sorry').show()
+              $('.cat-submitted').remove();
+              $('.save-later').remove();  
+            }
+            return required       
+           });
         } 
     });
 
-    // modal
+  
+  
+    
+    
+// modal
 $('#sorry').on('shown.bs.modal', function () {
   $('#next').trigger('focus')
 })
@@ -168,9 +187,9 @@ const inputElement = document.getElementById('phone');
 inputElement.addEventListener('keydown',enforceFormat);
 inputElement.addEventListener('keyup',formatToPhone);
 
-const inputElement2 = document.getElementById('employercontactnumber');
-inputElement2.addEventListener('keydown',enforceFormat);
-inputElement2.addEventListener('keyup',formatToPhone);
+// const inputElement2 = document.getElementById('employercontactnumber');
+// inputElement2.addEventListener('keydown',enforceFormat);
+// inputElement2.addEventListener('keyup',formatToPhone);
 // format phone end
 
 // format medicare number

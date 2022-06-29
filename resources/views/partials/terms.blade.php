@@ -1,0 +1,2 @@
+<p>By continuing, I authorise Pretty Penny Finance to contact a credit reporting body and access my credit report.</p>
+<P>I consent to Pretty Penny Finance's <a href="/img/Privacy-Policy.pdf" target="_new">Privacy</a> and <a href="/img/Credit-Guide.pdf" target="_new">Credit Guide</a> requirements, as defined in the Credit Guide and to receiving communications via email, phone and electronically, as set out in the Credit Guide.</p>
