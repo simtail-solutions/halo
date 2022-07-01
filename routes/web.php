@@ -14,16 +14,16 @@ use App\Http\Controllers\AutoAddressController;
 |
 */
 
-// Route::get('ping', function () {
-//     $mailchimp = new \MailchimpMarketing\ApiClient();
+Route::get('ping', function () {
+    $mailchimp = new \MailchimpMarketing\ApiClient();
 
-//     $mailchimp->setConfig([
-//         'apiKey' => config('services.mailchimp.key'),
-//         'server' => 'us13'
-//     ]);
+    $mailchimp->setConfig([
+        'apiKey' => config('services.mailchimp.key'),
+        'server' => 'us13'
+    ]);
 
 //     //$response = $mailchimp->ping->get();
-//     //$response = $mailchimp->lists->getAllLists();
+    $response = $mailchimp->lists->getAllLists();
 //     $response = $mailchimp->lists->getListMergeFields(config('services.mailchimp.lists.test'));
 //     // $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), "leanne.testing@simtail.com", [
 //     //     "email_address" => "leanne.testing@simtail.com",
@@ -48,8 +48,8 @@ use App\Http\Controllers\AutoAddressController;
 //     //       "PHONE" => "0412456456"
 //     //     ]
 //     //     ]);
-//     ddd($response);
-// });
+    ddd($response);
+});
 
 Route::get('auto-complete-address', [AutoAddressController::class, 'googleAutoAddress']);
 Route::get('/', function () {

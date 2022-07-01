@@ -1144,7 +1144,7 @@ $(function () {
 
 </script>
 
-<script src="https://maps.google.com/maps/api/js?key=AIzaSyCtIer4xqMGyBnHt_M2IyDaFLNZEEKwgcM&libraries=places&callback=initAutocomplete" type="text/javascript"></script>
+<script src="https://maps.google.com/maps/api/js?key={{config('services.google.maps')}}&libraries=places&callback=initAutocomplete" type="text/javascript"></script>
 
 <script>
 google.maps.event.addDomListener(window, 'load', initialize);

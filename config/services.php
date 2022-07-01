@@ -42,6 +42,10 @@ return [
         
     'contact' => [
         'phone' => env('DEFAULT_PHONE')
+    ],
+
+    'google' => [
+        'maps' => env('GOOGLE_API_KEY')
     ]
 
 ];
