@@ -47,8 +47,9 @@
     <div id="app">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
-    <a class="navbar-brand" href="{{ route('home') }}">
+    <a class="navbar-brand d-flex flex-column" href="{{ route('home') }}">
         <img src="{{ URL::asset('/img/halo-finance.png') }}">
+        <span class="logo-small-text">Powered by Pretty Penny Finance</span>
     </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

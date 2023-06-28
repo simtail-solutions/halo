@@ -36,9 +36,8 @@ return [
             'test' => env('MAILCHIMP_LIST_TEST'),
             'partners' => env('MAILCHIMP_LIST_PARTNERS'),
             'customers' => env('MAILCHIMP_LIST_CUSTOMERS')
-
         ]
-        ],
+    ],
         
     'contact' => [
         'phone' => env('DEFAULT_PHONE')

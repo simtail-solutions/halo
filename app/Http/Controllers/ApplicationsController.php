@@ -272,17 +272,19 @@ class ApplicationsController extends Controller
                 'server' => 'us13'
             ]);
 
-            $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $request->email, [
+            $subscriber_hash = md5(strtolower($request->email));
+
+            $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $subscriber_hash, [
                 "email_address" => $request->email,
                 "status_if_new" => "subscribed",
                 "merge_fields" => [
-                        "FNAME" => $request->firstname,
-                        "LNAME" => $request->lastname,
-                        "PHONE" => $request->phone
-                        ]
+                    "FNAME" => $request->firstname,
+                    "LNAME" => $request->lastname,
+                    "PHONE" => $request->phone
+                ]
             ]);
 
-            $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $request->email, [
+            $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $subscriber_hash, [
                 "tags" => [["name" => "Application", "status" => "active"]],
             ]);
             
@@ -473,7 +475,9 @@ class ApplicationsController extends Controller
                 'server' => 'us13'
             ]);
 
-            $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $request->email, [
+            $subscriber_hash = md5(strtolower($request->email));
+
+            $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $subscriber_hash, [
                 "email_address" => $request->email,
                 "status_if_new" => "subscribed",
                 "merge_fields" => [
@@ -483,7 +487,7 @@ class ApplicationsController extends Controller
                         ]
             ]);
 
-            $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $request->email, [
+            $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $subscriber_hash, [
                 "tags" => [["name" => "ApplicationUpdated", "status" => "active"]],
             ]);
                 

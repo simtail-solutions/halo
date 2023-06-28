@@ -12,11 +12,11 @@
 
     <div class="row m-3">
       <div class="col mx-3">
-        <p>If you'd prefer HALO to handle the application with the customer, complete the <strong>Quick Referral</strong> section and we'll handle the rest!</p>
+        <p>If you'd prefer Pretty Penny Finance to handle the application with the customer, complete the <strong>Quick Referral</strong> section and we'll handle the rest!</p>
         <ol>
           <li>Simply enter your customers details and submit!</li>
           <li>An email containing our eBrochure will be sent to the customer. The email will also contain our contact details and a link to apply when they're ready.</li>
-          <li>If the customer has decided to proceed and has submitted the application, you'll be able to track it in your HALO portal.</li>
+          <li>If the customer has decided to proceed and has submitted the application, you'll be able to track it in your portal account.</li>
         </ol>
       </div>
     </div>
@@ -90,7 +90,7 @@
         
       <label id="sample" class="form-check-label mr-5" for="defaultCheck1">
         <input type="checkbox" id="acceptance" name="acceptance" value="" required>
-          &nbsp;&nbsp;Clicking "Submit" confirms you've obtained the customer's consent to provide their contact details to HALO Finance
+          &nbsp;&nbsp;Clicking "Submit" confirms you've obtained the customer's consent to provide their contact details to Pretty Penny Finance
         </label>
        
       </span>

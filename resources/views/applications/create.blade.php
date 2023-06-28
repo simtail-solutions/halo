@@ -36,7 +36,7 @@
   
   <div class="row text-center">
 <p>Please ensure the application is completed in full and truthfully.</p>
-<p>Once the application is complete HALO's customer support team will be in contact providing your obligation free quote.</p>
+<p>Once the application is complete Pretty Penny Finance's customer support team will be in contact providing your obligation free quote.</p>
 <p>Halo makes borrowing more flexible with loans tailored to your budget helping you achieve your treatment sooner.</p>
 
         <h1 class="p-5">Let's get Started!</h1>
@@ -70,21 +70,21 @@
     <div class="col-lg-4">
       <div class="form-group">
         <label class="" for="first_name">First Name</label>
-        <input type="text" class="form-control" id="firstname" name="firstname" placeholder=" "  value="{{ isset($application) ? $application->applicant->firstname : '' }}"  required>
+        <input type="text" class="form-control" id="firstname" name="firstname" placeholder=" "  value="{{ isset($application) ? $application->applicant->firstname : '' }}"  required >
       </div>
     </div>
 
     <div class="col-lg-4">
       <div class="form-group">
         <label class="" for="last_name">Last Name</label>
-        <input type="text" class="form-control" id="lastname" name="lastname" placeholder=" "  value="{{ isset($application) ? $application->applicant->lastname : '' }}"  required>
+        <input type="text" class="form-control" id="lastname" name="lastname" placeholder=" "  value="{{ isset($application) ? $application->applicant->lastname : '' }}"  required >
       </div>
     </div>
 
     <div class="col-lg-1">
       <div class="form-group">
         <label class="" for="gender">Gender</label>
-          <select class="form-control" id="gender"  name="gender" required>
+          <select class="form-control" id="gender"  name="gender" required >
           <option value="" disabled selected hidden> </option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
@@ -103,7 +103,7 @@
       <div class="form-group">
         <label class=" " for="dob">Date of Birth</label>
       <div class="row mx-0">
-        <select class="form-control d-inline col mr-1" id="birth_day" name="birth_day" required>
+        <select class="form-control d-inline col mr-1" id="birth_day" name="birth_day" required >
         <option value="" disabled selected hidden>Day</option>
         <option>01</option>
             <option>02</option>
@@ -137,7 +137,7 @@
             <option>30</option>
             <option>31</option>
         </select>
-        <select class="form-control d-inline col mr-1" id="birth_month" name="birth_month" required>
+        <select class="form-control d-inline col mr-1" id="birth_month" name="birth_month" required >
             <option value="" disabled selected hidden>Month</option>
             <option>JAN</option>
             <option>FEB</option>
@@ -152,7 +152,7 @@
             <option>NOV</option>
             <option>DEC</option>
           </select>
-        <input type="text" class="form-control d-inline col" id="birth_year" name="birth_year" size="4" maxlength="4" placeholder="Year" required>
+        <input type="text" class="form-control d-inline col" id="birth_year" name="birth_year" size="4" maxlength="4" placeholder="Year" required >
       </div>
       </div>            
     </div>
@@ -161,7 +161,7 @@
     <div class="col-lg-4">
       <div class="form-group">
         <label class="" for="dependants">Number of Dependants</label>
-          <select class="form-control" id="dependants" name="dependants" required>
+          <select class="form-control" id="dependants" name="dependants" required >
             <option value="" disabled selected hidden> </option>  
             <option>0</option>
             <option>1</option>
@@ -177,7 +177,7 @@
     <div class="col-lg-4">
       <div class="form-group">
         <label class="" for="status">Marital Status</label>
-          <select class="form-control" id="status" name="status" required>
+          <select class="form-control" id="status" name="status" required >
           <option value="" disabled selected hidden> </option>
             <option id="single">Single</option>
             <option id="married">Married</option>
@@ -196,7 +196,7 @@
     <div class="col-lg-6">
       <div class="form-group">
         <label class="" for="phone">Mobile Number</label>
-        <input type="text" class="form-control" onKeyUp=check() minlength="12" id="phone" name="phone" value="{{ isset($application) ? $application->applicant->phone : '' }}" placeholder=" " required>
+        <input type="text" class="form-control" onKeyUp=check() minlength="12" id="phone" name="phone" value="{{ isset($application) ? $application->applicant->phone : '' }}" placeholder=" " required >
       </div>
       <div id="warning" class="mx-3">
 
@@ -218,7 +218,7 @@
     <div class="col-lg-6">
       <div class="form-group">
         <label class="" for="email">Email Address</label>
-        <input type="email" class="form-control" id="email" name="email" value="{{ isset($application) ? $application->applicant->email : '' }}" placeholder=" " required>
+        <input type="email" class="form-control" id="email" name="email" value="{{ isset($application) ? $application->applicant->email : '' }}" placeholder=" " required >
       </div>
     </div>
       
@@ -352,7 +352,7 @@
       <span class="my-4 d-flex justify-content-center">
         
       <label id="sample" class="form-check-label mr-5" for="defaultCheck1">
-        <input type="checkbox" id="acceptance" name="acceptance" value="" required>
+        <input type="checkbox" id="acceptance" name="acceptance" value="" required >
           &nbsp;&nbsp;I have read, understood and agree to the <a href="#terms" id="click-terms" data-toggle="modal" data-target="#terms">terms</a>
         </label>
        
@@ -565,7 +565,7 @@
 <div class="row m-3">
 
 <h3>Credit Cards</h3>
-<p class="credit-card-table">List all credit cards - include store cards and zero balance cards.</p>
+<p class="credit-card-table">List all credit cards - include store cards and zero balance cards. If you don’t have any, leave blank.</p>
 <p class="no-cards d-none">No credit cards to show.</p>
         
 
@@ -580,7 +580,7 @@
 
 <div class="m-3"><a href="#" class="btn btn-transparent credit-card-table" id="addRow"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#0dcaf075" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
-</svg></a> <span id="hideMe1"><label class="credit-card-table my-2" for="no-credit-cards"><input type="checkbox" id="noCards" class="m-2" name="noCards" value="" > I don't have any Credit Cards</label></span></div>
+</svg></a></div>
 
 <script type="text/javascript">
 
@@ -630,17 +630,6 @@
         $(this).parent().parent().remove();
         i--;
       });
-  
-      $('#noCards').click(function(){
-        if($(this).prop("checked") == true){
-       
-        $(".credit-card-table").addClass("d-none")
-        $(".no-cards").removeClass("d-none");
-      }else if($(this).prop("checked") == false){
-    
-        $(".credit-card-table").removeClass("d-none");
-        }
-    });
 
     $('#addRow').click(function(){
       $('#hideMe1').addClass('d-none');
@@ -657,7 +646,7 @@
 <div class="row m-3">
 
 <h3>Personal Loans</h3>
-<p class="personal-loan-table">List all unsecured personal loans.</p>
+<p class="personal-loan-table">List all unsecured personal loans. If you don’t have any, leave blank.</p>
 <p class="no-loans d-none">No unsecured loans.</p>
 
 </div>
@@ -670,7 +659,7 @@
 
 <div class="m-3"><a href="#" class="btn btn-transparent personal-loan-table" id="addPL"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#0dcaf075" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
-</svg></a> <span id="hideMe2"><label for="no-personal-loans" class="personal-loan-table my-3"><input type="checkbox" id="noLoans" name="noLoans" class="m-2" value="" > I don't have any Personal Loans</label></span></div>
+</svg></a></div>
 
 <script type="text/javascript">
 
@@ -743,17 +732,6 @@
         $(this).parent().parent().remove();
         p--;
       });
-  
-      $('#noLoans').click(function(){
-        if($(this).prop("checked") == true){
-    
-        $(".personal-loan-table").addClass("d-none")
-        $(".no-loans").removeClass("d-none");
-      }else if($(this).prop("checked") == false){
-        
-        $(".personal-loan-table").removeClass("d-none");
-        }
-    });
 
     $('#addPL').click(function($e){
       $e.preventDefault();
@@ -769,7 +747,7 @@
 <div class="row m-3">
 
 <h3>Secured Loans</h3>
-<p class="secured-loan-table">List all loans secured to car or asset.</p>
+<p class="secured-loan-table">List all loans secured to car or asset. If you don’t have any, leave blank.</p>
 <p class="no-sloans d-none">No secured loans.</p>
 
 </div>
@@ -780,7 +758,7 @@
 
 <div class="m-3"><a href="#" class="btn btn-transparent secured-loan-table" id="addSL"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#0dcaf075" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
-</svg></a> <span id="hideMe22"><label for="no-secured-loans" class="secured-loan-table my-3"><input type="checkbox" id="noSLoans" name="noSLoans" class="m-2" value="" > I don't have any Secured Loans</label></span></div>
+</svg></a></div>
 
 <script type="text/javascript">
 
@@ -841,15 +819,6 @@
         $(this).parent().parent().remove();
         s--;
       });
-  
-      $('#noSLoans').click(function(){
-        if($(this).prop("checked") == true){
-        $(".secured-loan-table").addClass("d-none")
-        $(".no-sloans").removeClass("d-none");
-      }else if($(this).prop("checked") == false){
-        $(".secured-loan-table").removeClass("d-none");
-        }
-    });
 
     $('#addSL').click(function($e){
       $e.preventDefault();
