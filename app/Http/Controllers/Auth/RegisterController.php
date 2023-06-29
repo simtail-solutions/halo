@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 use MailchimpMarketing\ApiClient;
 
@@ -90,19 +91,38 @@ class RegisterController extends Controller
             'server' => 'us13'
         ]);
 
-        $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $data['email'], [
-            "email_address" => $data['email'],
-            "status_if_new" => "subscribed",
-            "merge_fields" => [
-                    "FNAME" => $data['name'],
-                    "PHONE" => $data['phone'],
-                    "BNAME" => $data['businessName']
-                    ]
-        ]);
+        $subscriber_hash = md5(strtolower($data['email']));
 
-        $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $data['email'], [
-            "tags" => [["name" => $data['industry'], "status" => "active"]],
-        ]);
+        try {
+
+            $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $subscriber_hash, [
+                "email_address" => $data['email'],
+                "status_if_new" => "subscribed",
+                "merge_fields" => [
+                        "FNAME" => $data['name'],
+                        "PHONE" => $data['phone'],
+                        "BNAME" => $data['businessName']
+                        ]
+            ]);
+
+            $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $subscriber_hash, [
+                "tags" => [["name" => $data['industry'], "status" => "active"]],
+            ]);
+
+        } catch (\GuzzleHttp\Exception\ClientException $e)  {
+            /**
+             * be wary that mailchimp rejects emails like testing@testing.com.au and dont provide very descriptive warnings. it
+             * wasnt until I added a try/catch block and outputted the response that I was able to see the error message. until
+             * then all we got was a 400 error which was truncated and it broke the flow of the application.
+             * 
+             * uncomment the below if you need to debug mailchimp
+             */
+
+            Log::warning('Mailchimp Error: ' . $e->getResponse()->getBody()->getContents());
+            
+            //echo '<pre>' . var_export($e->getResponse()->getBody()->getContents()).'</pre>';
+            //$errors[] = $e->getMessage();
+        }
 
         return $user;
        

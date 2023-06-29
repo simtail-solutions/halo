@@ -60,10 +60,10 @@ class FinanceApplicationForm extends Notification implements ShouldQueue
 
         return (new MailMessage)
                     ->greeting('Hello ' . $applicantFirstName)
-                    ->line('We are delighted ' .  $referrer . ' has referred you to Halo Finance.')
+                    ->line('We are delighted ' .  $referrer . ' has referred you to Pretty Penny Finance.')
                     ->line('This application should only take a few minutes and will not impact your credit score. 
                             Please ensure the application is completed in full and truthfully.')
-                    ->line('Halo makes borrowing 
+                    ->line('Pretty Penny Finance makes borrowing 
                     more rewarding with flexible loans tailored to your budget helping borrowers get ahead in 
                     life and achieve more with their money. It\'s fairer finance that works for everyone.')
                     ->action('Apply Here', route('applications.edit', $applyLink) )

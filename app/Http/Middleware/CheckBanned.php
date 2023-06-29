@@ -23,7 +23,7 @@ class CheckBanned
 
             $request->session()->regenerateToken();
 
-            return redirect()->route('login')->with('error', 'Your Account have been deactivated, please contact Halo Finance for reactivation.');
+            return redirect()->route('login')->with('error', 'Your Account have been deactivated, please contact Pretty Penny Finance for reactivation.');
 
             }
 

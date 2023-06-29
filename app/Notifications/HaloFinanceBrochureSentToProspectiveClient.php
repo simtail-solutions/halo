@@ -60,7 +60,7 @@ class HaloFinanceBrochureSentToProspectiveClient extends Notification implements
 
         return (new MailMessage)
                 ->greeting('Update!')
-                ->line(' A Halo Finance brochure be sent to '. $applicantFirstName . ' ' . $applicantLastName . ' at the request of referrer business - '. $referrer);
+                ->line(' A Pretty Penny Finance brochure be sent to '. $applicantFirstName . ' ' . $applicantLastName . ' at the request of referrer business - '. $referrer);
     }
 
     /**

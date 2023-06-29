@@ -84,6 +84,24 @@
       
   </div>
 
+  <div class="row m-3">
+
+<div class="col-6">
+  <div class="form-group">
+    <label for="treatment_cost">Treament Cost (if known)</label>
+    <input type="text" class="form-control" id="treatmentcost" name="treatmentcost" placeholder="Treament Cost (if known)"  value=" "  required>
+  </div>
+</div>
+
+<div class="col-6">
+  <div class="form-group">
+    <label for="last_name">Dentist or dental company person (contact)</label>
+    <input type="text" class="form-control" id="dentist" name="dentist" placeholder="Dentist or dental company person (contact)"  value=" "  required>
+  </div>
+</div>
+  
+</div>
+
   <div class="row mx-3">
       
       <span class="my-4 d-flex justify-content-center">

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 use App\Models\Brochure;
 use App\Models\Application;
@@ -12,6 +14,8 @@ use App\Models\Update;
 use App\Models\User;
 
 use App\Notifications\HaloFinanceBrochure;
+use App\Notifications\BrochureApplicationLink;
+
 use App\Notifications\BrochureSent;
 use App\Notifications\HaloFinanceBrochureSentToProspectiveClient;
 use App\Http\Requests\BrochureRequest;
@@ -65,25 +69,47 @@ class BrochureController extends Controller
             'server' => 'us13'
         ]);
 
-        $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $request->email, [
-            "email_address" => $request->email,
-            "status_if_new" => "subscribed",
-            "merge_fields" => [
-                    "FNAME" => $request->firstname,
-                    "LNAME" => $request->lastname,
-                    "PHONE" => $request->phone
-                    ]
-        ]);
+        $subscriber_hash = md5(strtolower($request->email));
 
-        $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $request->email, [
-            "tags" => [["name" => "Brochure", "status" => "active"]],
-        ]);
+        try {
+
+            $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $subscriber_hash, [
+                "email_address" => $request->email,
+                "status_if_new" => "subscribed",
+                "merge_fields" => [
+                        "FNAME" => $request->firstname,
+                        "LNAME" => $request->lastname,
+                        "PHONE" => $request->phone
+                        ]
+            ]);
+
+            $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $subscriber_hash, [
+                "tags" => [["name" => "Brochure", "status" => "active"]],
+            ]);
+
+        } catch (\GuzzleHttp\Exception\ClientException $e)  {
+            /**
+             * be wary that mailchimp rejects emails like testing@testing.com.au and dont provide very descriptive warnings. it
+             * wasnt until I added a try/catch block and outputted the response that I was able to see the error message. until
+             * then all we got was a 400 error which was truncated and it broke the flow of the application.
+             * 
+             * uncomment the below if you need to debug mailchimp
+             */
+
+            Log::warning('Mailchimp Error: ' . $e->getResponse()->getBody()->getContents());
+            
+            //echo '<pre>' . var_export($e->getResponse()->getBody()->getContents()).'</pre>';
+            //$errors[] = $e->getMessage();
+        }
 
         $applicant->save();
         $application->save();
         $update->save();
 
-        $application->applicant->notify(new HaloFinanceBrochure($application, $applicant));
+        
+        //$application->applicant->notify(new HaloFinanceBrochure($application, $applicant));
+        $application->applicant->notify(new BrochureApplicationLink($application, $applicant));
+
         $application->user->notify(new BrochureSent($application));
 
         
@@ -130,5 +156,9 @@ class BrochureController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function download() {  
+        return Storage::download('public/pp_2207_DLBrochure_v4.pdf');
     }
 }

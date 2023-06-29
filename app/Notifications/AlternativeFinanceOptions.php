@@ -54,10 +54,10 @@ class AlternativeFinanceOptions extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                ->line('Thank you for applying for finance with Halo Finance.')
+                ->line('Thank you for applying for finance with Pretty Penny Finance.')
                 ->line('Given your current employment status, we will need to explore different options with you.')
                 ->line('One of our consultants will be in touch shortly, or you can contact us now to discuss your options.')
-                ->action('Contact Halo Finance', route('contact.index') )
+                ->action('Contact Pretty Penny Finance', route('contact.index') )
                 ->line('We look forward to speaking with you soon.')
                 ->line('Include link to Privacy Consent form.');
     }

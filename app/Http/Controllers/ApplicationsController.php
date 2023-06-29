@@ -16,6 +16,7 @@ use App\Models\Update;
 use App\Models\Result;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 use App\Notifications\FinanceApplicationSubmitted;
 use App\Notifications\AlternativeFinanceOptions;
@@ -274,20 +275,37 @@ class ApplicationsController extends Controller
 
             $subscriber_hash = md5(strtolower($request->email));
 
-            $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $subscriber_hash, [
-                "email_address" => $request->email,
-                "status_if_new" => "subscribed",
-                "merge_fields" => [
-                    "FNAME" => $request->firstname,
-                    "LNAME" => $request->lastname,
-                    "PHONE" => $request->phone
-                ]
-            ]);
+            try {
 
-            $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $subscriber_hash, [
-                "tags" => [["name" => "Application", "status" => "active"]],
-            ]);
+                $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $subscriber_hash, [
+                    "email_address" => $request->email,
+                    "status_if_new" => "subscribed",
+                    "merge_fields" => [
+                        "FNAME" => $request->firstname,
+                        "LNAME" => $request->lastname,
+                        "PHONE" => $request->phone
+                    ]
+                ]);
+
+                $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $subscriber_hash, [
+                    "tags" => [["name" => "Application", "status" => "active"]],
+                ]);
             
+            } catch (\GuzzleHttp\Exception\ClientException $e)  {
+                /**
+                 * be wary that mailchimp rejects emails like testing@testing.com.au and dont provide very descriptive warnings. it
+                 * wasnt until I added a try/catch block and outputted the response that I was able to see the error message. until
+                 * then all we got was a 400 error which was truncated and it broke the flow of the application.
+                 * 
+                 * uncomment the below if you need to debug mailchimp
+                 */
+
+                Log::warning('Mailchimp Error: ' . $e->getResponse()->getBody()->getContents());
+                
+                //echo '<pre>' . var_export($e->getResponse()->getBody()->getContents()).'</pre>';
+                //$errors[] = $e->getMessage();
+            }
+
             $application->user->notify(new FinanceApplicationSubmitted($application));
         
             if ($request->category_id == 1) {
@@ -295,10 +313,10 @@ class ApplicationsController extends Controller
                 session()->flash('success', 'Application saved - an email has been sent to the Applicant with a link to resume application');
             } else if ($request->category_id == 3) {
                 $applicant->notify(new AlternativeFinanceOptions($applicant));
-                session()->flash('success', 'Application updated - client to contact Halo Finance for further options.');
+                session()->flash('success', 'Application updated - client to contact Pretty Penny Finance for further options.');
             } else {
                 $applicant->notify(new FinanceApplicationReceived($applicant));
-                session()->flash('success','Application created successfully.');
+                session()->flash('success','Thanks for submitting your application. You will receive an email shortly with the next steps of the process.');
             }
             
             \Notification::route('mail', config('mail.from.address'))->notify(new NewApplication($application, $applicant));
@@ -477,19 +495,36 @@ class ApplicationsController extends Controller
 
             $subscriber_hash = md5(strtolower($request->email));
 
-            $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $subscriber_hash, [
-                "email_address" => $request->email,
-                "status_if_new" => "subscribed",
-                "merge_fields" => [
-                        "FNAME" => $request->firstname,
-                        "LNAME" => $request->lastname,
-                        "PHONE" => $request->phone
-                        ]
-            ]);
+            try {
 
-            $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $subscriber_hash, [
-                "tags" => [["name" => "ApplicationUpdated", "status" => "active"]],
-            ]);
+                $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), $subscriber_hash, [
+                    "email_address" => $request->email,
+                    "status_if_new" => "subscribed",
+                    "merge_fields" => [
+                            "FNAME" => $request->firstname,
+                            "LNAME" => $request->lastname,
+                            "PHONE" => $request->phone
+                            ]
+                ]);
+
+                $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), $subscriber_hash, [
+                    "tags" => [["name" => "ApplicationUpdated", "status" => "active"]],
+                ]);
+
+            } catch (\GuzzleHttp\Exception\ClientException $e)  {
+                /**
+                 * be wary that mailchimp rejects emails like testing@testing.com.au and dont provide very descriptive warnings. it
+                 * wasnt until I added a try/catch block and outputted the response that I was able to see the error message. until
+                 * then all we got was a 400 error which was truncated and it broke the flow of the application.
+                 * 
+                 * uncomment the below if you need to debug mailchimp
+                 */
+
+                Log::warning('Mailchimp Error: ' . $e->getResponse()->getBody()->getContents());
+                
+                //echo '<pre>' . var_export($e->getResponse()->getBody()->getContents()).'</pre>';
+                //$errors[] = $e->getMessage();
+            }
                 
             $application->user->notify(new FinanceApplicationSubmitted($application));
            
@@ -499,7 +534,7 @@ class ApplicationsController extends Controller
             } else if ($request->category_id == 3) {
                 $applicant->notify(new AlternativeFinanceOptions($applicant));
                 // flash message
-                session()->flash('success', 'Application updated - client to contact Halo Finance for further options.');
+                session()->flash('success', 'Application updated - client to contact Pretty Penny Finance for further options.');
             } else {
                 $application->applicant->notify(new UpdatedFinanceApplicationReceived($applicant));
                 // flash message

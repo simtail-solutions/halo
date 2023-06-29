@@ -5,7 +5,7 @@
   
   <div class="row m-3 p-3 text-center">
         <p>This application should only take a few minutes and will not impact your credit score. Please ensure the application is 
-        completed in full and truthfully. Halo makes borrowing more rewarding with flexible loans tailored to your budget 
+        completed in full and truthfully. Pretty Penny Finance makes borrowing more rewarding with flexible loans tailored to your budget 
         helping borrowers get ahead in life and achieve more with their money. It's fairer finance that works for everyone</p>
 
         <h1 class="p-5">Let's get Started!</h1>

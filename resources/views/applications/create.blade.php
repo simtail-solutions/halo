@@ -37,7 +37,7 @@
   <div class="row text-center">
 <p>Please ensure the application is completed in full and truthfully.</p>
 <p>Once the application is complete Pretty Penny Finance's customer support team will be in contact providing your obligation free quote.</p>
-<p>Halo makes borrowing more flexible with loans tailored to your budget helping you achieve your treatment sooner.</p>
+<p>Pretty Penny Finance makes borrowing more flexible with loans tailored to your budget helping you achieve your treatment sooner.</p>
 
         <h1 class="p-5">Let's get Started!</h1>
   

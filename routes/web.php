@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\AutoAddressController;
+use App\Http\Controllers\BrochureController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,32 +23,7 @@ Route::get('ping', function () {
         'server' => 'us13'
     ]);
 
-//     //$response = $mailchimp->ping->get();
     $response = $mailchimp->lists->getAllLists();
-//     $response = $mailchimp->lists->getListMergeFields(config('services.mailchimp.lists.test'));
-//     // $response = $mailchimp->lists->setListMember(config('services.mailchimp.lists.test'), "leanne.testing@simtail.com", [
-//     //     "email_address" => "leanne.testing@simtail.com",
-//     //     "status_if_new" => "subscribed",
-//     //     "merge_fields" => [
-//     //               "FNAME" => "Leanne",
-//     //               "LNAME" => "Bishop",
-//     //               "PHONE" => "0412456456"                  
-//     //     ]
-//     // ]);
-
-//     // $response = $mailchimp->lists->updateListMemberTags(config('services.mailchimp.lists.test'), "leanne.testing@simtail.com", [
-//     //     "tags" => [["name" => "testTag", "status" => "active"]],
-//     // ]);
-
-//     // $response = $mailchimp->lists->addListMember(config('services.mailchimp.lists.test'), [
-//     //     "email_address" => "leanne.test.1@simtail.com",
-//     //     "status" => "transactional",
-//     //     "merge_fields" => [
-//     //       "FNAME" => "Leanne",
-//     //       "LNAME" => "Bishop",
-//     //       "PHONE" => "0412456456"
-//     //     ]
-//     //     ]);
     ddd($response);
 });
 
@@ -107,14 +83,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user-profile', function () {
         return view('user-profile');
     });
-
-    
-
-    // Route::resource('updatepassword','App\Http\Controllers\UpdatePasswordController');
-    // Route::get('updatepassword/{user}/edit', 'App\Http\Controllers\UpdatePasswordController@edit')->name('updatepassword.edit');
-
 });
 
-
-
-
+Route::get('/brochure.pdf', [BrochureController::class, 'download'])->name('brochure.download');

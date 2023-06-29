@@ -63,7 +63,7 @@ Hello
             <img src="{{ URL::asset('/img/brochure-2.png') }}" alt="">
         </div>
         <div class="d-flex h-25 align-items-center justify-content-center">
-            <strong>Email HALO Brochure to Customer</strong>
+            <strong>Email Pretty Penny Finance Brochure to Customer</strong>
         </div>
         </a>
     </div>

@@ -57,7 +57,7 @@ class BrochureSent extends Notification implements ShouldQueue
         $applicantFirstName = $this->application->applicant->firstname;
         $applicantLastName = $this->application->applicant->lastname;
         return (new MailMessage)
-                    ->line('A Halo Finance Brochure has been sent to your client:')
+                    ->line('A Pretty Penny Finance Brochure has been sent to your client:')
                     ->line('**' . $applicantFirstName . ' ' . $applicantLastName . '**')
                     ->line('We will notify you when they proceed with their application. In the meantime you can login 
                             to track the progress of all your client applications.')

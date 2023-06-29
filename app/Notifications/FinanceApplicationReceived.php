@@ -53,8 +53,8 @@ class FinanceApplicationReceived extends Notification /*implements ShouldQueue*/
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Thank you for submitting your application with Halo Finance. We will be in touch with you shortly to discuss your loan application to complete your submission.')
-                    ->line('We will require the below documents:')
+                    ->line('Thank you for submitting your application with Pretty Penny Finance. We will be in touch with you shortly to discuss your loan application to complete your submission.')
+                    ->line('We will require the below documents. Ask your dentist to get details from you in person or submit info to info@prettypennyfinance.com.au')
                     ->line('- Current Drivers License (Passport if license not available)')
                     ->line('- Medicare card')
                     ->line('- 2 most recent payslips')

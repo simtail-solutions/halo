@@ -5,7 +5,7 @@
 <div class="card-header">Benefits to the Patient</div>
 <div class="card-body p-5">
 
-<h2 class="mb-3">HALO Dental Payment Plans</h2>
+<h2 class="mb-3">Pretty Penny Dental Payment Plans</h2>
 <h3>A Healthy Payment Alternative for your Dental Treatment</h3>
 <div class="row py-4">
 <div class="col-lg-6">
@@ -21,7 +21,6 @@
 <li>Loans up to $50,000 typically approved same day</li>
 <li>No upfront out of pocket costs</li>
 <li>No early repayment fees</li>
-<!-- <li>HALO can fund your dentists directly</li> -->
 <li>Applicants must be employed</li>
 <li>Applicants must be over the age of 18</li>
 <!-- <li>In most circumstances we simply confirm ID and income</li>

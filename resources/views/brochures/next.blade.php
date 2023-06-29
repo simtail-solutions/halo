@@ -6,7 +6,7 @@
     <div class="card-header">Brochure Sent</div>
     <div class="card-body text-center">
         <h1>Brochure sent!</h1>
-        <p>A Halo brochure has been sent to your customer.
+        <p>A Pretty Penny Finance brochure has been sent to your customer.
 </p>
 
 <p>&nbsp;</p>

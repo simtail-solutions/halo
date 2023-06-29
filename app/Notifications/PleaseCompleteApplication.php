@@ -60,12 +60,12 @@ class PleaseCompleteApplication extends Notification implements ShouldQueue
 
         return (new MailMessage)
                     ->greeting('Hello ' . $applicantFirstName)
-                    ->line('We are delighted ' .  $referrer . ' has referred you to Halo Finance.')
+                    ->line('We are delighted ' .  $referrer . ' has referred you to Pretty Penny Finance.')
                     ->line('We will be in touch shortly to discuss our loan options and answer any questions you may have. 
                             If you\'d like to get the ball rolling, we\'ve provided information and our application form 
                             in the link below. Please feel free to have a read and apply when you\'re ready.')
                     ->line('**This application should only take a few minutes and will not impact your credit score**.')
-                    ->line('Please ensure the application is completed in full and truthfully. Halo makes borrowing more 
+                    ->line('Please ensure the application is completed in full and truthfully. Pretty Penny Finance makes borrowing more 
                             rewarding with flexible loans tailored to your budget helping borrowers get ahead in life and achieve 
                             more with their money. It\'s fairer finance that works for everyone.')
                     ->action('Complete your Application', route('applications.edit', $applyLink) )

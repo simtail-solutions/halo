@@ -83,7 +83,7 @@
             Resources
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">eBrochures</a></li>
+            <li><a class="dropdown-item" href="{{ route('brochure.download') }}" target="_new">eBrochures</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="/img/Privacy-Policy.pdf" target="_new">Privacy Policy</a></li>
             <li><a class="dropdown-item" href="/img/Credit-Guide.pdf" target="_new">Credit Guide</a></li>

@@ -46,7 +46,7 @@ class ThankYouForContactingHaloFinance extends Notification implements ShouldQue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Thank you for contacting Halo Finance.')
+                    ->line('Thank you for contacting Pretty Penny Finance.')
                     ->line('We will review your query and respond to you shortly.')
                     ->action('Send us an email', url('mailto:'.config('mail.from.address') ));
                     
